@@ -15,132 +15,185 @@
  */
 package org.intellij.lang.regexp.intention;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.util.regex.Pattern;
+
+import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+import org.intellij.lang.regexp.RegExpLanguage;
+import org.intellij.lang.regexp.RegExpModifierProvider;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.TestOnly;
+import org.mustbe.consulo.RequiredDispatchThread;
 import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.Disposable;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CustomShortcutSet;
 import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.event.DocumentAdapter;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.fileTypes.PlainTextFileType;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.popup.Balloon;
-import com.intellij.openapi.ui.popup.JBPopupAdapter;
-import com.intellij.openapi.ui.popup.LightweightWindowEvent;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.Ref;
+import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.wm.IdeFocusManager;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
-import com.intellij.ui.BalloonImpl;
+import com.intellij.psi.PsiLanguageInjectionHost;
+import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import com.intellij.ui.EditorTextField;
+import com.intellij.ui.Gray;
 import com.intellij.ui.JBColor;
+import com.intellij.ui.components.JBLabel;
 import com.intellij.util.Alarm;
-import org.intellij.lang.regexp.RegExpLanguage;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.regex.Pattern;
+import com.intellij.util.ui.UIUtil;
 
 /**
  * @author Konstantin Bulenkov
  */
-public class CheckRegExpForm {
-  private static final String LAST_EDITED_REGEXP = "last.edited.regexp";
-  private Pair<PsiFile, Ref<Balloon>> myParams;
+public class CheckRegExpForm
+{
+	private static final JBColor BACKGROUND_COLOR_MATCH = new JBColor(new Color(231, 250, 219), new Color(68, 85, 66));
+	private static final JBColor BACKGROUND_COLOR_NOMATCH = new JBColor(new Color(255, 177, 160), new Color(110, 43,
+			40));
 
-  private EditorTextField mySampleText; //TODO[kb]: make it multiline
+	private static final String LAST_EDITED_REGEXP = "last.edited.regexp";
+	private final PsiFile myRegexpFile;
 
-  private EditorTextField myRegExp;
-  private JPanel myRootPanel;
-  private Ref<Balloon> myRef;
-  private Project myProject;
+	private EditorTextField mySampleText; //TODO[kb]: make it multiline
 
+	private EditorTextField myRegExp;
+	private JPanel myRootPanel;
+	private JBLabel myMessage;
+	private Project myProject;
 
-  public CheckRegExpForm(Pair<PsiFile, Ref<Balloon>> params) {
-    myParams = params;
-  }
+	public CheckRegExpForm(PsiFile file)
+	{
+		myRegexpFile = file;
+	}
 
-  private void createUIComponents() {
-    PsiFile file = myParams.first;
-    myProject = file.getProject();
-    myRef = myParams.second;
-    Document document = PsiDocumentManager.getInstance(myProject).getDocument(file);
+	private void createUIComponents()
+	{
+		myProject = myRegexpFile.getProject();
+		Document document = PsiDocumentManager.getInstance(myProject).getDocument(myRegexpFile);
 
-    myRegExp = new EditorTextField(document, myProject, RegExpLanguage.INSTANCE.getAssociatedFileType());
-    final String sampleText = PropertiesComponent.getInstance(myProject).getValue(LAST_EDITED_REGEXP, "Sample Text");
-    mySampleText = new EditorTextField(sampleText, myProject, PlainTextFileType.INSTANCE);
-    myRootPanel = new JPanel(new BorderLayout()) {
-      @Override
-      public void addNotify() {
-        super.addNotify();
-        IdeFocusManager.getGlobalInstance().requestFocus(mySampleText, true);
+		myRegExp = new EditorTextField(document, myProject, RegExpLanguage.INSTANCE.getAssociatedFileType());
+		myRegExp.setPreferredWidth(Math.max(300, myRegExp.getPreferredSize().width));
+		final String sampleText = PropertiesComponent.getInstance(myProject).getValue(LAST_EDITED_REGEXP,
+				"Sample Text");
+		mySampleText = new EditorTextField(sampleText, myProject, PlainTextFileType.INSTANCE);
+		mySampleText.setBorder(new CompoundBorder(new EmptyBorder(2, 2, 2, 4), new LineBorder(UIUtil.isUnderDarcula()
+				? Gray._100 : JBColor.border())));
+		mySampleText.setOneLineMode(false);
 
-        final KeyAdapter escaper = new KeyAdapter() {
-          @Override
-          public void keyPressed(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-              if (!myRef.get().isDisposed()) {
-                myRef.get().hide();
-              }
-            }
-          }
-        };
+		myRootPanel = new JPanel(new BorderLayout())
+		{
+			Disposable disposable;
 
-        final Editor fieldEditor = myRegExp.getEditor();
-        final Editor textEditor = mySampleText.getEditor();
+			@Override
+			public void addNotify()
+			{
+				super.addNotify();
+				disposable = Disposer.newDisposable();
 
-        assert fieldEditor != null && textEditor != null;
+				IdeFocusManager.getGlobalInstance().requestFocus(mySampleText, true);
 
-        fieldEditor.getContentComponent().addKeyListener(escaper);
-        textEditor.getContentComponent().addKeyListener(escaper);
+				new AnAction()
+				{
+					@RequiredDispatchThread
+					@Override
+					public void actionPerformed(AnActionEvent e)
+					{
+						IdeFocusManager.findInstance().requestFocus(myRegExp.getFocusTarget(), true);
+					}
+				}.registerCustomShortcutSet(CustomShortcutSet.fromString("shift TAB"), mySampleText);
 
-        myRef.get().addListener(new JBPopupAdapter() {
-          @Override
-          public void onClosed(LightweightWindowEvent event) {
-            PropertiesComponent.getInstance(myProject).setValue(LAST_EDITED_REGEXP, mySampleText.getText());
-          }
-        });
+				final Alarm updater = new Alarm(Alarm.ThreadToUse.SWING_THREAD, disposable);
+				DocumentAdapter documentListener = new DocumentAdapter()
+				{
+					@Override
+					public void documentChanged(DocumentEvent e)
+					{
+						updater.cancelAllRequests();
+						if(!updater.isDisposed())
+						{
+							updater.addRequest(new Runnable()
+							{
+								@Override
+								public void run()
+								{
+									updateBalloon();
+								}
+							}, 200);
+						}
+					}
+				};
+				myRegExp.addDocumentListener(documentListener);
+				mySampleText.addDocumentListener(documentListener);
 
-        final Alarm updater = new Alarm(Alarm.ThreadToUse.SWING_THREAD, myRef.get());
-        final DocumentAdapter documentListener = new DocumentAdapter() {
-          @Override
-          public void documentChanged(DocumentEvent e) {
-            updater.cancelAllRequests();
-            if (!updater.isDisposed()) {
-              updater.addRequest(new Runnable() {
-                @Override
-                public void run() {
-                  updateBalloon();
-                }
-              }, 200);
-            }
-          }
-        };
-        myRegExp.addDocumentListener(documentListener);
-        mySampleText.addDocumentListener(documentListener);
+				updateBalloon();
+				mySampleText.selectAll();
+			}
 
-        updateBalloon();
-        mySampleText.selectAll();
-      }
-    };
-  }
+			@Override
+			public void removeNotify()
+			{
+				super.removeNotify();
+				Disposer.dispose(disposable);
+				PropertiesComponent.getInstance(myProject).setValue(LAST_EDITED_REGEXP, mySampleText.getText());
+			}
+		};
+	}
 
+	public JPanel getRootPanel()
+	{
+		return myRootPanel;
+	}
 
-  public JPanel getRootPanel() {
-    return myRootPanel;
-  }
+	private void updateBalloon()
+	{
+		boolean correct = isMatchingText(myRegexpFile, mySampleText.getText());
 
-  private void updateBalloon() {
-    boolean correct = false;
-    try {
-      correct = Pattern.compile(myRegExp.getText()).matcher(mySampleText.getText()).matches();
-    } catch (Exception ignore) {}
+		mySampleText.setBackground(correct ? BACKGROUND_COLOR_MATCH : BACKGROUND_COLOR_NOMATCH);
+		myMessage.setText(correct ? "Matches!" : "no match");
+		myRootPanel.revalidate();
+	}
 
-    mySampleText.setBackground(correct ? new JBColor(new Color(231, 250, 219), new Color(68, 85, 66)) : new JBColor(new Color(255, 177, 160), new Color(110, 43, 40)));
-    BalloonImpl balloon = (BalloonImpl)myRef.get();
-    if (balloon != null && balloon.isDisposed()) {
-      balloon.revalidate();
-    }
-  }
+	@TestOnly
+	public static boolean isMatchingTextTest(@NotNull PsiFile regexpFile, @NotNull String sampleText)
+	{
+		return isMatchingText(regexpFile, sampleText);
+	}
+
+	private static boolean isMatchingText(@NotNull PsiFile regexpFile, @NotNull String sampleText)
+	{
+		final String regExp = regexpFile.getText();
+
+		PsiLanguageInjectionHost host = InjectedLanguageUtil.findInjectionHost(regexpFile);
+		int flags = 0;
+		if(host != null)
+		{
+			for(RegExpModifierProvider provider : RegExpModifierProvider.EP.allForLanguage(host.getLanguage()))
+			{
+				flags = provider.getFlags(host, regexpFile);
+				if(flags > 0)
+				{
+					break;
+				}
+			}
+		}
+		try
+		{
+			return Pattern.compile(regExp, flags).matcher(sampleText).matches();
+		}
+		catch(Exception ignore)
+		{
+		}
+
+		return false;
+	}
 }

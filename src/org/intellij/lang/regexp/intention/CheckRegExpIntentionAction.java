@@ -15,23 +15,22 @@
  */
 package org.intellij.lang.regexp.intention;
 
+import javax.swing.Icon;
+import javax.swing.JComponent;
+
+import org.intellij.lang.regexp.RegExpLanguage;
+import org.jetbrains.annotations.NotNull;
 import com.intellij.codeInsight.intention.impl.QuickEditAction;
 import com.intellij.lang.Language;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import org.intellij.lang.regexp.RegExpLanguage;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 
 /**
  * @author Konstantin Bulenkov
@@ -57,11 +56,11 @@ public class CheckRegExpIntentionAction extends QuickEditAction implements Icona
   }
 
   @Override
-  protected JComponent createBalloonComponent(PsiFile file, final Ref<Balloon> ref) {
+  protected JComponent createBalloonComponent(PsiFile file) {
     final Project project = file.getProject();
     final Document document = PsiDocumentManager.getInstance(project).getDocument(file);
     if (document != null) {
-      return new CheckRegExpForm(new Pair<PsiFile, Ref<Balloon>>(file, ref)).getRootPanel();
+      return new CheckRegExpForm(file).getRootPanel();
     }
     return null;
   }

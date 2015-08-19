@@ -9,6 +9,9 @@
 			<with attribute="forClass" implements="com.intellij.psi.PsiElement"/>
 			<with attribute="implementationClass" implements="org.intellij.lang.regexp.RegExpLanguageHost"/>
 		</extensionPoint>
+		<extensionPoint name="modifierProvider" beanClass="com.intellij.lang.LanguageExtensionPoint">
+		<with attribute="implementationClass" implements="org.intellij.lang.regexp.RegExpModifierProvider"/>
+	</extensionPoint>
 		<!--<extensionPoint name="propertiesProvider" beanClass="com.intellij.lang.LanguageExtensionPoint"/> -->
 	</extensionPoints>
 
