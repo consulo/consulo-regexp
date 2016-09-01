@@ -15,13 +15,15 @@
  */
 package org.intellij.lang.regexp;
 
+import java.util.EnumSet;
+
+import org.intellij.lang.regexp.psi.impl.*;
+import org.jetbrains.annotations.NotNull;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.LanguageVersion;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -29,22 +31,18 @@ import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
-import org.intellij.lang.regexp.psi.impl.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.EnumSet;
+import consulo.lang.LanguageVersion;
 
 public class RegExpParserDefinition implements ParserDefinition {
   private static final TokenSet COMMENT_TOKENS = TokenSet.create(RegExpTT.COMMENT);
 
     @NotNull
-    public Lexer createLexer(@Nullable Project project, @NotNull LanguageVersion languageVersion) {
+    public Lexer createLexer(@NotNull LanguageVersion languageVersion) {
         return new RegExpLexer(EnumSet.of(RegExpCapability.NESTED_CHARACTER_CLASSES));
     }
 
     @NotNull
-    public PsiParser createParser(@NotNull Project project, @NotNull LanguageVersion languageVersion) {
+    public PsiParser createParser(@NotNull LanguageVersion languageVersion) {
         return new RegExpParser();
     }
 

@@ -15,21 +15,20 @@
  */
 package org.intellij.lang.regexp;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.StringEscapesTokenTypes;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.util.LanguageVersionUtil;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
-import java.util.Map;
+import consulo.lang.util.LanguageVersionUtil;
 
 public class RegExpHighlighter extends SyntaxHighlighterBase {
   private static final Map<IElementType, TextAttributesKey> keys1;
@@ -58,11 +57,9 @@ public class RegExpHighlighter extends SyntaxHighlighterBase {
   static final TextAttributesKey COMMENT =
     TextAttributesKey.createTextAttributesKey("REGEXP.COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
 
-  private final Project myProject;
   private final ParserDefinition myParserDefinition;
 
-  public RegExpHighlighter(Project project, ParserDefinition parserDefinition) {
-    myProject = project;
+  public RegExpHighlighter(ParserDefinition parserDefinition) {
     myParserDefinition = parserDefinition;
   }
 
@@ -112,7 +109,7 @@ public class RegExpHighlighter extends SyntaxHighlighterBase {
   @Override
   @NotNull
   public Lexer getHighlightingLexer() {
-    return myParserDefinition.createLexer(myProject, LanguageVersionUtil.findDefaultVersion(RegExpLanguage.INSTANCE));
+    return myParserDefinition.createLexer(LanguageVersionUtil.findDefaultVersion(RegExpLanguage.INSTANCE));
   }
 
   @Override

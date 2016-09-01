@@ -15,8 +15,17 @@
  */
 package org.intellij.lang.regexp;
 
+import static com.intellij.patterns.PlatformPatterns.psiElement;
+
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import com.intellij.codeInsight.TailType;
-import com.intellij.codeInsight.completion.*;
+import com.intellij.codeInsight.completion.CompletionContributor;
+import com.intellij.codeInsight.completion.CompletionParameters;
+import com.intellij.codeInsight.completion.CompletionResultSet;
+import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.codeInsight.lookup.TailTypeDecorator;
@@ -25,12 +34,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.util.PlatformIcons;
 import com.intellij.util.ProcessingContext;
 import com.intellij.util.ui.EmptyIcon;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-
-import static com.intellij.patterns.PlatformPatterns.psiElement;
+import consulo.codeInsight.completion.CompletionProvider;
 
 /**
  * @author vnikolaenko
@@ -85,7 +89,7 @@ public final class RegExpCompletionContributor extends CompletionContributor {
     return LookupElementBuilder.create(name).withTypeText(type).withIcon(icon);
   }
 
-  private static class PropertyNameCompletionProvider extends CompletionProvider<CompletionParameters> {
+  private static class PropertyNameCompletionProvider implements CompletionProvider {
 
     public void addCompletions(@NotNull final CompletionParameters parameters,
                                final ProcessingContext context,
@@ -97,7 +101,8 @@ public final class RegExpCompletionContributor extends CompletionContributor {
     }
   }
 
-  private static class PropertyCompletionProvider extends CompletionProvider<CompletionParameters> {
+  private static class PropertyCompletionProvider implements CompletionProvider
+  {
 
     public void addCompletions(@NotNull final CompletionParameters parameters,
                                final ProcessingContext context,
@@ -108,7 +113,7 @@ public final class RegExpCompletionContributor extends CompletionContributor {
     }
   }
 
-  private static class CharacterClassesNameCompletionProvider extends CompletionProvider<CompletionParameters> {
+  private static class CharacterClassesNameCompletionProvider implements CompletionProvider {
 
     public void addCompletions(@NotNull final CompletionParameters parameters,
                                final ProcessingContext context,

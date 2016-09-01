@@ -15,12 +15,12 @@
  */
 package org.intellij.lang.regexp;
 
+import org.jetbrains.annotations.NotNull;
 import com.intellij.lang.Language;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.openapi.fileTypes.SingleLazyInstanceSyntaxHighlighterFactory;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
-import org.jetbrains.annotations.NotNull;
 
 public class RegExpSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHighlighterFactory {
   private final ParserDefinition myParserDefinition;
@@ -36,6 +36,6 @@ public class RegExpSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHigh
 
   @NotNull
   protected SyntaxHighlighter createHighlighter() {
-    return new RegExpHighlighter(null, myParserDefinition);
+    return new RegExpHighlighter(myParserDefinition);
   }
 }
