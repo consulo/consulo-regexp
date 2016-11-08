@@ -17,17 +17,19 @@ package org.intellij.lang.regexp.psi;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface RegExpBoundary extends RegExpAtom {
-    /**
-     * Boundary type enumeration.
-     */
-    enum Type  {
-        LINE_START, LINE_END,
-        WORD, NON_WORD,
-        BEGIN, END, END_NO_LINE_TERM,
-        PREVIOUS_MATCH
-    }
+public interface RegExpBoundary extends RegExpAtom
+{
+	/**
+	 * Boundary type enumeration.
+	 */
+	enum Type
+	{
+		LINE_START, LINE_END,
+		WORD, UNICODE_EXTENDED_GRAPHEME, NON_WORD,
+		BEGIN, END, END_NO_LINE_TERM,
+		PREVIOUS_MATCH
+	}
 
-    @NotNull
-    Type getType();
+	@NotNull
+	Type getType();
 }

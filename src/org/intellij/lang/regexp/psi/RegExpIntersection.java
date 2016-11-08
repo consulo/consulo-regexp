@@ -16,15 +16,13 @@
 package org.intellij.lang.regexp.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents an intersection of class elements: [a-z&&[^cd]]
  */
-public interface RegExpIntersection extends RegExpClassElement {
-    @NotNull
-    RegExpClassElement getLOperand();
+public interface RegExpIntersection extends RegExpClassElement
+{
 
-    @Nullable
-    RegExpClassElement getROperand();
+	@NotNull
+	RegExpClassElement[] getOperands();
 }

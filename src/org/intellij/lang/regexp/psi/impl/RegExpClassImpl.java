@@ -15,38 +15,45 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import org.intellij.lang.regexp.RegExpElementTypes;
+import org.intellij.lang.regexp.RegExpTT;
+import org.intellij.lang.regexp.psi.RegExpClass;
+import org.intellij.lang.regexp.psi.RegExpClassElement;
+import org.intellij.lang.regexp.psi.RegExpElementVisitor;
+import org.jetbrains.annotations.NotNull;
 import com.intellij.lang.ASTNode;
 
-import org.jetbrains.annotations.NotNull;
+public class RegExpClassImpl extends RegExpElementImpl implements RegExpClass
+{
 
-import org.intellij.lang.regexp.psi.RegExpClass;
-import org.intellij.lang.regexp.psi.RegExpElementVisitor;
-import org.intellij.lang.regexp.psi.RegExpClassElement;
-import org.intellij.lang.regexp.RegExpTT;
-import org.intellij.lang.regexp.RegExpElementTypes;
+	public RegExpClassImpl(ASTNode astNode)
+	{
+		super(astNode);
+	}
 
-public class RegExpClassImpl extends RegExpElementImpl implements RegExpClass {
+	@Override
+	public boolean isNegated()
+	{
+		final ASTNode node = getNode().getFirstChildNode();
+		return node != null && node.getElementType() == RegExpTT.CARET;
+	}
 
-    public RegExpClassImpl(ASTNode astNode) {
-        super(astNode);
-    }
+	@Override
+	@NotNull
+	public RegExpClassElement[] getElements()
+	{
+		final ASTNode[] nodes = getNode().getChildren(RegExpElementTypes.CLASS_ELEMENTS);
+		final RegExpClassElement[] e = new RegExpClassElement[nodes.length];
+		for(int i = 0; i < e.length; i++)
+		{
+			e[i] = (RegExpClassElement) nodes[i].getPsi();
+		}
+		return e;
+	}
 
-    public boolean isNegated() {
-        final ASTNode node = getNode().getFirstChildNode();
-        return node != null && node.getElementType() == RegExpTT.CARET;
-    }
-
-    @NotNull
-    public RegExpClassElement[] getElements() {
-        final ASTNode[] nodes = getNode().getChildren(RegExpElementTypes.CLASS_ELEMENTS);
-        RegExpClassElement[] e = new RegExpClassElement[nodes.length];
-        for (int i = 0; i < e.length; i++) {
-            e[i] = (RegExpClassElement)nodes[i].getPsi();
-        }
-        return e;
-    }
-
-    public void accept(RegExpElementVisitor visitor) {
-        visitor.visitRegExpClass(this);
-    }
+	@Override
+	public void accept(RegExpElementVisitor visitor)
+	{
+		visitor.visitRegExpClass(this);
+	}
 }

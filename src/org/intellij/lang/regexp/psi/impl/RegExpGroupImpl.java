@@ -15,52 +15,88 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import com.intellij.lang.ASTNode;
-
 import org.intellij.lang.regexp.RegExpElementTypes;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpGroup;
 import org.intellij.lang.regexp.psi.RegExpPattern;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.IElementType;
+import com.intellij.util.IncorrectOperationException;
 
-public class RegExpGroupImpl extends RegExpElementImpl implements RegExpGroup {
-  public RegExpGroupImpl(ASTNode astNode) {
-    super(astNode);
-  }
+public class RegExpGroupImpl extends RegExpElementImpl implements RegExpGroup
+{
+	public RegExpGroupImpl(ASTNode astNode)
+	{
+		super(astNode);
+	}
 
-  public void accept(RegExpElementVisitor visitor) {
-    visitor.visitRegExpGroup(this);
-  }
+	public void accept(RegExpElementVisitor visitor)
+	{
+		visitor.visitRegExpGroup(this);
+	}
 
-  public boolean isCapturing() {
-    final ASTNode node = getNode().getFirstChildNode();
-    return node != null && node.getElementType() == RegExpTT.GROUP_BEGIN;
-  }
+	public boolean isCapturing()
+	{
+		final ASTNode node = getNode().getFirstChildNode();
+		if(node == null)
+		{
+			return false;
+		}
+		final IElementType type = node.getElementType();
+		return type == RegExpTT.GROUP_BEGIN || type == RegExpTT.RUBY_NAMED_GROUP ||
+				type == RegExpTT.RUBY_QUOTED_NAMED_GROUP || type == RegExpTT.PYTHON_NAMED_GROUP;
+	}
 
-  public boolean isSimple() {
-    final ASTNode node = getNode().getFirstChildNode();
-    return node != null && (node.getElementType() == RegExpTT.GROUP_BEGIN || node.getElementType() == RegExpTT.NON_CAPT_GROUP);
-  }
+	public boolean isSimple()
+	{
+		final ASTNode node = getNode().getFirstChildNode();
+		return node != null && (node.getElementType() == RegExpTT.GROUP_BEGIN || node.getElementType() == RegExpTT.NON_CAPT_GROUP);
+	}
 
-  public RegExpPattern getPattern() {
-    final ASTNode node = getNode().findChildByType(RegExpElementTypes.PATTERN);
-    return node != null ? (RegExpPattern)node.getPsi() : null;
-  }
+	public RegExpPattern getPattern()
+	{
+		final ASTNode node = getNode().findChildByType(RegExpElementTypes.PATTERN);
+		return node != null ? (RegExpPattern) node.getPsi() : null;
+	}
 
-  public boolean isPythonNamedGroup() {
-    return getNode().findChildByType(RegExpTT.PYTHON_NAMED_GROUP) != null;
-  }
+	public boolean isPythonNamedGroup()
+	{
+		return getNode().findChildByType(RegExpTT.PYTHON_NAMED_GROUP) != null;
+	}
 
-  public boolean isRubyNamedGroup() {
-    return getNode().findChildByType(RegExpTT.RUBY_NAMED_GROUP) != null ||
-           getNode().findChildByType(RegExpTT.RUBY_QUOTED_NAMED_GROUP) != null;
-  }
+	public boolean isRubyNamedGroup()
+	{
+		return getNode().findChildByType(RegExpTT.RUBY_NAMED_GROUP) != null || getNode().findChildByType(RegExpTT.RUBY_QUOTED_NAMED_GROUP) != null;
+	}
 
-  public String getGroupName() {
-    if (!isPythonNamedGroup()) {
-      return null;
-    }
-    final ASTNode nameNode = getNode().findChildByType(RegExpTT.NAME);
-    return nameNode != null ? nameNode.getText() : null;
-  }
+	public boolean isNamedGroup()
+	{
+		return getNode().findChildByType(RegExpTT.RUBY_NAMED_GROUP) != null;
+	}
+
+	public String getGroupName()
+	{
+		if(!isPythonNamedGroup() && !isRubyNamedGroup())
+		{
+			return null;
+		}
+		final ASTNode nameNode = getNode().findChildByType(RegExpTT.NAME);
+		return nameNode != null ? nameNode.getText() : null;
+	}
+
+	@Override
+	public String getName()
+	{
+		return getGroupName();
+	}
+
+	@Override
+	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException
+	{
+		throw new IncorrectOperationException();
+	}
 }

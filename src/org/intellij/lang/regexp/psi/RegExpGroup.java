@@ -16,19 +16,23 @@
 package org.intellij.lang.regexp.psi;
 
 import org.jetbrains.annotations.Nullable;
+import com.intellij.psi.PsiNamedElement;
 
-public interface RegExpGroup extends RegExpAtom {
-  boolean isCapturing();
+public interface RegExpGroup extends RegExpAtom, PsiNamedElement
+{
+	boolean isCapturing();
 
-  boolean isSimple();
+	boolean isSimple();
 
-  @Nullable
-  RegExpPattern getPattern();
+	@Nullable
+	RegExpPattern getPattern();
 
-  boolean isPythonNamedGroup();
+	boolean isPythonNamedGroup();
 
-  boolean isRubyNamedGroup();
+	boolean isRubyNamedGroup();
 
-  @Nullable
-  String getGroupName();
+	boolean isNamedGroup();
+
+	@Nullable
+	String getGroupName();
 }

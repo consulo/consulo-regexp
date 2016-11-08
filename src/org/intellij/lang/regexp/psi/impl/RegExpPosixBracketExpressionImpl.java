@@ -1,11 +1,11 @@
 /*
- * Copyright 2006 Sascha Weinreuter
+ * Copyright 2000-2016 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,15 +15,17 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import org.intellij.lang.regexp.psi.RegExpClassElement;
+import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
-import org.intellij.lang.regexp.psi.RegExpIntersection;
-import org.jetbrains.annotations.NotNull;
+import org.intellij.lang.regexp.psi.RegExpPosixBracketExpression;
 import com.intellij.lang.ASTNode;
 
-public class RegExpIntersectionImpl extends RegExpElementImpl implements RegExpIntersection
+/**
+ * @author Bas Leijdekkers
+ */
+public class RegExpPosixBracketExpressionImpl extends RegExpElementImpl implements RegExpPosixBracketExpression
 {
-	public RegExpIntersectionImpl(ASTNode astNode)
+	public RegExpPosixBracketExpressionImpl(ASTNode astNode)
 	{
 		super(astNode);
 	}
@@ -31,13 +33,13 @@ public class RegExpIntersectionImpl extends RegExpElementImpl implements RegExpI
 	@Override
 	public void accept(RegExpElementVisitor visitor)
 	{
-		visitor.visitRegExpIntersection(this);
+		visitor.visitPosixBracketExpression(this);
 	}
 
 	@Override
-	@NotNull
-	public RegExpClassElement[] getOperands()
+	public String getClassName()
 	{
-		return findChildrenByClass(RegExpClassElement.class);
+		final ASTNode nameNode = getNode().findChildByType(RegExpTT.NAME);
+		return nameNode != null ? nameNode.getText() : null;
 	}
 }
