@@ -15,6 +15,18 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import java.awt.Color;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.intellij.lang.regexp.RegExpLanguageHosts;
+import org.intellij.lang.regexp.RegExpTT;
+import org.intellij.lang.regexp.psi.RegExpElementVisitor;
+import org.intellij.lang.regexp.psi.RegExpProperty;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.codeInsight.lookup.LookupValueFactory;
 import com.intellij.codeInsight.lookup.LookupValueWithPriority;
 import com.intellij.codeInsight.lookup.LookupValueWithUIHint;
@@ -25,18 +37,6 @@ import com.intellij.psi.PsiReference;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PlatformIcons;
-import org.intellij.lang.regexp.RegExpLanguageHosts;
-import org.intellij.lang.regexp.RegExpTT;
-import org.intellij.lang.regexp.psi.RegExpElementVisitor;
-import org.intellij.lang.regexp.psi.RegExpProperty;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.awt.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
 
 public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpProperty {
     public RegExpPropertyImpl(ASTNode astNode) {

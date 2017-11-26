@@ -15,6 +15,9 @@
  */
 package test;
 
+import java.io.File;
+
+import org.intellij.lang.regexp.RegExpFileType;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
@@ -25,9 +28,6 @@ import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
 import com.intellij.testFramework.fixtures.IdeaProjectTestFixture;
 import com.intellij.testFramework.fixtures.IdeaTestFixtureFactory;
 import com.intellij.testFramework.fixtures.TestFixtureBuilder;
-import org.intellij.lang.regexp.RegExpFileType;
-
-import java.io.File;
 
 public abstract class BaseParseTestcase extends UsefulTestCase{
   protected CodeInsightTestFixture myFixture;

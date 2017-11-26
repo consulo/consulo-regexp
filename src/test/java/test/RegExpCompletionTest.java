@@ -15,14 +15,15 @@
  */
 package test;
 
-import com.intellij.openapi.application.PathManager;
-import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
-import com.intellij.util.ArrayUtil;
-import org.intellij.lang.regexp.DefaultRegExpPropertiesProvider;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import org.intellij.lang.regexp.DefaultRegExpPropertiesProvider;
+import org.junit.Ignore;
+import com.intellij.openapi.application.PathManager;
+import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
+import com.intellij.util.ArrayUtil;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,6 +31,7 @@ import java.util.Arrays;
  * Date: 25.09.2008
  * Time: 15:10:10
  */
+@Ignore
 public class RegExpCompletionTest extends CodeInsightFixtureTestCase {
   // util methods
     private static String getInputDataFileName(String testName) {

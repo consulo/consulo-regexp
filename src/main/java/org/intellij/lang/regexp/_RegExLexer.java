@@ -3,11 +3,12 @@
 /* It's an automatically generated code. Do not modify it. */
 package org.intellij.lang.regexp;
 
-import com.intellij.lexer.FlexLexer;
-import com.intellij.psi.tree.IElementType;
-import java.util.LinkedList;
 import java.util.EnumSet;
+import java.util.LinkedList;
+
+import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.StringEscapesTokenTypes;
+import com.intellij.psi.tree.IElementType;
 
 // IDEADEV-11055
 @SuppressWarnings({ "ALL", "SameParameterValue", "WeakerAccess", "SameReturnValue", "RedundantThrows", "UnusedDeclaration", "UnusedDeclaration" })

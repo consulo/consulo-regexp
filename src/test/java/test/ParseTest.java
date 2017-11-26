@@ -15,6 +15,9 @@
  */
 package test;
 
+import org.junit.Ignore;
+
+@Ignore
 public class ParseTest extends BaseParseTestcase {
 
     //public void test0() throws Throwable {

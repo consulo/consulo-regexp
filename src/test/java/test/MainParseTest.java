@@ -15,19 +15,26 @@
  */
 package test;
 
-import org.intellij.lang.regexp.RegExpFileType;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
-import org.jdom.xpath.XPath;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.StringReader;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.intellij.lang.regexp.RegExpFileType;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
+import org.jdom.xpath.XPath;
+import org.junit.Ignore;
+
+@Ignore
 public class MainParseTest extends BaseParseTestcase {
 
   private ByteArrayOutputStream myOut;
