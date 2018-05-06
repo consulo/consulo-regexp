@@ -18,7 +18,7 @@ package org.intellij.lang.regexp.psi.impl;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpNamedCharacter;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import com.intellij.lang.ASTNode;
 
 /**

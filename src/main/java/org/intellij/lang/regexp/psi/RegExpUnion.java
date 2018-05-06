@@ -15,7 +15,7 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * A union of two or more class elements: [abc]
@@ -25,6 +25,6 @@ import org.jetbrains.annotations.NotNull;
 public interface RegExpUnion extends RegExpClassElement
 {
 
-	@NotNull
+	@Nonnull
 	RegExpClassElement[] getElements();
 }

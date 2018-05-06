@@ -15,9 +15,10 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import javax.annotation.Nonnull;
+
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpSimpleClass;
-import org.jetbrains.annotations.NotNull;
 import com.intellij.lang.ASTNode;
 
 public class RegExpSimpleClassImpl extends RegExpElementImpl implements RegExpSimpleClass
@@ -28,7 +29,7 @@ public class RegExpSimpleClassImpl extends RegExpElementImpl implements RegExpSi
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public Kind getKind()
 	{
 		switch(getUnescapedText())

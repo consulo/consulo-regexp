@@ -19,11 +19,13 @@ import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.intellij.lang.regexp.RegExpLanguageHosts;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.lang.ASTNode;
@@ -50,7 +52,7 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
 	}
 
 	@Override
-	public void annotate(@NotNull PsiElement psiElement, @NotNull AnnotationHolder holder)
+	public void annotate(@Nonnull PsiElement psiElement, @Nonnull AnnotationHolder holder)
 	{
 		assert myHolder == null : "unsupported concurrent annotator invocation";
 		try
@@ -71,7 +73,7 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
 		checkValidFlag(options.getOptionsOff(), options);
 	}
 
-	private void checkValidFlag(@Nullable ASTNode optionsNode, @NotNull RegExpOptions context)
+	private void checkValidFlag(@Nullable ASTNode optionsNode, @Nonnull RegExpOptions context)
 	{
 		if(optionsNode == null)
 		{

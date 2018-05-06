@@ -15,7 +15,7 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Represents a character range as in [a-z]. 
@@ -23,9 +23,9 @@ import org.jetbrains.annotations.NotNull;
 public interface RegExpCharRange extends RegExpElement, RegExpClassElement {
     interface Endpoint extends RegExpClassElement { }
 
-    @NotNull
+    @Nonnull
     Endpoint getFrom();
 
-    @NotNull
+    @Nonnull
     Endpoint getTo();
 }

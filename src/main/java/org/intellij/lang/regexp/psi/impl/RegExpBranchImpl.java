@@ -15,9 +15,9 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import com.intellij.lang.ASTNode;
+import javax.annotation.Nonnull;
 
-import org.jetbrains.annotations.NotNull;
+import com.intellij.lang.ASTNode;
 
 import org.intellij.lang.regexp.RegExpElementTypes;
 import org.intellij.lang.regexp.psi.RegExpAtom;
@@ -29,7 +29,7 @@ public class RegExpBranchImpl extends RegExpElementImpl implements RegExpBranch 
         super(astNode);
     }
 
-    @NotNull
+    @Nonnull
     public RegExpAtom[] getAtoms() {
         final ASTNode[] nodes = getNode().getChildren(RegExpElementTypes.ATOMS);
         final RegExpAtom[] atoms = new RegExpAtom[nodes.length];

@@ -15,10 +15,11 @@
  */
 package org.intellij.lang.regexp.validation;
 
+import javax.annotation.Nonnull;
+
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpChar;
 import org.intellij.lang.regexp.psi.impl.RegExpElementImpl;
-import org.jetbrains.annotations.NotNull;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.editor.Editor;
@@ -35,21 +36,21 @@ class RemoveRedundantEscapeAction implements IntentionAction {
         myChar = ch;
     }
 
-    @NotNull
+    @Nonnull
     public String getText() {
         return "Remove Redundant Escape";
     }
 
-    @NotNull
+    @Nonnull
     public String getFamilyName() {
         return "Redundant Character Escape";
     }
 
-    public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {
+    public boolean isAvailable(@Nonnull Project project, Editor editor, PsiFile file) {
         return myChar.isValid() && myChar.getUnescapedText().startsWith("\\");
     }
 
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
+    public void invoke(@Nonnull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
         final Character v = myChar.getValue();
         assert v != null;
 

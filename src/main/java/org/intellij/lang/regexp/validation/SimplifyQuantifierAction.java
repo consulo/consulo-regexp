@@ -15,6 +15,8 @@
  */
 package org.intellij.lang.regexp.validation;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
@@ -26,7 +28,6 @@ import org.intellij.lang.regexp.RegExpFileType;
 import org.intellij.lang.regexp.psi.RegExpClosure;
 import org.intellij.lang.regexp.psi.RegExpPattern;
 import org.intellij.lang.regexp.psi.RegExpQuantifier;
-import org.jetbrains.annotations.NotNull;
 
 class SimplifyQuantifierAction implements IntentionAction {
     private final RegExpQuantifier myQuantifier;
@@ -37,21 +38,21 @@ class SimplifyQuantifierAction implements IntentionAction {
         myReplacement = s;
     }
 
-    @NotNull
+    @Nonnull
     public String getText() {
         return myReplacement == null ? "Simplify" : "Replace with '" + myReplacement + "'";
     }
 
-    @NotNull
+    @Nonnull
     public String getFamilyName() {
         return "Simplify Quantifier";
     }
 
-    public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {
+    public boolean isAvailable(@Nonnull Project project, Editor editor, PsiFile file) {
         return myQuantifier.isValid();
     }
 
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
+    public void invoke(@Nonnull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
         if (myReplacement == null) {
             myQuantifier.delete();
         } else {

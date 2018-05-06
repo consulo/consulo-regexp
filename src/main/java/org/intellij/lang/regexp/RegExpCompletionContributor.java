@@ -18,10 +18,10 @@ package org.intellij.lang.regexp;
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 import static com.intellij.patterns.StandardPatterns.or;
 
+import javax.annotation.Nonnull;
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import com.intellij.codeInsight.TailType;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
@@ -120,7 +120,7 @@ public final class RegExpCompletionContributor extends CompletionContributor
 
 		@RequiredReadAction
 		@Override
-		public void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet result)
+		public void addCompletions(@Nonnull CompletionParameters parameters, ProcessingContext context, @Nonnull CompletionResultSet result)
 		{
 
 			for(String[] completion : RegExpLanguageHosts.getInstance().getPosixCharacterClasses(parameters.getPosition()))
@@ -150,7 +150,7 @@ public final class RegExpCompletionContributor extends CompletionContributor
 	{
 		@RequiredReadAction
 		@Override
-		public void addCompletions(@NotNull final CompletionParameters parameters, final ProcessingContext context, @NotNull final CompletionResultSet result)
+		public void addCompletions(@Nonnull final CompletionParameters parameters, final ProcessingContext context, @Nonnull final CompletionResultSet result)
 		{
 			for(String[] stringArray : RegExpLanguageHosts.getInstance().getAllKnownProperties(parameters.getPosition()))
 			{
@@ -164,7 +164,7 @@ public final class RegExpCompletionContributor extends CompletionContributor
 
 		@RequiredReadAction
 		@Override
-		public void addCompletions(@NotNull final CompletionParameters parameters, final ProcessingContext context, @NotNull final CompletionResultSet result)
+		public void addCompletions(@Nonnull final CompletionParameters parameters, final ProcessingContext context, @Nonnull final CompletionResultSet result)
 		{
 			for(String[] stringArray : RegExpLanguageHosts.getInstance().getAllKnownProperties(parameters.getPosition()))
 			{
@@ -178,7 +178,7 @@ public final class RegExpCompletionContributor extends CompletionContributor
 
 		@RequiredReadAction
 		@Override
-		public void addCompletions(@NotNull final CompletionParameters parameters, final ProcessingContext context, @NotNull final CompletionResultSet result)
+		public void addCompletions(@Nonnull final CompletionParameters parameters, final ProcessingContext context, @Nonnull final CompletionResultSet result)
 		{
 			for(final String[] completion : RegExpLanguageHosts.getInstance().getKnownCharacterClasses(parameters.getPosition()))
 			{
@@ -204,7 +204,7 @@ public final class RegExpCompletionContributor extends CompletionContributor
 
 		@RequiredReadAction
 		@Override
-		public void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet result)
+		public void addCompletions(@Nonnull CompletionParameters parameters, ProcessingContext context, @Nonnull CompletionResultSet result)
 		{
 			UnicodeCharacterNames.iterate(name -> {
 				if(result.getPrefixMatcher().prefixMatches(name))

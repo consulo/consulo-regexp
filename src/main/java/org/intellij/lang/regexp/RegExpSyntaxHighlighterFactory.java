@@ -15,7 +15,8 @@
  */
 package org.intellij.lang.regexp;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import com.intellij.lang.Language;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.lang.ParserDefinition;
@@ -29,12 +30,12 @@ public class RegExpSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHigh
     this(RegExpLanguage.INSTANCE);
   }
 
-  protected RegExpSyntaxHighlighterFactory(@NotNull Language language) {
+  protected RegExpSyntaxHighlighterFactory(@Nonnull Language language) {
     myParserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(language);
   }
 
 
-  @NotNull
+  @Nonnull
   protected SyntaxHighlighter createHighlighter() {
     return new RegExpHighlighter(myParserDefinition);
   }

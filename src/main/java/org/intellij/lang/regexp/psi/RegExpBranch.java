@@ -15,7 +15,7 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * A branch represents an alternative in a regex pattern: abc | xyz
@@ -25,6 +25,6 @@ public interface RegExpBranch extends RegExpElement {
      * Returns the atoms making up the branch.
      * @see org.intellij.lang.regexp.psi.RegExpAtom 
      */
-    @NotNull
+    @Nonnull
     RegExpAtom[] getAtoms();
 }

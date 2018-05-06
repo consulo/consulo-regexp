@@ -15,6 +15,8 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
@@ -23,7 +25,6 @@ import org.intellij.lang.regexp.RegExpElementTypes;
 import org.intellij.lang.regexp.psi.RegExpBranch;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpPattern;
-import org.jetbrains.annotations.NotNull;
 
 public class RegExpPatternImpl extends RegExpElementImpl implements RegExpPattern {
     private static final TokenSet BRANCH = TokenSet.create(RegExpElementTypes.BRANCH);
@@ -36,7 +37,7 @@ public class RegExpPatternImpl extends RegExpElementImpl implements RegExpPatter
         visitor.visitRegExpPattern(this);
     }
 
-    @NotNull
+    @Nonnull
     public RegExpBranch[] getBranches() {
         final ASTNode[] nodes = getNode().getChildren(BRANCH);
         final RegExpBranch[] branches = new RegExpBranch[nodes.length];
@@ -46,7 +47,7 @@ public class RegExpPatternImpl extends RegExpElementImpl implements RegExpPatter
         return branches;
     }
 
-  @NotNull
+  @Nonnull
   @Override
   public PsiReference[] getReferences() {
     return ReferenceProvidersRegistry.getReferencesFromProviders(this, RegExpPattern.class);

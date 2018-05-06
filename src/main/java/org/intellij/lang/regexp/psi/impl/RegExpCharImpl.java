@@ -15,13 +15,15 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.StringEscapesTokenTypes;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpChar;
@@ -36,7 +38,7 @@ public class RegExpCharImpl extends RegExpElementImpl implements RegExpChar {
         super(astNode);
     }
 
-    @NotNull
+    @Nonnull
     public Type getType() {
         final ASTNode child = getNode().getFirstChildNode();
         assert child != null;

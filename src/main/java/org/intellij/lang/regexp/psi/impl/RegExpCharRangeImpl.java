@@ -15,10 +15,11 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.TokenSet;
-import org.jetbrains.annotations.NotNull;
 
 import org.intellij.lang.regexp.RegExpElementTypes;
 import org.intellij.lang.regexp.psi.RegExpCharRange;
@@ -31,11 +32,11 @@ public class RegExpCharRangeImpl extends RegExpElementImpl implements RegExpChar
         super(astNode);
     }
 
-    @NotNull
+    @Nonnull
     public Endpoint getFrom() {
         return (Endpoint)getCharNode(0);
     }
-    @NotNull
+    @Nonnull
     public Endpoint getTo() {
         return (Endpoint)getCharNode(1);
     }

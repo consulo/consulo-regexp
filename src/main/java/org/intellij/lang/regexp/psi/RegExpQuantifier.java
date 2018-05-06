@@ -15,11 +15,11 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public interface RegExpQuantifier extends RegExpAtom {
 
-    @NotNull
+    @Nonnull
     RegExpAtom getAtom();
 
     /**
@@ -28,19 +28,19 @@ public interface RegExpQuantifier extends RegExpAtom {
      * quantifiers, or an arbitrary instance of the {@link org.intellij.lang.regexp.psi.RegExpQuantifier.Count}
      * interface that returns the values obtained from the {min,max} quantifier.
      */
-    @NotNull
+    @Nonnull
     Count getCount();
 
     /**
      * The "greedyness" type of the quantifier.  
      */
-    @NotNull
+    @Nonnull
     Type getType();
 
     interface Count {
-        @NotNull
+        @Nonnull
         String getMin();
-        @NotNull
+        @Nonnull
         String getMax();
     }
 
@@ -60,11 +60,11 @@ public interface RegExpQuantifier extends RegExpAtom {
             myMax = max;
         }
 
-        @NotNull
+        @Nonnull
         public String getMin() {
             return myMin;
         }
-        @NotNull
+        @Nonnull
         public String getMax() {
             return myMax;
         }

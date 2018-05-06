@@ -15,10 +15,11 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
-import org.jetbrains.annotations.NotNull;
 
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.RegExpElementTypes;
@@ -36,14 +37,14 @@ public class RegExpQuantifierImpl extends RegExpElementImpl implements RegExpQua
         visitor.visitRegExpQuantifier(this);
     }
 
-    @NotNull
+    @Nonnull
     public RegExpAtom getAtom() {
         final ASTNode[] nodes = getNode().getChildren(RegExpElementTypes.ATOMS);
         assert nodes.length > 0;
         return (RegExpAtom)nodes[0].getPsi();
     }
 
-    @NotNull
+    @Nonnull
     public Count getCount() {
         final ASTNode[] nodes = getNode().getChildren(RegExpTT.QUANTIFIERS);
         assert nodes.length > 0;
@@ -77,7 +78,7 @@ public class RegExpQuantifierImpl extends RegExpElementImpl implements RegExpQua
         return null;
     }
 
-    @NotNull
+    @Nonnull
     public Type getType() {
         final ASTNode[] nodes = getNode().getChildren(RegExpTT.QUANTIFIERS);
         if (nodes.length > 1) {
@@ -95,17 +96,17 @@ public class RegExpQuantifierImpl extends RegExpElementImpl implements RegExpQua
         private final String myMin;
         private final String myMax;
 
-        public RepeatedCount(@NotNull String min, @NotNull String max) {
+        public RepeatedCount(@Nonnull String min, @Nonnull String max) {
             myMin = min;
             myMax = max;
         }
 
-        @NotNull
+        @Nonnull
         public String getMin() {
             return myMin;
         }
 
-        @NotNull
+        @Nonnull
         public String getMax() {
             return myMax;
         }

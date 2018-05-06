@@ -15,8 +15,8 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Represents a simple or escaped character
@@ -36,7 +36,7 @@ public interface RegExpChar extends RegExpAtom, RegExpClassElement, RegExpCharRa
      * Returns the type of this character.
      * @see org.intellij.lang.regexp.psi.RegExpChar.Type
      */
-    @NotNull
+    @Nonnull
     Type getType();
 
     /**

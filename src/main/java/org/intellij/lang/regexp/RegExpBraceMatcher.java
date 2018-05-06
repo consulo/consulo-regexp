@@ -15,12 +15,13 @@
  */
 package org.intellij.lang.regexp;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.intellij.lang.BracePair;
 import com.intellij.lang.PairedBraceMatcher;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class RegExpBraceMatcher implements PairedBraceMatcher {
   public BracePair[] getPairs() {
@@ -34,7 +35,7 @@ public class RegExpBraceMatcher implements PairedBraceMatcher {
       new BracePair(RegExpTT.QUOTE_BEGIN, RegExpTT.QUOTE_END, false),};
   }
 
-  public boolean isPairedBracesAllowedBeforeType(@NotNull IElementType lbraceType, @Nullable IElementType contextType) {
+  public boolean isPairedBracesAllowedBeforeType(@Nonnull IElementType lbraceType, @Nullable IElementType contextType) {
     return false;
   }
 

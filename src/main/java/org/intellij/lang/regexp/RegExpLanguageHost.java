@@ -15,14 +15,16 @@
  */
 package org.intellij.lang.regexp;
 
+import javax.annotation.Nonnull;
+
 import org.intellij.lang.regexp.psi.RegExpBoundary;
 import org.intellij.lang.regexp.psi.RegExpChar;
 import org.intellij.lang.regexp.psi.RegExpGroup;
 import org.intellij.lang.regexp.psi.RegExpNamedCharacter;
 import org.intellij.lang.regexp.psi.RegExpNamedGroupRef;
 import org.intellij.lang.regexp.psi.RegExpSimpleClass;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -44,7 +46,7 @@ public interface RegExpLanguageHost
 
 	boolean supportsExtendedHexCharacter(RegExpChar regExpChar);
 
-	default boolean isValidGroupName(String name, @NotNull PsiElement context)
+	default boolean isValidGroupName(String name, @Nonnull PsiElement context)
 	{
 		for(int i = 0, length = name.length(); i < length; i++)
 		{
@@ -101,14 +103,14 @@ public interface RegExpLanguageHost
 		return true;
 	}
 
-	boolean isValidCategory(@NotNull String category);
+	boolean isValidCategory(@Nonnull String category);
 
-	@NotNull
+	@Nonnull
 	String[][] getAllKnownProperties();
 
 	@Nullable
 	String getPropertyDescription(@Nullable final String name);
 
-	@NotNull
+	@Nonnull
 	String[][] getKnownCharacterClasses();
 }

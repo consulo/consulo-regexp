@@ -20,8 +20,8 @@ import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.ui.LayeredIcon;
 import icons.RegExpSupportIcons;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import javax.swing.*;
 
@@ -42,18 +42,18 @@ public class RegExpFileType extends LanguageFileType {
 //                IconLoader.getIcon("regexp-filetype-icon.png"));
     }
 
-    @NotNull
+    @Nonnull
     @NonNls
     public String getName() {
         return "RegExp";
     }
 
-    @NotNull
+    @Nonnull
     public String getDescription() {
         return "Regular Expression";
     }
 
-    @NotNull
+    @Nonnull
     @NonNls
     public String getDefaultExtension() {
         return "regexp";

@@ -18,7 +18,7 @@ package org.intellij.lang.regexp.psi.impl;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpBoundary;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
 
@@ -29,7 +29,7 @@ public class RegExpBoundaryImpl extends RegExpElementImpl implements RegExpBound
 		super(astNode);
 	}
 
-	@NotNull
+	@Nonnull
 	public Type getType()
 	{
 		final ASTNode child = getNode().getFirstChildNode();

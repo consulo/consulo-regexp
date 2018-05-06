@@ -30,7 +30,7 @@ import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpElement;
 import org.intellij.lang.regexp.psi.RegExpGroup;
 import org.intellij.lang.regexp.psi.RegExpBackref;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackref {
     public RegExpBackrefImpl(ASTNode astNode) {
@@ -80,7 +80,7 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
                 return TextRange.from(0, getElement().getTextLength());
             }
 
-            @NotNull
+            @Nonnull
             public String getCanonicalText() {
                 return getElement().getText();
             }
@@ -89,7 +89,7 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
                 throw new IncorrectOperationException();
             }
 
-            public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+            public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException {
                 throw new IncorrectOperationException();
             }
 
@@ -105,7 +105,7 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
                 return RegExpBackrefImpl.this.resolve();
             }
             
-            @NotNull
+            @Nonnull
             public Object[] getVariants() {
                 return ArrayUtil.EMPTY_OBJECT_ARRAY;
             }

@@ -15,15 +15,15 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Represents an atom with a quantifier, such as ?, *, + or {min,max}
  */
 public interface RegExpClosure extends RegExpAtom {
-    @NotNull
+    @Nonnull
     RegExpQuantifier getQuantifier();
 
-    @NotNull
+    @Nonnull
     RegExpAtom getAtom();
 }

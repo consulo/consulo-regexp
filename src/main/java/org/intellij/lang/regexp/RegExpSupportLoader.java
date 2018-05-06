@@ -16,15 +16,16 @@
 
 package org.intellij.lang.regexp;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
-import org.jetbrains.annotations.NotNull;
 
 public class RegExpSupportLoader extends FileTypeFactory {
     public static final RegExpLanguage LANGUAGE = RegExpLanguage.INSTANCE;
     public static final RegExpFileType FILE_TYPE = RegExpFileType.INSTANCE;
 
-    public void createFileTypes(final @NotNull FileTypeConsumer consumer) {
+    public void createFileTypes(final @Nonnull FileTypeConsumer consumer) {
         consumer.consume(FILE_TYPE, FILE_TYPE.getDefaultExtension());
     }
 }

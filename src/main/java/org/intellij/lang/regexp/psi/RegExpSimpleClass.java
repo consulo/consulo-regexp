@@ -15,7 +15,7 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Represents a simple character class.
@@ -70,6 +70,6 @@ public interface RegExpSimpleClass extends RegExpAtom, RegExpClassElement, RegEx
 		 */UNICODE_LINEBREAK
 	}
 
-	@NotNull
+	@Nonnull
 	Kind getKind();
 }

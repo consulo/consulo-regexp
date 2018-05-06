@@ -15,6 +15,8 @@
  */
 package org.intellij.lang.regexp;
 
+import javax.annotation.Nonnull;
+
 import org.intellij.lang.regexp.psi.RegExpBoundary;
 import org.intellij.lang.regexp.psi.RegExpChar;
 import org.intellij.lang.regexp.psi.RegExpGroup;
@@ -24,8 +26,8 @@ import org.intellij.lang.regexp.psi.RegExpPyCondRef;
 import org.intellij.lang.regexp.psi.RegExpQuantifier;
 import org.intellij.lang.regexp.psi.RegExpSimpleClass;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 import org.jetbrains.annotations.TestOnly;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.util.ClassExtension;
@@ -84,7 +86,7 @@ public final class RegExpLanguageHosts extends ClassExtension<RegExpLanguageHost
 		return null;
 	}
 
-	public boolean isRedundantEscape(@NotNull final RegExpChar ch, @NotNull final String text)
+	public boolean isRedundantEscape(@Nonnull final RegExpChar ch, @Nonnull final String text)
 	{
 		if(text.length() <= 1)
 		{
@@ -184,46 +186,46 @@ public final class RegExpLanguageHosts extends ClassExtension<RegExpLanguageHost
 		return host == null || host.supportsSimpleClass(simpleClass);
 	}
 
-	public boolean isValidCategory(@NotNull final PsiElement element, @NotNull String category)
+	public boolean isValidCategory(@Nonnull final PsiElement element, @Nonnull String category)
 	{
 		final RegExpLanguageHost host = findRegExpHost(element);
 		return host != null ? host.isValidCategory(category) : myDefaultProvider.isValidCategory(category);
 	}
 
-	public boolean supportsNamedCharacters(@NotNull final RegExpNamedCharacter namedCharacter)
+	public boolean supportsNamedCharacters(@Nonnull final RegExpNamedCharacter namedCharacter)
 	{
 		final RegExpLanguageHost host = findRegExpHost(namedCharacter);
 		return host != null && host.supportsNamedCharacters(namedCharacter);
 	}
 
-	public boolean isValidNamedCharacter(@NotNull final RegExpNamedCharacter namedCharacter)
+	public boolean isValidNamedCharacter(@Nonnull final RegExpNamedCharacter namedCharacter)
 	{
 		final RegExpLanguageHost host = findRegExpHost(namedCharacter);
 		return host != null && host.isValidNamedCharacter(namedCharacter);
 	}
 
-	@NotNull
-	public String[][] getAllKnownProperties(@NotNull final PsiElement element)
+	@Nonnull
+	public String[][] getAllKnownProperties(@Nonnull final PsiElement element)
 	{
 		final RegExpLanguageHost host = findRegExpHost(element);
 		return host != null ? host.getAllKnownProperties() : myDefaultProvider.getAllKnownProperties();
 	}
 
 	@Nullable
-	String getPropertyDescription(@NotNull final PsiElement element, @Nullable final String name)
+	String getPropertyDescription(@Nonnull final PsiElement element, @Nullable final String name)
 	{
 		final RegExpLanguageHost host = findRegExpHost(element);
 		return host != null ? host.getPropertyDescription(name) : myDefaultProvider.getPropertyDescription(name);
 	}
 
-	@NotNull
-	String[][] getKnownCharacterClasses(@NotNull final PsiElement element)
+	@Nonnull
+	String[][] getKnownCharacterClasses(@Nonnull final PsiElement element)
 	{
 		final RegExpLanguageHost host = findRegExpHost(element);
 		return host != null ? host.getKnownCharacterClasses() : myDefaultProvider.getKnownCharacterClasses();
 	}
 
-	String[][] getPosixCharacterClasses(@NotNull final PsiElement element)
+	String[][] getPosixCharacterClasses(@Nonnull final PsiElement element)
 	{
 		return myDefaultProvider.getPosixCharacterClasses();
 	}

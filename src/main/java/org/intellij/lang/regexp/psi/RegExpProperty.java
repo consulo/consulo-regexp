@@ -16,7 +16,7 @@
 package org.intellij.lang.regexp.psi;
 
 import com.intellij.lang.ASTNode;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 /**
  * Represents a character property as in \p{Digit}

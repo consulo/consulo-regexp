@@ -20,7 +20,7 @@ import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpClass;
 import org.intellij.lang.regexp.psi.RegExpClassElement;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import com.intellij.lang.ASTNode;
 
 public class RegExpClassImpl extends RegExpElementImpl implements RegExpClass
@@ -39,7 +39,7 @@ public class RegExpClassImpl extends RegExpElementImpl implements RegExpClass
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public RegExpClassElement[] getElements()
 	{
 		final ASTNode[] nodes = getNode().getChildren(RegExpElementTypes.CLASS_ELEMENTS);

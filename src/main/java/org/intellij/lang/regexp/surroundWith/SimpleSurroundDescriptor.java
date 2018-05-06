@@ -20,8 +20,8 @@ import com.intellij.lang.surroundWith.Surrounder;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilBase;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.intellij.lang.regexp.psi.RegExpElement;
 import org.intellij.lang.regexp.psi.RegExpPattern;
@@ -37,12 +37,12 @@ public class SimpleSurroundDescriptor implements SurroundDescriptor {
             new GroupSurrounder("Non-Capturing Group (?:pattern)", "(?:"),
     };
 
-    @NotNull
+    @Nonnull
     public PsiElement[] getElementsToSurround(PsiFile file, int startOffset, int endOffset) {
         return findElementsInRange(file, startOffset, endOffset);
     }
 
-    @NotNull
+    @Nonnull
     public Surrounder[] getSurrounders() {
         return SURROUNDERS;
     }

@@ -25,8 +25,9 @@ import org.intellij.lang.regexp.RegExpLanguageHosts;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpProperty;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.intellij.codeInsight.lookup.LookupValueFactory;
 import com.intellij.codeInsight.lookup.LookupValueWithPriority;
 import com.intellij.codeInsight.lookup.LookupValueWithUIHint;
@@ -83,7 +84,7 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
             return RegExpPropertyImpl.this;
         }
 
-        @NotNull
+        @Nonnull
         public String getCanonicalText() {
             return getRangeInElement().substring(getElement().getText());
         }
@@ -92,7 +93,7 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
             throw new IncorrectOperationException();
         }
 
-        public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+        public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException {
             throw new IncorrectOperationException();
         }
 
@@ -100,7 +101,7 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
             return false;
         }
 
-        @NotNull
+        @Nonnull
         public Object[] getVariants() {
             final ASTNode categoryNode = getCategoryNode();
             if (categoryNode != null && categoryNode.getText().startsWith("In") && !categoryNode.getText().startsWith("Intelli")) {

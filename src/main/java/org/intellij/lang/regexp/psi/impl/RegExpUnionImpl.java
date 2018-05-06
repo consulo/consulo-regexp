@@ -15,10 +15,11 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import javax.annotation.Nonnull;
+
 import org.intellij.lang.regexp.psi.RegExpClassElement;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpUnion;
-import org.jetbrains.annotations.NotNull;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -38,7 +39,7 @@ public class RegExpUnionImpl extends RegExpElementImpl implements RegExpUnion
 		visitor.visitRegExpUnion(this);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public RegExpClassElement[] getElements()
 	{

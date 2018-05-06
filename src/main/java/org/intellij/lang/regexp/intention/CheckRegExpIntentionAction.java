@@ -19,7 +19,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 
 import org.intellij.lang.regexp.RegExpLanguage;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import com.intellij.codeInsight.intention.impl.QuickEditAction;
 import com.intellij.lang.Language;
 import com.intellij.openapi.editor.Document;
@@ -39,7 +39,7 @@ import com.intellij.psi.PsiFile;
 public class CheckRegExpIntentionAction extends QuickEditAction implements Iconable {
 
   @Override
-  public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {
+  public boolean isAvailable(@Nonnull Project project, Editor editor, PsiFile file) {
     final Pair<PsiElement, TextRange> pair = getRangePair(file, editor);
     /*super.isAvailable(project, editor, file) && */
     if (pair != null && pair.first != null) {
@@ -65,13 +65,13 @@ public class CheckRegExpIntentionAction extends QuickEditAction implements Icona
     return null;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public String getText() {
     return "Check RegExp";
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public String getFamilyName() {
     return getText();

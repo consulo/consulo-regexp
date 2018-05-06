@@ -17,9 +17,10 @@ package org.intellij.lang.regexp;
 
 import java.util.EnumSet;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.intellij.lang.regexp.psi.impl.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
@@ -44,7 +45,7 @@ public class RegExpParserDefinition implements ParserDefinition
 			.UNICODE_CATEGORY_SHORTHAND);
 
 	@TestOnly
-	public static void setTestCapability(@Nullable RegExpCapability capability, @NotNull Disposable parentDisposable)
+	public static void setTestCapability(@Nullable RegExpCapability capability, @Nonnull Disposable parentDisposable)
 	{
 		if(!CAPABILITIES.contains(capability))
 		{
@@ -53,7 +54,7 @@ public class RegExpParserDefinition implements ParserDefinition
 		}
 	}
 
-	@NotNull
+	@Nonnull
 	public Lexer createLexer(LanguageVersion languageVersion)
 	{
 		return new RegExpLexer(CAPABILITIES);
@@ -69,26 +70,26 @@ public class RegExpParserDefinition implements ParserDefinition
 		return RegExpElementTypes.REGEXP_FILE;
 	}
 
-	@NotNull
+	@Nonnull
 	public TokenSet getWhitespaceTokens(LanguageVersion languageVersion)
 	{
 		// trick to hide quote tokens from parser... should actually go into the lexer
 		return TokenSet.create(RegExpTT.QUOTE_BEGIN, RegExpTT.QUOTE_END, TokenType.WHITE_SPACE);
 	}
 
-	@NotNull
+	@Nonnull
 	public TokenSet getStringLiteralElements(LanguageVersion languageVersion)
 	{
 		return TokenSet.EMPTY;
 	}
 
-	@NotNull
+	@Nonnull
 	public TokenSet getCommentTokens(LanguageVersion languageVersion)
 	{
 		return COMMENT_TOKENS;
 	}
 
-	@NotNull
+	@Nonnull
 	public PsiElement createElement(ASTNode node)
 	{
 		final IElementType type = node.getElementType();

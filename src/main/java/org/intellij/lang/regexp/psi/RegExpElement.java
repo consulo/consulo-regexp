@@ -15,12 +15,13 @@
  */
 package org.intellij.lang.regexp.psi;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
-import org.jetbrains.annotations.NotNull;
 
 public interface RegExpElement extends PsiElement {
-    @NotNull
+    @Nonnull
     ASTNode getNode();
 
     String getUnescapedText();

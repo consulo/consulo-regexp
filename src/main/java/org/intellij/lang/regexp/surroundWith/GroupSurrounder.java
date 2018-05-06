@@ -15,6 +15,9 @@
  */
 package org.intellij.lang.regexp.surroundWith;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.surroundWith.Surrounder;
 import com.intellij.openapi.editor.Document;
@@ -32,8 +35,6 @@ import org.intellij.lang.regexp.RegExpFileType;
 import org.intellij.lang.regexp.psi.RegExpAtom;
 import org.intellij.lang.regexp.psi.RegExpPattern;
 import org.intellij.lang.regexp.psi.impl.RegExpElementImpl;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 class GroupSurrounder implements Surrounder {
     private final String myTitle;
@@ -48,12 +49,12 @@ class GroupSurrounder implements Surrounder {
         return myTitle;
     }
 
-    public boolean isApplicable(@NotNull PsiElement[] elements) {
+    public boolean isApplicable(@Nonnull PsiElement[] elements) {
         return elements.length == 1 || PsiTreeUtil.findCommonParent(elements) == elements[0].getParent();
     }
 
     @Nullable
-    public TextRange surroundElements(@NotNull Project project, @NotNull Editor editor, @NotNull PsiElement[] elements) throws IncorrectOperationException {
+    public TextRange surroundElements(@Nonnull Project project, @Nonnull Editor editor, @Nonnull PsiElement[] elements) throws IncorrectOperationException {
         assert elements.length == 1 || PsiTreeUtil.findCommonParent(elements) == elements[0].getParent();
         final PsiElement e = elements[0];
         final ASTNode node = e.getNode();

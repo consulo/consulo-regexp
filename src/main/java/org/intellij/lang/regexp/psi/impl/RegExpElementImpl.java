@@ -15,6 +15,9 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
@@ -29,20 +32,18 @@ import com.intellij.util.IncorrectOperationException;
 import org.intellij.lang.regexp.RegExpLanguage;
 import org.intellij.lang.regexp.psi.RegExpElement;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements RegExpElement {
     public RegExpElementImpl(ASTNode node) {
         super(node);
     }
 
-    @NotNull
+    @Nonnull
     public Language getLanguage() {
         return RegExpLanguage.INSTANCE;
     }
 
-    @NotNull
+    @Nonnull
     @SuppressWarnings({ "ConstantConditions", "EmptyMethod" })
     public ASTNode getNode() {
         return super.getNode();
@@ -52,7 +53,7 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
         return getClass().getSimpleName() + ": <" + getText() + ">";
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
+    public void accept(@Nonnull PsiElementVisitor visitor) {
         if (visitor instanceof RegExpElementVisitor) {
             accept((RegExpElementVisitor)visitor);
         } else {
@@ -64,7 +65,7 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
         visitor.visitRegExpElement(this);
     }
 
-    public PsiElement replace(@NotNull PsiElement psiElement) throws IncorrectOperationException {
+    public PsiElement replace(@Nonnull PsiElement psiElement) throws IncorrectOperationException {
         final ASTNode node = psiElement.getNode();
         assert node != null;
         getNode().getTreeParent().replaceChild(getNode(), node);

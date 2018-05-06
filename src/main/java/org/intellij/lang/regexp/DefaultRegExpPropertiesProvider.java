@@ -15,8 +15,8 @@
  */
 package org.intellij.lang.regexp;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.intellij.openapi.util.text.StringUtil;
 
 public final class DefaultRegExpPropertiesProvider
@@ -421,7 +421,7 @@ public final class DefaultRegExpPropertiesProvider
 	{
 	}
 
-	public boolean isValidCategory(@NotNull String category)
+	public boolean isValidCategory(@Nonnull String category)
 	{
 		if(category.startsWith("In"))
 		{
@@ -462,19 +462,19 @@ public final class DefaultRegExpPropertiesProvider
 		return null;
 	}
 
-	@NotNull
+	@Nonnull
 	public String[][] getAllKnownProperties()
 	{
 		return myPropertyNames;
 	}
 
-	@NotNull
+	@Nonnull
 	public String[][] getKnownCharacterClasses()
 	{
 		return myCharacterClasses;
 	}
 
-	@NotNull
+	@Nonnull
 	public String[][] getPosixCharacterClasses()
 	{
 		return myPosixCharacterClasses;

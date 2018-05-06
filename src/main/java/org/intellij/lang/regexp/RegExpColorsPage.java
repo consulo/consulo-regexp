@@ -23,7 +23,7 @@ import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
 import com.intellij.util.containers.HashMap;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import javax.swing.*;
 import java.util.Map;
@@ -49,7 +49,7 @@ public class RegExpColorsPage implements ColorSettingsPage {
 
   @NonNls private static final HashMap<String,TextAttributesKey> ourTagToDescriptorMap = new HashMap<String, TextAttributesKey>();
 
-  @NotNull
+  @Nonnull
   public String getDisplayName() {
     return "RegExp";
   }
@@ -58,24 +58,24 @@ public class RegExpColorsPage implements ColorSettingsPage {
     return RegExpFileType.INSTANCE.getIcon();
   }
 
-  @NotNull
+  @Nonnull
   public AttributesDescriptor[] getAttributeDescriptors() {
     return ATTRS;
   }
 
-  @NotNull
+  @Nonnull
   public ColorDescriptor[] getColorDescriptors() {
     return ColorDescriptor.EMPTY_ARRAY;
   }
 
-  @NotNull
+  @Nonnull
   public SyntaxHighlighter getHighlighter() {
     final SyntaxHighlighter highlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(RegExpFileType.INSTANCE, null, null);
     assert highlighter != null;
     return highlighter;
   }
 
-  @NotNull
+  @Nonnull
   public String getDemoText() {
     return
       "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}\\x0g\\#\\p{alpha}\\Q\\E$";

@@ -26,7 +26,7 @@ import javax.swing.border.LineBorder;
 
 import org.intellij.lang.regexp.RegExpLanguage;
 import org.intellij.lang.regexp.RegExpModifierProvider;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.jetbrains.annotations.TestOnly;
 import consulo.annotations.RequiredDispatchThread;
 import com.intellij.ide.util.PropertiesComponent;
@@ -164,12 +164,12 @@ public class CheckRegExpForm
 	}
 
 	@TestOnly
-	public static boolean isMatchingTextTest(@NotNull PsiFile regexpFile, @NotNull String sampleText)
+	public static boolean isMatchingTextTest(@Nonnull PsiFile regexpFile, @Nonnull String sampleText)
 	{
 		return isMatchingText(regexpFile, sampleText);
 	}
 
-	private static boolean isMatchingText(@NotNull PsiFile regexpFile, @NotNull String sampleText)
+	private static boolean isMatchingText(@Nonnull PsiFile regexpFile, @Nonnull String sampleText)
 	{
 		final String regExp = regexpFile.getText();
 

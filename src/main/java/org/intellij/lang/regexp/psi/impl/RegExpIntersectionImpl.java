@@ -15,10 +15,11 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import javax.annotation.Nonnull;
+
 import org.intellij.lang.regexp.psi.RegExpClassElement;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpIntersection;
-import org.jetbrains.annotations.NotNull;
 import com.intellij.lang.ASTNode;
 
 public class RegExpIntersectionImpl extends RegExpElementImpl implements RegExpIntersection
@@ -35,7 +36,7 @@ public class RegExpIntersectionImpl extends RegExpElementImpl implements RegExpI
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public RegExpClassElement[] getOperands()
 	{
 		return findChildrenByClass(RegExpClassElement.class);

@@ -15,12 +15,12 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Basic element that holds a whole pattern that consists of one or more branches.
  */
 public interface RegExpPattern extends RegExpElement {
-    @NotNull
+    @Nonnull
     RegExpBranch[] getBranches();
 }

@@ -15,7 +15,7 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Represents a class indicated by [...]
@@ -28,6 +28,6 @@ public interface RegExpClass extends RegExpAtom, RegExpClassElement
 	 */
 	boolean isNegated();
 
-	@NotNull
+	@Nonnull
 	RegExpClassElement[] getElements();
 }

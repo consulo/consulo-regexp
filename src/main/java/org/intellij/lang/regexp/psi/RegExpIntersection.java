@@ -15,7 +15,7 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Represents an intersection of class elements: [a-z&&[^cd]]
@@ -23,6 +23,6 @@ import org.jetbrains.annotations.NotNull;
 public interface RegExpIntersection extends RegExpClassElement
 {
 
-	@NotNull
+	@Nonnull
 	RegExpClassElement[] getOperands();
 }

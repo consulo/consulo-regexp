@@ -15,11 +15,12 @@
  */
 package org.intellij.lang.regexp;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.lang.Language;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
-import org.jetbrains.annotations.NotNull;
 
 public class RegExpFile extends PsiFileBase {
 
@@ -27,7 +28,7 @@ public class RegExpFile extends PsiFileBase {
         super(viewProvider, language);
     }
 
-    @NotNull
+    @Nonnull
     public FileType getFileType() {
         return RegExpFileType.INSTANCE;
     }

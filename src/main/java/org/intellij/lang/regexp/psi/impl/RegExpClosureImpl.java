@@ -15,10 +15,10 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.util.PsiTreeUtil;
-
-import org.jetbrains.annotations.NotNull;
 
 import org.intellij.lang.regexp.RegExpElementTypes;
 import org.intellij.lang.regexp.psi.RegExpAtom;
@@ -36,14 +36,14 @@ public class RegExpClosureImpl extends RegExpElementImpl implements RegExpClosur
         visitor.visitRegExpClosure(this);
     }
 
-    @NotNull
+    @Nonnull
     public RegExpQuantifier getQuantifier() {
         final ASTNode node = getNode().findChildByType(RegExpElementTypes.QUANTIFIER);
         assert node != null;
         return (RegExpQuantifier)node.getPsi();
     }
 
-    @NotNull
+    @Nonnull
     public RegExpAtom getAtom() {
         final RegExpAtom atom = PsiTreeUtil.getChildOfType(this, RegExpAtom.class);
         assert atom != null;

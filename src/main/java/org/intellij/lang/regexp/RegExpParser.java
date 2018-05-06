@@ -17,8 +17,9 @@ package org.intellij.lang.regexp;
 
 import java.util.EnumSet;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
@@ -43,8 +44,8 @@ public class RegExpParser implements PsiParser
 	}
 
 	@Override
-	@NotNull
-	public ASTNode parse(@NotNull IElementType root, @NotNull PsiBuilder builder, @NotNull LanguageVersion languageVersion)
+	@Nonnull
+	public ASTNode parse(@Nonnull IElementType root, @Nonnull PsiBuilder builder, @Nonnull LanguageVersion languageVersion)
 	{
 		final PsiBuilder.Marker rootMarker = builder.mark();
 

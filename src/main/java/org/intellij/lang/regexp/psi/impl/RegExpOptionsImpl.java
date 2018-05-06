@@ -15,10 +15,11 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import javax.annotation.Nullable;
+
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpOptions;
-import org.jetbrains.annotations.Nullable;
 import com.intellij.lang.ASTNode;
 
 public class RegExpOptionsImpl extends RegExpElementImpl implements RegExpOptions

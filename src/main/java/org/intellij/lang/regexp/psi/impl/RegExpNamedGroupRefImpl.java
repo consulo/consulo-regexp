@@ -19,8 +19,8 @@ import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpGroup;
 import org.intellij.lang.regexp.psi.RegExpNamedGroupRef;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.TextRange;
@@ -121,7 +121,7 @@ public class RegExpNamedGroupRefImpl extends RegExpElementImpl implements RegExp
 				return RegExpNamedGroupRefImpl.this.resolve();
 			}
 
-			@NotNull
+			@Nonnull
 			public String getCanonicalText()
 			{
 				return getRangeInElement().substring(getText());
@@ -132,7 +132,7 @@ public class RegExpNamedGroupRefImpl extends RegExpElementImpl implements RegExp
 				throw new UnsupportedOperationException();
 			}
 
-			public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException
+			public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException
 			{
 				throw new UnsupportedOperationException();
 			}
@@ -143,7 +143,7 @@ public class RegExpNamedGroupRefImpl extends RegExpElementImpl implements RegExp
 			}
 
 			@Override
-			@NotNull
+			@Nonnull
 			public Object[] getVariants()
 			{
 				final PsiElementProcessor.CollectFilteredElements<RegExpGroup> processor = new PsiElementProcessor.CollectFilteredElements<>(new PsiElementFilter()
