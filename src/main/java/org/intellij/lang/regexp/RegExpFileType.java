@@ -15,36 +15,26 @@
  */
 package org.intellij.lang.regexp;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.fileTypes.LanguageFileType;
-import com.intellij.ui.LayeredIcon;
-import icons.RegExpSupportIcons;
-import org.jetbrains.annotations.NonNls;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import javax.swing.*;
+import org.jetbrains.annotations.NonNls;
+import com.intellij.icons.AllIcons;
+import com.intellij.openapi.fileTypes.LanguageFileType;
+import consulo.ui.image.Image;
+import consulo.ui.image.ImageEffects;
+import icons.RegExpSupportIcons;
 
 public class RegExpFileType extends LanguageFileType {
     public static final RegExpFileType INSTANCE = new RegExpFileType();
 
-    private final Icon myIcon;
-
     private RegExpFileType() {
         super(RegExpLanguage.INSTANCE);
-
-        myIcon = new LayeredIcon(2);
-        ((LayeredIcon)myIcon).setIcon(AllIcons.FileTypes.Text, 0);
-        ((LayeredIcon)myIcon).setIcon(RegExpSupportIcons.Regexp_filetype_icon, 1);
-
-//        myIcon = LayeredIcon.create(
-//                IconLoader.getIcon("/fileTypes/text.png"),
-//                IconLoader.getIcon("regexp-filetype-icon.png"));
     }
 
     @Nonnull
     @NonNls
-    public String getName() {
+    public String getId() {
         return "RegExp";
     }
 
@@ -60,7 +50,7 @@ public class RegExpFileType extends LanguageFileType {
     }
 
     @Nullable
-    public Icon getIcon() {
-        return myIcon;
+    public Image getIcon() {
+        return ImageEffects.folded(AllIcons.FileTypes.Text, RegExpSupportIcons.Regexp_filetype_icon);
     }
 }

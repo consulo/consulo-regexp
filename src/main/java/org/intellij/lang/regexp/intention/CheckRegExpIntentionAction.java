@@ -15,11 +15,11 @@
  */
 package org.intellij.lang.regexp.intention;
 
+import javax.annotation.Nonnull;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
 import org.intellij.lang.regexp.RegExpLanguage;
-import javax.annotation.Nonnull;
 import com.intellij.codeInsight.intention.impl.QuickEditAction;
 import com.intellij.lang.Language;
 import com.intellij.openapi.editor.Document;
@@ -31,6 +31,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import consulo.awt.TargetAWT;
 
 /**
  * @author Konstantin Bulenkov
@@ -79,7 +80,6 @@ public class CheckRegExpIntentionAction extends QuickEditAction implements Icona
 
   @Override
   public Icon getIcon(int flags) {
-    //noinspection ConstantConditions
-    return RegExpLanguage.INSTANCE.getAssociatedFileType().getIcon();
+    return TargetAWT.to(RegExpLanguage.INSTANCE.getAssociatedFileType().getIcon());
   }
 }

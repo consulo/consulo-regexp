@@ -15,6 +15,11 @@
  */
 package org.intellij.lang.regexp;
 
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NonNls;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
@@ -22,11 +27,6 @@ import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
 import com.intellij.util.containers.HashMap;
-import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
-
-import javax.swing.*;
-import java.util.Map;
 
 /**
  * @author traff
@@ -52,10 +52,6 @@ public class RegExpColorsPage implements ColorSettingsPage {
   @Nonnull
   public String getDisplayName() {
     return "RegExp";
-  }
-
-  public Icon getIcon() {
-    return RegExpFileType.INSTANCE.getIcon();
   }
 
   @Nonnull
