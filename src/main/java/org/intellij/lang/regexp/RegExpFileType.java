@@ -51,6 +51,6 @@ public class RegExpFileType extends LanguageFileType {
 
     @Nullable
     public Image getIcon() {
-        return ImageEffects.folded(AllIcons.FileTypes.Text, RegExpSupportIcons.Regexp_filetype_icon);
+        return ImageEffects.layered(AllIcons.FileTypes.Text, RegExpSupportIcons.Regexp_filetype_icon);
     }
 }
