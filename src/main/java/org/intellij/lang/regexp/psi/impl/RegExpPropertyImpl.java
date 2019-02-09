@@ -21,23 +21,23 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.intellij.lang.regexp.RegExpLanguageHosts;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpProperty;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.intellij.codeInsight.lookup.LookupValueFactory;
 import com.intellij.codeInsight.lookup.LookupValueWithPriority;
 import com.intellij.codeInsight.lookup.LookupValueWithUIHint;
+import com.intellij.icons.AllIcons;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.IncorrectOperationException;
-import com.intellij.util.PlatformIcons;
 
 public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpProperty {
     public RegExpPropertyImpl(ASTNode astNode) {
@@ -126,7 +126,7 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
             private final String[] myProp;
 
             public MyLookupValue(String[] prop) {
-                super(prop[0], PlatformIcons.PROPERTY_ICON);
+                super(prop[0], AllIcons.Nodes.Property);
                 myProp = prop;
             }
 

@@ -32,6 +32,7 @@ import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import consulo.awt.TargetAWT;
+import consulo.ui.image.Image;
 
 /**
  * @author Konstantin Bulenkov
@@ -79,7 +80,7 @@ public class CheckRegExpIntentionAction extends QuickEditAction implements Icona
   }
 
   @Override
-  public Icon getIcon(int flags) {
-    return TargetAWT.to(RegExpLanguage.INSTANCE.getAssociatedFileType().getIcon());
+  public Image getIcon(int flags) {
+    return RegExpLanguage.INSTANCE.getAssociatedFileType().getIcon();
   }
 }
