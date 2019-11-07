@@ -1,4 +1,4 @@
-<idea-plugin>
+<consulo-plugin>
 	<id>com.intellij.regexp</id>
 	<name>Regexp</name>
 	<version>SNAPSHOT</version>
@@ -32,4 +32,4 @@
 			<category>Declaration</category>
 		</intentionAction>
 	</extensions>
-</idea-plugin>
+</consulo-plugin>
