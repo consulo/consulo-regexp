@@ -15,24 +15,19 @@
  */
 package test;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.StringReader;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
 import org.intellij.lang.regexp.RegExpFileType;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 import org.junit.Ignore;
+
+import java.io.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 @Ignore
 public class MainParseTest extends BaseParseTestcase {
@@ -62,10 +57,14 @@ public class MainParseTest extends BaseParseTestcase {
   @Override
   protected void setUp() throws Exception {
     final Document document = new SAXBuilder().build(new File(getTestDataRoot(), "/RETest.xml"));
-    final List<Element> list = XPath.selectNodes(document.getRootElement(), "//test");
+    final List<?> list = XPath.selectNodes(document.getRootElement(), "//test");
 
     int i = 0;
-    for (Element element : list) {
+    for (Object o : list) {
+      if(!(o instanceof Element)) {
+      	continue;
+	  }
+	  Element element = (Element) o;
       final String name;
       final Element parent = (Element)element.getParent();
       final String s = parent.getName();
