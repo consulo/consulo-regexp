@@ -15,20 +15,6 @@
  */
 package org.intellij.lang.regexp.intention;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.util.regex.Pattern;
-
-import javax.swing.JPanel;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
-import org.intellij.lang.regexp.RegExpLanguage;
-import org.intellij.lang.regexp.RegExpModifierProvider;
-import javax.annotation.Nonnull;
-import org.jetbrains.annotations.TestOnly;
-import consulo.annotations.RequiredDispatchThread;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -51,6 +37,18 @@ import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.util.Alarm;
 import com.intellij.util.ui.UIUtil;
+import consulo.ui.annotation.RequiredUIAccess;
+import org.intellij.lang.regexp.RegExpLanguage;
+import org.intellij.lang.regexp.RegExpModifierProvider;
+import org.jetbrains.annotations.TestOnly;
+
+import javax.annotation.Nonnull;
+import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.util.regex.Pattern;
 
 /**
  * @author Konstantin Bulenkov
@@ -104,7 +102,7 @@ public class CheckRegExpForm
 
 				new AnAction()
 				{
-					@RequiredDispatchThread
+					@RequiredUIAccess
 					@Override
 					public void actionPerformed(AnActionEvent e)
 					{
