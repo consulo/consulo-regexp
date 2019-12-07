@@ -15,10 +15,6 @@
  */
 package test;
 
-import java.io.File;
-
-import org.intellij.lang.regexp.RegExpFileType;
-import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.fileTypes.FileTypeManager;
@@ -28,6 +24,9 @@ import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
 import com.intellij.testFramework.fixtures.IdeaProjectTestFixture;
 import com.intellij.testFramework.fixtures.IdeaTestFixtureFactory;
 import com.intellij.testFramework.fixtures.TestFixtureBuilder;
+import org.intellij.lang.regexp.RegExpFileType;
+
+import java.io.File;
 
 public abstract class BaseParseTestcase extends UsefulTestCase{
   protected CodeInsightTestFixture myFixture;
@@ -61,12 +60,7 @@ public abstract class BaseParseTestcase extends UsefulTestCase{
   }
 
   public static String getTestDataRoot() {
-    String homePath = PathManager.getHomePath();
-    File candidate = new File(homePath, "community/RegExpSupport");
-    if (candidate.isDirectory()) {
-      return new File(candidate, "testData").getPath();
-    }
-    return new File(homePath, "RegExpSupport/testData").getPath();
+    return new File("testData").getPath();
   }
 
   protected String getTestDataPath() {

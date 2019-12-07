@@ -15,15 +15,13 @@
  */
 package test;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.intellij.lang.regexp.DefaultRegExpPropertiesProvider;
-import org.junit.Ignore;
-import com.intellij.openapi.application.PathManager;
 import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
 import com.intellij.util.ArrayUtil;
+import org.intellij.lang.regexp.DefaultRegExpPropertiesProvider;
+import org.junit.Ignore;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by IntelliJ IDEA.
@@ -79,11 +77,6 @@ public class RegExpCompletionTest extends CodeInsightFixtureTestCase {
 
     @Override
     protected String getBasePath() {
-      String homePath = PathManager.getHomePath();
-      File candidate = new File(homePath, "community/RegExpSupport");
-      if (candidate.isDirectory()) {
-        return "/community/RegExpSupport/testData/completion";
-      }
-      return "/RegExpSupport/testData/completion";
+      return "testData/completion";
     }
 }
