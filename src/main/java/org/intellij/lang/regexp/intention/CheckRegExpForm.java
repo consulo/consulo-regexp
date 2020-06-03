@@ -15,8 +15,19 @@
  */
 package org.intellij.lang.regexp.intention;
 
+import java.awt.*;
+import java.util.regex.Pattern;
+
+import javax.annotation.Nonnull;
+import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+import org.intellij.lang.regexp.RegExpLanguage;
+import org.intellij.lang.regexp.RegExpModifierProvider;
+import org.jetbrains.annotations.TestOnly;
 import com.intellij.ide.util.PropertiesComponent;
-import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CustomShortcutSet;
@@ -25,7 +36,6 @@ import com.intellij.openapi.editor.event.DocumentAdapter;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.fileTypes.PlainTextFileType;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.wm.IdeFocusManager;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
@@ -37,18 +47,9 @@ import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.util.Alarm;
 import com.intellij.util.ui.UIUtil;
+import consulo.disposer.Disposable;
+import consulo.disposer.Disposer;
 import consulo.ui.annotation.RequiredUIAccess;
-import org.intellij.lang.regexp.RegExpLanguage;
-import org.intellij.lang.regexp.RegExpModifierProvider;
-import org.jetbrains.annotations.TestOnly;
-
-import javax.annotation.Nonnull;
-import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import java.awt.*;
-import java.util.regex.Pattern;
 
 /**
  * @author Konstantin Bulenkov
@@ -96,7 +97,7 @@ public class CheckRegExpForm
 			public void addNotify()
 			{
 				super.addNotify();
-				disposable = Disposer.newDisposable();
+				disposable = Disposable.newDisposable();
 
 				IdeFocusManager.getGlobalInstance().requestFocus(mySampleText, true);
 
