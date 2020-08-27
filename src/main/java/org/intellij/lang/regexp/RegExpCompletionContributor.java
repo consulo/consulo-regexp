@@ -20,6 +20,7 @@ import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.codeInsight.lookup.TailTypeDecorator;
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.progress.ProgressManager;
@@ -27,15 +28,13 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.ElementPattern;
 import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.PsiElement;
-import com.intellij.util.PlatformIcons;
 import com.intellij.util.ProcessingContext;
-import com.intellij.util.ui.EmptyIcon;
 import consulo.annotation.access.RequiredReadAction;
 import consulo.codeInsight.completion.CompletionProvider;
+import consulo.ui.image.Image;
 import org.jetbrains.annotations.NonNls;
 
 import javax.annotation.Nonnull;
-import javax.swing.*;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 import static com.intellij.patterns.StandardPatterns.or;
@@ -45,7 +44,7 @@ import static com.intellij.patterns.StandardPatterns.or;
  */
 public final class RegExpCompletionContributor extends CompletionContributor
 {
-	private static final Icon emptyIcon = EmptyIcon.create(PlatformIcons.PROPERTY_ICON);
+	private static final Image emptyIcon = Image.empty(Image.DEFAULT_ICON_SIZE);
 
 	public RegExpCompletionContributor()
 	{
@@ -100,12 +99,12 @@ public final class RegExpCompletionContributor extends CompletionContributor
 		}
 	}
 
-	private static void addLookupElement(final CompletionResultSet result, @NonNls final String name, String type, Icon icon)
+	private static void addLookupElement(final CompletionResultSet result, @NonNls final String name, String type, Image icon)
 	{
 		result.addElement(createLookupElement(name, type, icon));
 	}
 
-	private static LookupElement createLookupElement(String name, String type, Icon icon)
+	private static LookupElement createLookupElement(String name, String type, Image icon)
 	{
 		return LookupElementBuilder.create(name).withTypeText(type).withIcon(icon);
 	}
@@ -163,7 +162,7 @@ public final class RegExpCompletionContributor extends CompletionContributor
 		{
 			for(String[] stringArray : RegExpLanguageHosts.getInstance().getAllKnownProperties(parameters.getPosition()))
 			{
-				addLookupElement(result, "{" + stringArray[0] + "}", stringArray.length > 1 ? stringArray[1] : null, PlatformIcons.PROPERTY_ICON);
+				addLookupElement(result, "{" + stringArray[0] + "}", stringArray.length > 1 ? stringArray[1] : null, AllIcons.Nodes.Property);
 			}
 		}
 	}
@@ -182,7 +181,7 @@ public final class RegExpCompletionContributor extends CompletionContributor
 
 			for(String[] stringArray : RegExpLanguageHosts.getInstance().getAllKnownProperties(parameters.getPosition()))
 			{
-				addLookupElement(result, "p{" + stringArray[0] + "}", stringArray.length > 1 ? stringArray[1] : null, PlatformIcons.PROPERTY_ICON);
+				addLookupElement(result, "p{" + stringArray[0] + "}", stringArray.length > 1 ? stringArray[1] : null, AllIcons.Nodes.Property);
 			}
 		}
 	}
