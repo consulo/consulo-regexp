@@ -15,15 +15,14 @@
  */
 package org.intellij.lang.regexp;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import org.jetbrains.annotations.NonNls;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.fileTypes.LanguageFileType;
+import consulo.regexp.icon.RegExpIconGroup;
 import consulo.ui.image.Image;
 import consulo.ui.image.ImageEffects;
-import icons.RegExpSupportIcons;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class RegExpFileType extends LanguageFileType {
     public static final RegExpFileType INSTANCE = new RegExpFileType();
@@ -33,7 +32,6 @@ public class RegExpFileType extends LanguageFileType {
     }
 
     @Nonnull
-    @NonNls
     public String getId() {
         return "RegExp";
     }
@@ -44,13 +42,12 @@ public class RegExpFileType extends LanguageFileType {
     }
 
     @Nonnull
-    @NonNls
     public String getDefaultExtension() {
         return "regexp";
     }
 
     @Nullable
     public Image getIcon() {
-        return ImageEffects.layered(AllIcons.FileTypes.Text, RegExpSupportIcons.Regexp_filetype_icon);
+        return ImageEffects.layered(AllIcons.FileTypes.Text, RegExpIconGroup.regexp_filetype_icon());
     }
 }
