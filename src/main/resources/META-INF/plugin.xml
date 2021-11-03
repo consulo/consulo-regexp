@@ -3,6 +3,9 @@
 	<name>Regexp</name>
 	<version>SNAPSHOT</version>
 	<category>Custom Languages</category>
+	<tags>
+		<tag>pattern.language</tag>
+	</tags>
 
 	<extensionPoints>
 		<extensionPoint name="languageHost" beanClass="com.intellij.openapi.util.ClassExtensionPoint">
