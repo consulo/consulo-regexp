@@ -15,18 +15,6 @@
  */
 package org.intellij.lang.regexp.intention;
 
-import java.awt.*;
-import java.util.regex.Pattern;
-
-import javax.annotation.Nonnull;
-import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
-import org.intellij.lang.regexp.RegExpLanguage;
-import org.intellij.lang.regexp.RegExpModifierProvider;
-import org.jetbrains.annotations.TestOnly;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -36,36 +24,40 @@ import com.intellij.openapi.editor.event.DocumentAdapter;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.fileTypes.PlainTextFileType;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.LabeledComponent;
+import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.openapi.wm.IdeFocusManager;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiLanguageInjectionHost;
 import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import com.intellij.ui.EditorTextField;
-import com.intellij.ui.Gray;
-import com.intellij.ui.JBColor;
+import com.intellij.ui.LightColors;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.util.Alarm;
-import com.intellij.util.ui.UIUtil;
+import com.intellij.util.ui.components.BorderLayoutPanel;
 import consulo.disposer.Disposable;
 import consulo.disposer.Disposer;
 import consulo.ui.annotation.RequiredUIAccess;
+import org.intellij.lang.regexp.RegExpLanguage;
+import org.intellij.lang.regexp.RegExpModifierProvider;
+import org.jetbrains.annotations.TestOnly;
+
+import javax.annotation.Nonnull;
+import javax.swing.*;
+import java.util.regex.Pattern;
 
 /**
  * @author Konstantin Bulenkov
  */
 public class CheckRegExpForm
 {
-	private static final JBColor BACKGROUND_COLOR_MATCH = new JBColor(new Color(231, 250, 219), new Color(68, 85, 66));
-	private static final JBColor BACKGROUND_COLOR_NOMATCH = new JBColor(new Color(255, 177, 160), new Color(110, 43,
-			40));
-
 	private static final String LAST_EDITED_REGEXP = "last.edited.regexp";
 	private final PsiFile myRegexpFile;
 
-	private EditorTextField mySampleText; //TODO[kb]: make it multiline
-
+	private EditorTextField mySampleText;
 	private EditorTextField myRegExp;
+
 	private JPanel myRootPanel;
 	private JBLabel myMessage;
 	private Project myProject;
@@ -73,23 +65,17 @@ public class CheckRegExpForm
 	public CheckRegExpForm(PsiFile file)
 	{
 		myRegexpFile = file;
-	}
 
-	private void createUIComponents()
-	{
 		myProject = myRegexpFile.getProject();
+
 		Document document = PsiDocumentManager.getInstance(myProject).getDocument(myRegexpFile);
 
 		myRegExp = new EditorTextField(document, myProject, RegExpLanguage.INSTANCE.getAssociatedFileType());
 		myRegExp.setPreferredWidth(Math.max(300, myRegExp.getPreferredSize().width));
-		final String sampleText = PropertiesComponent.getInstance(myProject).getValue(LAST_EDITED_REGEXP,
-				"Sample Text");
+		final String sampleText = PropertiesComponent.getInstance(myProject).getValue(LAST_EDITED_REGEXP, "Sample Text");
 		mySampleText = new EditorTextField(sampleText, myProject, PlainTextFileType.INSTANCE);
-		mySampleText.setBorder(new CompoundBorder(new EmptyBorder(2, 2, 2, 4), new LineBorder(UIUtil.isUnderDarcula()
-				? Gray._100 : JBColor.border())));
-		mySampleText.setOneLineMode(false);
 
-		myRootPanel = new JPanel(new BorderLayout())
+		myRootPanel = new JPanel(new VerticalFlowLayout())
 		{
 			Disposable disposable;
 
@@ -120,14 +106,7 @@ public class CheckRegExpForm
 						updater.cancelAllRequests();
 						if(!updater.isDisposed())
 						{
-							updater.addRequest(new Runnable()
-							{
-								@Override
-								public void run()
-								{
-									updateBalloon();
-								}
-							}, 200);
+							updater.addRequest(() -> updateBalloon(), 200);
 						}
 					}
 				};
@@ -146,6 +125,22 @@ public class CheckRegExpForm
 				PropertiesComponent.getInstance(myProject).setValue(LAST_EDITED_REGEXP, mySampleText.getText());
 			}
 		};
+		myRootPanel.setOpaque(false);
+
+		myMessage = new JBLabel();
+
+		mySampleText.setOneLineMode(true);
+
+		LabeledComponent<EditorTextField> regExpLabeled = LabeledComponent.create(myRegExp, "RegExp");
+		regExpLabeled.setOpaque(false);
+		myRootPanel.add(regExpLabeled);
+		LabeledComponent<EditorTextField> sampleLabeled = LabeledComponent.create(mySampleText, "Sample");
+		sampleLabeled.setOpaque(false);
+		myRootPanel.add(sampleLabeled);
+		BorderLayoutPanel borderLayoutPanel = new BorderLayoutPanel();
+		borderLayoutPanel.setOpaque(false);
+
+		myRootPanel.add(borderLayoutPanel.addToRight(myMessage));
 	}
 
 	public JPanel getRootPanel()
@@ -157,7 +152,7 @@ public class CheckRegExpForm
 	{
 		boolean correct = isMatchingText(myRegexpFile, mySampleText.getText());
 
-		mySampleText.setBackground(correct ? BACKGROUND_COLOR_MATCH : BACKGROUND_COLOR_NOMATCH);
+		mySampleText.setBackground(correct ? LightColors.GREEN : LightColors.RED);
 		myMessage.setText(correct ? "Matches!" : "no match");
 		myRootPanel.revalidate();
 	}
