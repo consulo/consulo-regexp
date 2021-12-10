@@ -16,6 +16,7 @@
 package org.intellij.lang.regexp;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
+import consulo.localize.LocalizeValue;
 import consulo.regexp.icon.RegExpIconGroup;
 import consulo.ui.image.Image;
 
@@ -34,8 +35,8 @@ public class RegExpFileType extends LanguageFileType {
     }
 
     @Nonnull
-    public String getDescription() {
-        return "Regular Expression";
+    public LocalizeValue getDescription() {
+        return LocalizeValue.localizeTODO("Regular Expression");
     }
 
     @Nonnull
