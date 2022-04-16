@@ -15,23 +15,23 @@
  */
 package org.intellij.lang.regexp;
 
+import consulo.codeEditor.DefaultLanguageHighlighterColors;
+import consulo.codeEditor.HighlighterColors;
+import consulo.colorScheme.TextAttributesKey;
+import consulo.language.ast.IElementType;
+import consulo.language.ast.StringEscapesTokenTypes;
+import consulo.language.ast.TokenType;
+import consulo.language.editor.highlight.SyntaxHighlighterBase;
+import consulo.language.lexer.Lexer;
+import consulo.language.parser.ParserDefinition;
+import consulo.language.version.LanguageVersionUtil;
+
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.lang.ParserDefinition;
-import com.intellij.lexer.Lexer;
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
-import com.intellij.openapi.editor.HighlighterColors;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
-import com.intellij.psi.StringEscapesTokenTypes;
-import com.intellij.psi.TokenType;
-import com.intellij.psi.tree.IElementType;
-import consulo.lang.util.LanguageVersionUtil;
-
-public class RegExpHighlighter extends SyntaxHighlighterBase {
+public class RegExpHighlighter extends SyntaxHighlighterBase
+{
   private static final Map<IElementType, TextAttributesKey> keys1;
   private static final Map<IElementType, TextAttributesKey> keys2;
 

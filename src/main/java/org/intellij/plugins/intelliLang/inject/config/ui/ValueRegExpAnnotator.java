@@ -15,10 +15,11 @@
  */
 package org.intellij.plugins.intelliLang.inject.config.ui;
 
-import com.intellij.lang.annotation.AnnotationHolder;
-import com.intellij.lang.annotation.Annotator;
-import com.intellij.psi.PsiElement;
 import consulo.annotation.access.RequiredReadAction;
+import consulo.language.editor.annotation.AnnotationHolder;
+import consulo.language.editor.annotation.Annotator;
+import consulo.language.inject.InjectedLanguageManagerUtil;
+import consulo.language.psi.PsiElement;
 import org.intellij.lang.regexp.RegExpFile;
 import org.intellij.lang.regexp.psi.RegExpBranch;
 import org.intellij.lang.regexp.psi.RegExpGroup;
@@ -37,7 +38,7 @@ public class ValueRegExpAnnotator implements Annotator
 	@RequiredReadAction
 	public void annotate(@Nonnull PsiElement psiElement, @Nonnull AnnotationHolder holder)
 	{
-		if(psiElement instanceof RegExpFile && psiElement.getCopyableUserData(AdvancedPanel.KEY) == Boolean.TRUE)
+		if(psiElement instanceof RegExpFile && psiElement.getCopyableUserData(InjectedLanguageManagerUtil.VALUE_PATTERN_KEY_FOR_ADVANCED_INJECT) == Boolean.TRUE)
 		{
 			final PsiElement pattern = psiElement.getFirstChild();
 			if(!(pattern instanceof RegExpPattern))

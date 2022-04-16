@@ -15,11 +15,11 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import javax.annotation.Nonnull;
-
+import consulo.language.ast.ASTNode;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpSimpleClass;
-import com.intellij.lang.ASTNode;
+
+import javax.annotation.Nonnull;
 
 public class RegExpSimpleClassImpl extends RegExpElementImpl implements RegExpSimpleClass
 {

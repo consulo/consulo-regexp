@@ -15,16 +15,15 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.util.PsiTreeUtil;
-
+import consulo.language.ast.ASTNode;
+import consulo.language.psi.util.PsiTreeUtil;
 import org.intellij.lang.regexp.RegExpElementTypes;
 import org.intellij.lang.regexp.psi.RegExpAtom;
+import org.intellij.lang.regexp.psi.RegExpClosure;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpQuantifier;
-import org.intellij.lang.regexp.psi.RegExpClosure;
+
+import javax.annotation.Nonnull;
 
 public class RegExpClosureImpl extends RegExpElementImpl implements RegExpClosure {
 

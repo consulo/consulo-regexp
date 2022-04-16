@@ -15,19 +15,13 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.StringEscapesTokenTypes;
-import com.intellij.psi.TokenType;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
-
-import javax.annotation.Nullable;
-
+import consulo.language.ast.*;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpChar;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class RegExpCharImpl extends RegExpElementImpl implements RegExpChar {
     private static final TokenSet OCT_CHARS = TokenSet.create(RegExpTT.OCT_CHAR, RegExpTT.BAD_OCT_VALUE);

@@ -15,11 +15,10 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import com.intellij.psi.PsiElementVisitor;
+import consulo.language.psi.PsiElementVisitor;
 
 public class RegExpElementVisitor extends PsiElementVisitor
 {
-
 	public void visitRegExpElement(RegExpElement element)
 	{
 	}

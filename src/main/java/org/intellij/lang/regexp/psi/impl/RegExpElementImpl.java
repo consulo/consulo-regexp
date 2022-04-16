@@ -15,23 +15,23 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
-import com.intellij.lang.LanguageParserDefinitions;
-import com.intellij.lang.ParserDefinition;
-import com.intellij.lang.injection.InjectedLanguageManager;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.util.IncorrectOperationException;
+import consulo.language.Language;
+import consulo.language.ast.ASTNode;
+import consulo.language.ast.IElementType;
+import consulo.language.impl.psi.ASTWrapperPsiElement;
+import consulo.language.inject.InjectedLanguageManager;
+import consulo.language.inject.InjectedLanguageManagerUtil;
+import consulo.language.parser.LanguageParserDefinitions;
+import consulo.language.parser.ParserDefinition;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiElementVisitor;
+import consulo.language.util.IncorrectOperationException;
 import org.intellij.lang.regexp.RegExpLanguage;
 import org.intellij.lang.regexp.psi.RegExpElement;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements RegExpElement {
     public RegExpElementImpl(ASTNode node) {
@@ -77,7 +77,7 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
     }
 
     public final String getUnescapedText() {
-        if (InjectedLanguageUtil.isInInjectedLanguagePrefixSuffix(this)) {
+        if (InjectedLanguageManagerUtil.isInInjectedLanguagePrefixSuffix(this)) {
             // do not attempt to decode text if PsiElement is part of prefix/suffix
             return getText();
         }

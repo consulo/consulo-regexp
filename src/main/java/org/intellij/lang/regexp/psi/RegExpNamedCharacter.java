@@ -15,15 +15,15 @@
  */
 package org.intellij.lang.regexp.psi;
 
+import consulo.language.ast.ASTNode;
+
 import javax.annotation.Nullable;
-import com.intellij.lang.ASTNode;
 
 /**
  * @author Bas Leijdekkers
  */
 public interface RegExpNamedCharacter extends RegExpAtom, RegExpClassElement
 {
-
 	@Nullable
 	ASTNode getNameNode();
 

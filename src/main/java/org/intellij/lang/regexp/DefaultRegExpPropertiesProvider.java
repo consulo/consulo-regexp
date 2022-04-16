@@ -15,9 +15,10 @@
  */
 package org.intellij.lang.regexp;
 
+import consulo.util.lang.StringUtil;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import com.intellij.openapi.util.text.StringUtil;
 
 public final class DefaultRegExpPropertiesProvider
 {

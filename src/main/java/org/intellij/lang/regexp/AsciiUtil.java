@@ -15,16 +15,11 @@
  */
 package org.intellij.lang.regexp;
 
-import java.nio.charset.Charset;
-
 /**
  * @author Bas Leijdekkers
  */
 public final class AsciiUtil
 {
-
-	public static final Charset ASCII_CHARSET = Charset.forName("US-ASCII");
-
 	private AsciiUtil()
 	{
 	}

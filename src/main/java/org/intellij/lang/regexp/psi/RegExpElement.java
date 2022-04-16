@@ -15,14 +15,15 @@
  */
 package org.intellij.lang.regexp.psi;
 
+import consulo.language.ast.ASTNode;
+import consulo.language.psi.PsiElement;
+
 import javax.annotation.Nonnull;
 
-import com.intellij.psi.PsiElement;
-import com.intellij.lang.ASTNode;
+public interface RegExpElement extends PsiElement
+{
+	@Nonnull
+	ASTNode getNode();
 
-public interface RegExpElement extends PsiElement {
-    @Nonnull
-    ASTNode getNode();
-
-    String getUnescapedText();
+	String getUnescapedText();
 }

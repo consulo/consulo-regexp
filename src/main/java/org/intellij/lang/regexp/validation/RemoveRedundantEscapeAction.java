@@ -15,21 +15,22 @@
  */
 package org.intellij.lang.regexp.validation;
 
-import javax.annotation.Nonnull;
-
+import consulo.codeEditor.Editor;
+import consulo.language.ast.ASTNode;
+import consulo.language.editor.intention.IntentionAction;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.util.IncorrectOperationException;
+import consulo.project.Project;
+import consulo.util.lang.StringUtil;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpChar;
 import org.intellij.lang.regexp.psi.impl.RegExpElementImpl;
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.util.IncorrectOperationException;
 
-class RemoveRedundantEscapeAction implements IntentionAction {
+import javax.annotation.Nonnull;
+
+class RemoveRedundantEscapeAction implements IntentionAction
+{
     private final RegExpChar myChar;
 
     public RemoveRedundantEscapeAction(RegExpChar ch) {
@@ -50,7 +51,8 @@ class RemoveRedundantEscapeAction implements IntentionAction {
         return myChar.isValid() && myChar.getUnescapedText().startsWith("\\");
     }
 
-    public void invoke(@Nonnull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
+    public void invoke(@Nonnull Project project, Editor editor, PsiFile file) throws IncorrectOperationException
+	{
         final Character v = myChar.getValue();
         assert v != null;
 

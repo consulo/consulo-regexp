@@ -15,21 +15,22 @@
  */
 package org.intellij.lang.regexp.validation;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiFileFactory;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.IncorrectOperationException;
+import consulo.codeEditor.Editor;
+import consulo.language.editor.intention.IntentionAction;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiFileFactory;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.language.util.IncorrectOperationException;
+import consulo.project.Project;
 import org.intellij.lang.regexp.RegExpFileType;
 import org.intellij.lang.regexp.psi.RegExpClosure;
 import org.intellij.lang.regexp.psi.RegExpPattern;
 import org.intellij.lang.regexp.psi.RegExpQuantifier;
 
-class SimplifyQuantifierAction implements IntentionAction {
+import javax.annotation.Nonnull;
+
+class SimplifyQuantifierAction implements IntentionAction
+{
     private final RegExpQuantifier myQuantifier;
     private final String myReplacement;
 
@@ -52,7 +53,8 @@ class SimplifyQuantifierAction implements IntentionAction {
         return myQuantifier.isValid();
     }
 
-    public void invoke(@Nonnull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
+    public void invoke(@Nonnull Project project, Editor editor, PsiFile file) throws IncorrectOperationException
+	{
         if (myReplacement == null) {
             myQuantifier.delete();
         } else {

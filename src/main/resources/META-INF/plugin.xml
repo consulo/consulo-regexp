@@ -8,17 +8,16 @@
 	</tags>
 
 	<extensionPoints>
-		<extensionPoint name="languageHost" beanClass="com.intellij.openapi.util.ClassExtensionPoint">
-			<with attribute="forClass" implements="com.intellij.psi.PsiElement"/>
+		<extensionPoint name="languageHost" beanClass="consulo.application.extension.ClassExtensionPoint">
+			<with attribute="forClass" implements="consulo.language.psi.PsiElement"/>
 			<with attribute="implementationClass" implements="org.intellij.lang.regexp.RegExpLanguageHost"/>
 		</extensionPoint>
-		<extensionPoint name="modifierProvider" beanClass="com.intellij.lang.LanguageExtensionPoint">
+		<extensionPoint name="modifierProvider" beanClass="consulo.language.LanguageExtensionPoint">
 			<with attribute="implementationClass" implements="org.intellij.lang.regexp.RegExpModifierProvider"/>
 		</extensionPoint>
-		<!--<extensionPoint name="propertiesProvider" beanClass="com.intellij.lang.LanguageExtensionPoint"/> -->
 	</extensionPoints>
 
-	<extensions defaultExtensionNs="com.intellij">
+	<extensions defaultExtensionNs="consulo">
 		<lang.documentationProvider language="RegExp" implementationClass="org.intellij.lang.regexp.RegExpDocumentationProvider"/>
 		<completion.contributor language="RegExp" implementationClass="org.intellij.lang.regexp.RegExpCompletionContributor"/>
 		<fileTypeFactory implementation="org.intellij.lang.regexp.RegExpSupportLoader"/>

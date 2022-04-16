@@ -1,11 +1,11 @@
 /* It's an automatically generated code. Do not modify it. */
 package org.intellij.lang.regexp;
 
-import com.intellij.lexer.FlexLexer;
-import com.intellij.psi.tree.IElementType;
+import consulo.language.lexer.FlexLexer;
+import consulo.language.ast.IElementType;
 import java.util.LinkedList;
 import java.util.EnumSet;
-import com.intellij.psi.StringEscapesTokenTypes;
+import consulo.language.ast.StringEscapesTokenTypes;
 
 // IDEADEV-11055
 @SuppressWarnings({ "ALL", "SameParameterValue", "WeakerAccess", "SameReturnValue", "RedundantThrows", "UnusedDeclaration", "UnusedDeclaration" })
@@ -244,7 +244,7 @@ HEX_CHAR=[0-9a-fA-F]
   {RBRACKET}            { yypopstate(); return RegExpTT.CLASS_END; }
 
   "&&"                  { return allowNestedCharacterClasses ? RegExpTT.ANDAND : RegExpTT.CHARACTER;    }
-  [\n\b\t\r\f]          { return commentMode ? com.intellij.psi.TokenType.WHITE_SPACE : RegExpTT.ESC_CHARACTER; }
+  [\n\b\t\r\f]          { return commentMode ? consulo.language.ast.TokenType.WHITE_SPACE : RegExpTT.ESC_CHARACTER; }
   {ANY}                 { return RegExpTT.CHARACTER; }
 }
 
@@ -320,7 +320,7 @@ HEX_CHAR=[0-9a-fA-F]
   [^\r\n]*[\r\n]?  { yypopstate(); return RegExpTT.COMMENT; }
 }
 
-" "          { return commentMode ? com.intellij.psi.TokenType.WHITE_SPACE : RegExpTT.CHARACTER; }
-[\n\b\t\r\f]   { return commentMode ? com.intellij.psi.TokenType.WHITE_SPACE : RegExpTT.CTRL_CHARACTER; }
+" "          { return commentMode ? consulo.language.ast.TokenType.WHITE_SPACE : RegExpTT.CHARACTER; }
+[\n\b\t\r\f]   { return commentMode ? consulo.language.ast.TokenType.WHITE_SPACE : RegExpTT.CTRL_CHARACTER; }
 
 {ANY}        { return RegExpTT.CHARACTER; }

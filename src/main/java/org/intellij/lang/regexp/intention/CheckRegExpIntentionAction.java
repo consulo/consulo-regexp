@@ -15,72 +15,79 @@
  */
 package org.intellij.lang.regexp.intention;
 
-import javax.annotation.Nonnull;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-
-import org.intellij.lang.regexp.RegExpLanguage;
-import com.intellij.codeInsight.intention.impl.QuickEditAction;
-import com.intellij.lang.Language;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Iconable;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import consulo.awt.TargetAWT;
+import consulo.codeEditor.Editor;
+import consulo.component.util.Iconable;
+import consulo.document.Document;
+import consulo.document.util.TextRange;
+import consulo.language.Language;
+import consulo.language.editor.impl.intention.QuickEditAction;
+import consulo.language.psi.PsiDocumentManager;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.project.Project;
+import consulo.regexp.icon.RegExpIconGroup;
 import consulo.ui.image.Image;
+import consulo.util.lang.Pair;
+import org.intellij.lang.regexp.RegExpLanguage;
+
+import javax.annotation.Nonnull;
+import javax.swing.*;
 
 /**
  * @author Konstantin Bulenkov
  * @author Anna Bulenkova
  */
-public class CheckRegExpIntentionAction extends QuickEditAction implements Iconable {
+public class CheckRegExpIntentionAction extends QuickEditAction implements Iconable
+{
+	@Override
+	public boolean isAvailable(@Nonnull Project project, Editor editor, PsiFile file)
+	{
+		final Pair<PsiElement, TextRange> pair = getRangePair(file, editor);
+		/*super.isAvailable(project, editor, file) && */
+		if(pair != null && pair.first != null)
+		{
+			Language language = pair.first.getLanguage();
+			Language baseLanguage = language.getBaseLanguage();
+			return language == RegExpLanguage.INSTANCE || baseLanguage == RegExpLanguage.INSTANCE;
+		}
+		return false;
+	}
 
-  @Override
-  public boolean isAvailable(@Nonnull Project project, Editor editor, PsiFile file) {
-    final Pair<PsiElement, TextRange> pair = getRangePair(file, editor);
-    /*super.isAvailable(project, editor, file) && */
-    if (pair != null && pair.first != null) {
-      Language language = pair.first.getLanguage();
-      Language baseLanguage = language.getBaseLanguage();
-      return language == RegExpLanguage.INSTANCE || baseLanguage == RegExpLanguage.INSTANCE;
-    }
-    return false;
-  }
+	@Override
+	public boolean isShowInBalloon()
+	{
+		return true;
+	}
 
-  @Override
-  protected boolean isShowInBalloon() {
-    return true;
-  }
+	@Override
+	public JComponent createBalloonComponent(PsiFile file)
+	{
+		final Project project = file.getProject();
+		final Document document = PsiDocumentManager.getInstance(project).getDocument(file);
+		if(document != null)
+		{
+			return new CheckRegExpForm(file).getRootPanel();
+		}
+		return null;
+	}
 
-  @Override
-  protected JComponent createBalloonComponent(PsiFile file) {
-    final Project project = file.getProject();
-    final Document document = PsiDocumentManager.getInstance(project).getDocument(file);
-    if (document != null) {
-      return new CheckRegExpForm(file).getRootPanel();
-    }
-    return null;
-  }
+	@Nonnull
+	@Override
+	public String getText()
+	{
+		return "Check RegExp";
+	}
 
-  @Nonnull
-  @Override
-  public String getText() {
-    return "Check RegExp";
-  }
+	@Nonnull
+	@Override
+	public String getFamilyName()
+	{
+		return getText();
+	}
 
-  @Nonnull
-  @Override
-  public String getFamilyName() {
-    return getText();
-  }
-
-  @Override
-  public Image getIcon(int flags) {
-    return RegExpLanguage.INSTANCE.getAssociatedFileType().getIcon();
-  }
+	@Override
+	public Image getIcon(int flags)
+	{
+		return RegExpIconGroup.regexp();
+	}
 }

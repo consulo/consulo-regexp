@@ -16,16 +16,18 @@
 
 package org.intellij.lang.regexp;
 
+import consulo.virtualFileSystem.fileType.FileTypeConsumer;
+import consulo.virtualFileSystem.fileType.FileTypeFactory;
+
 import javax.annotation.Nonnull;
 
-import com.intellij.openapi.fileTypes.FileTypeConsumer;
-import com.intellij.openapi.fileTypes.FileTypeFactory;
+public class RegExpSupportLoader extends FileTypeFactory
+{
+	public static final RegExpLanguage LANGUAGE = RegExpLanguage.INSTANCE;
+	public static final RegExpFileType FILE_TYPE = RegExpFileType.INSTANCE;
 
-public class RegExpSupportLoader extends FileTypeFactory {
-    public static final RegExpLanguage LANGUAGE = RegExpLanguage.INSTANCE;
-    public static final RegExpFileType FILE_TYPE = RegExpFileType.INSTANCE;
-
-    public void createFileTypes(final @Nonnull FileTypeConsumer consumer) {
-        consumer.consume(FILE_TYPE, FILE_TYPE.getDefaultExtension());
-    }
+	public void createFileTypes(final @Nonnull FileTypeConsumer consumer)
+	{
+		consumer.consume(FILE_TYPE, FILE_TYPE.getDefaultExtension());
+	}
 }

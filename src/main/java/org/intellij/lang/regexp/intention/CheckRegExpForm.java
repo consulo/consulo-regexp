@@ -15,30 +15,26 @@
  */
 package org.intellij.lang.regexp.intention;
 
-import com.intellij.ide.util.PropertiesComponent;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CustomShortcutSet;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.event.DocumentAdapter;
-import com.intellij.openapi.editor.event.DocumentEvent;
-import com.intellij.openapi.fileTypes.PlainTextFileType;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.LabeledComponent;
-import com.intellij.openapi.ui.VerticalFlowLayout;
-import com.intellij.openapi.wm.IdeFocusManager;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiLanguageInjectionHost;
-import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
-import com.intellij.ui.EditorTextField;
-import com.intellij.ui.LightColors;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.util.Alarm;
-import com.intellij.util.ui.components.BorderLayoutPanel;
+import consulo.application.ui.wm.IdeFocusManager;
 import consulo.disposer.Disposable;
 import consulo.disposer.Disposer;
+import consulo.document.Document;
+import consulo.document.event.DocumentAdapter;
+import consulo.document.event.DocumentEvent;
+import consulo.language.editor.ui.awt.EditorTextField;
+import consulo.language.inject.InjectedLanguageManagerUtil;
+import consulo.language.plain.PlainTextFileType;
+import consulo.language.psi.PsiDocumentManager;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiLanguageInjectionHost;
+import consulo.project.Project;
+import consulo.project.ProjectPropertiesComponent;
 import consulo.ui.annotation.RequiredUIAccess;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.CustomShortcutSet;
+import consulo.ui.ex.awt.*;
+import consulo.ui.ex.awt.util.Alarm;
 import org.intellij.lang.regexp.RegExpLanguage;
 import org.intellij.lang.regexp.RegExpModifierProvider;
 import org.jetbrains.annotations.TestOnly;
@@ -72,7 +68,7 @@ public class CheckRegExpForm
 
 		myRegExp = new EditorTextField(document, myProject, RegExpLanguage.INSTANCE.getAssociatedFileType());
 		myRegExp.setPreferredWidth(Math.max(300, myRegExp.getPreferredSize().width));
-		final String sampleText = PropertiesComponent.getInstance(myProject).getValue(LAST_EDITED_REGEXP, "Sample Text");
+		final String sampleText = ProjectPropertiesComponent.getInstance(myProject).getValue(LAST_EDITED_REGEXP, "Sample Text");
 		mySampleText = new EditorTextField(sampleText, myProject, PlainTextFileType.INSTANCE);
 
 		myRootPanel = new JPanel(new VerticalFlowLayout())
@@ -122,7 +118,7 @@ public class CheckRegExpForm
 			{
 				super.removeNotify();
 				Disposer.dispose(disposable);
-				PropertiesComponent.getInstance(myProject).setValue(LAST_EDITED_REGEXP, mySampleText.getText());
+				ProjectPropertiesComponent.getInstance(myProject).setValue(LAST_EDITED_REGEXP, mySampleText.getText());
 			}
 		};
 		myRootPanel.setOpaque(false);
@@ -167,7 +163,7 @@ public class CheckRegExpForm
 	{
 		final String regExp = regexpFile.getText();
 
-		PsiLanguageInjectionHost host = InjectedLanguageUtil.findInjectionHost(regexpFile);
+		PsiLanguageInjectionHost host = InjectedLanguageManagerUtil.findInjectionHost(regexpFile);
 		int flags = 0;
 		if(host != null)
 		{

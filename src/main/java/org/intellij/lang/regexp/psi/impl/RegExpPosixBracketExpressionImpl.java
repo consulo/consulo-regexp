@@ -15,10 +15,10 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import consulo.language.ast.ASTNode;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpPosixBracketExpression;
-import com.intellij.lang.ASTNode;
 
 /**
  * @author Bas Leijdekkers

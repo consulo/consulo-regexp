@@ -15,17 +15,11 @@
  */
 package org.intellij.lang.regexp;
 
+import consulo.language.psi.PsiElement;
+import org.intellij.lang.regexp.psi.*;
+
 import javax.annotation.Nonnull;
-
-import org.intellij.lang.regexp.psi.RegExpBoundary;
-import org.intellij.lang.regexp.psi.RegExpChar;
-import org.intellij.lang.regexp.psi.RegExpGroup;
-import org.intellij.lang.regexp.psi.RegExpNamedCharacter;
-import org.intellij.lang.regexp.psi.RegExpNamedGroupRef;
-import org.intellij.lang.regexp.psi.RegExpSimpleClass;
-
 import javax.annotation.Nullable;
-import com.intellij.psi.PsiElement;
 
 /**
  * @author yole

@@ -15,17 +15,16 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
-
-import org.intellij.lang.regexp.RegExpTT;
+import consulo.language.ast.ASTNode;
+import consulo.language.ast.IElementType;
+import consulo.language.ast.TokenSet;
 import org.intellij.lang.regexp.RegExpElementTypes;
+import org.intellij.lang.regexp.RegExpTT;
+import org.intellij.lang.regexp.psi.RegExpAtom;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpQuantifier;
-import org.intellij.lang.regexp.psi.RegExpAtom;
+
+import javax.annotation.Nonnull;
 
 public class RegExpQuantifierImpl extends RegExpElementImpl implements RegExpQuantifier {
 

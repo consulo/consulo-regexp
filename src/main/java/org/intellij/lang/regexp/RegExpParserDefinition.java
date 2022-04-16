@@ -15,28 +15,23 @@
  */
 package org.intellij.lang.regexp;
 
-import java.util.EnumSet;
+import consulo.disposer.Disposable;
+import consulo.disposer.Disposer;
+import consulo.language.ast.*;
+import consulo.language.file.FileViewProvider;
+import consulo.language.impl.psi.ASTWrapperPsiElement;
+import consulo.language.lexer.Lexer;
+import consulo.language.parser.ParserDefinition;
+import consulo.language.parser.PsiParser;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.version.LanguageVersion;
+import org.intellij.lang.regexp.psi.impl.*;
+import org.jetbrains.annotations.TestOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.intellij.lang.regexp.psi.impl.*;
-import org.jetbrains.annotations.TestOnly;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.ParserDefinition;
-import com.intellij.lang.PsiParser;
-import com.intellij.lexer.Lexer;
-import consulo.disposer.Disposable;
-import com.intellij.psi.FileViewProvider;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.TokenType;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.IFileElementType;
-import com.intellij.psi.tree.TokenSet;
-import consulo.disposer.Disposer;
-import consulo.lang.LanguageVersion;
+import java.util.EnumSet;
 
 public class RegExpParserDefinition implements ParserDefinition
 {

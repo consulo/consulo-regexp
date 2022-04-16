@@ -15,9 +15,9 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import javax.annotation.Nullable;
+import consulo.language.psi.PsiNamedElement;
 
-import com.intellij.psi.PsiNamedElement;
+import javax.annotation.Nullable;
 
 public interface RegExpGroup extends RegExpAtom, PsiNamedElement
 {

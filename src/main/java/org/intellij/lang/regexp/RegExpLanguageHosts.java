@@ -15,25 +15,17 @@
  */
 package org.intellij.lang.regexp;
 
-import javax.annotation.Nonnull;
-
-import org.intellij.lang.regexp.psi.RegExpBoundary;
-import org.intellij.lang.regexp.psi.RegExpChar;
-import org.intellij.lang.regexp.psi.RegExpGroup;
-import org.intellij.lang.regexp.psi.RegExpNamedCharacter;
-import org.intellij.lang.regexp.psi.RegExpNamedGroupRef;
-import org.intellij.lang.regexp.psi.RegExpPyCondRef;
-import org.intellij.lang.regexp.psi.RegExpQuantifier;
-import org.intellij.lang.regexp.psi.RegExpSimpleClass;
+import consulo.application.ApplicationManager;
+import consulo.application.extension.ClassExtension;
+import consulo.language.psi.PsiComment;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import org.intellij.lang.regexp.psi.*;
 import org.jetbrains.annotations.Contract;
-
-import javax.annotation.Nullable;
 import org.jetbrains.annotations.TestOnly;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.util.ClassExtension;
-import com.intellij.psi.PsiComment;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author yole

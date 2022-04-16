@@ -15,10 +15,10 @@
  */
 package org.intellij.lang.regexp;
 
-import com.intellij.openapi.fileTypes.LanguageFileType;
+import consulo.language.file.LanguageFileType;
 import consulo.localize.LocalizeValue;
-import consulo.regexp.icon.RegExpIconGroup;
 import consulo.ui.image.Image;
+import consulo.regexp.icon.RegExpIconGroup;
 
 import javax.annotation.Nonnull;
 

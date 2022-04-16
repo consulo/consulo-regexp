@@ -15,16 +15,18 @@
  */
 package org.intellij.lang.regexp;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.Condition;
-import com.intellij.psi.PsiElement;
+import consulo.language.ast.ASTNode;
+import consulo.language.psi.PsiElement;
+import consulo.util.lang.function.Condition;
 import org.intellij.lang.regexp.psi.RegExpChar;
+
 import javax.annotation.Nonnull;
 
 /**
  * @author yole
  */
-public class RegExpWordSelectionFilter implements Condition<PsiElement> {
+public class RegExpWordSelectionFilter implements Condition<PsiElement>
+{
   @Override
   public boolean value(@Nonnull PsiElement element) {
     final ASTNode node = element.getNode();

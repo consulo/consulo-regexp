@@ -15,15 +15,16 @@
  */
 package org.intellij.lang.regexp;
 
+import consulo.language.BracePair;
+import consulo.language.PairedBraceMatcher;
+import consulo.language.ast.IElementType;
+import consulo.language.psi.PsiFile;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.intellij.lang.BracePair;
-import com.intellij.lang.PairedBraceMatcher;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.tree.IElementType;
-
-public class RegExpBraceMatcher implements PairedBraceMatcher {
+public class RegExpBraceMatcher implements PairedBraceMatcher
+{
   public BracePair[] getPairs() {
     return new BracePair[]{new BracePair(RegExpTT.GROUP_BEGIN, RegExpTT.GROUP_END, true),
       new BracePair(RegExpTT.SET_OPTIONS, RegExpTT.GROUP_END, true), new BracePair(RegExpTT.NON_CAPT_GROUP, RegExpTT.GROUP_END, true),

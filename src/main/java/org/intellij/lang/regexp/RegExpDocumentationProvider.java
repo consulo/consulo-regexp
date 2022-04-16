@@ -15,12 +15,13 @@
  */
 package org.intellij.lang.regexp;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.documentation.AbstractDocumentationProvider;
-import com.intellij.psi.PsiElement;
+import consulo.language.ast.ASTNode;
+import consulo.language.editor.documentation.AbstractDocumentationProvider;
+import consulo.language.psi.PsiElement;
 import org.intellij.lang.regexp.psi.RegExpElement;
 import org.intellij.lang.regexp.psi.RegExpGroup;
 import org.intellij.lang.regexp.psi.RegExpProperty;
+
 import javax.annotation.Nullable;
 
 /**

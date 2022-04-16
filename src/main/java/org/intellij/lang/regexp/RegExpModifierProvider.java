@@ -15,12 +15,12 @@
  */
 package org.intellij.lang.regexp;
 
-import java.util.regex.Pattern;
-
+import consulo.language.LanguageExtension;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
 import org.intellij.lang.annotations.MagicConstant;
-import com.intellij.lang.LanguageExtension;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+
+import java.util.regex.Pattern;
 
 /**
  * Enables support of checking regexp with modifiers, e.g. case insensitivity, new line skip and other options

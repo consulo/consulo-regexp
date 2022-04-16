@@ -15,7 +15,7 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import com.intellij.lang.ASTNode;
+import consulo.language.ast.ASTNode;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpPyCondRef;
 

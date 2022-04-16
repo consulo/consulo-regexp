@@ -15,23 +15,25 @@
  */
 package org.intellij.lang.regexp.surroundWith;
 
-import com.intellij.lang.surroundWith.SurroundDescriptor;
-import com.intellij.lang.surroundWith.Surrounder;
-import com.intellij.psi.*;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.util.PsiUtilBase;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.language.editor.surroundWith.SurroundDescriptor;
+import consulo.language.editor.surroundWith.Surrounder;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiUtilCore;
+import consulo.language.psi.PsiWhiteSpace;
+import consulo.language.psi.util.PsiTreeUtil;
+import org.intellij.lang.regexp.psi.RegExpAtom;
+import org.intellij.lang.regexp.psi.RegExpBranch;
 import org.intellij.lang.regexp.psi.RegExpElement;
 import org.intellij.lang.regexp.psi.RegExpPattern;
-import org.intellij.lang.regexp.psi.RegExpBranch;
-import org.intellij.lang.regexp.psi.RegExpAtom;
 
-import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.List;
 
-public class SimpleSurroundDescriptor implements SurroundDescriptor {
+public class SimpleSurroundDescriptor implements SurroundDescriptor
+{
     private static final Surrounder[] SURROUNDERS = {
             new GroupSurrounder("Capturing Group (pattern)", "("),
             new GroupSurrounder("Non-Capturing Group (?:pattern)", "(?:"),
@@ -83,7 +85,7 @@ public class SimpleSurroundDescriptor implements SurroundDescriptor {
         }
 
         if (startOffset == endOffset && atoms.size() > 0) {
-          final PsiElement[] elements = PsiUtilBase.toPsiElementArray(atoms);
+          final PsiElement[] elements = PsiUtilCore.toPsiElementArray(atoms);
             if ((atoms.size() == 1 || PsiTreeUtil.findCommonParent(elements) == elements[0].getParent())) {
                 return elements;
             }

@@ -15,29 +15,28 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import java.awt.Color;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import consulo.application.AllIcons;
+import consulo.document.util.TextRange;
+import consulo.language.ast.ASTNode;
+import consulo.language.editor.completion.lookup.LookupValueFactory;
+import consulo.language.editor.completion.lookup.LookupValueWithPriority;
+import consulo.language.editor.completion.lookup.LookupValueWithUIHint;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReference;
+import consulo.language.util.IncorrectOperationException;
+import consulo.util.collection.ArrayUtil;
 import org.intellij.lang.regexp.RegExpLanguageHosts;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpProperty;
-import com.intellij.codeInsight.lookup.LookupValueFactory;
-import com.intellij.codeInsight.lookup.LookupValueWithPriority;
-import com.intellij.codeInsight.lookup.LookupValueWithUIHint;
-import com.intellij.icons.AllIcons;
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.IncorrectOperationException;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpProperty {
     public RegExpPropertyImpl(ASTNode astNode) {
@@ -89,7 +88,7 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
             return getRangeInElement().substring(getElement().getText());
         }
 
-        public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+        public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException	{
             throw new IncorrectOperationException();
         }
 
@@ -122,7 +121,8 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
             return true;
         }
 
-        private class MyLookupValue extends LookupValueFactory.LookupValueWithIcon implements LookupValueWithPriority, LookupValueWithUIHint {
+        private class MyLookupValue extends LookupValueFactory.LookupValueWithIcon implements LookupValueWithPriority, LookupValueWithUIHint
+		{
             private final String[] myProp;
 
             public MyLookupValue(String[] prop) {
