@@ -16,12 +16,14 @@
 package org.intellij.lang.regexp;
 
 import consulo.annotation.access.RequiredReadAction;
+import consulo.annotation.component.ExtensionImpl;
 import consulo.application.AllIcons;
 import consulo.application.progress.ProgressManager;
 import consulo.codeEditor.Editor;
 import consulo.component.util.UnicodeCharacterRegistry;
 import consulo.document.Document;
 import consulo.document.util.TextRange;
+import consulo.language.Language;
 import consulo.language.editor.completion.*;
 import consulo.language.editor.completion.lookup.*;
 import consulo.language.pattern.ElementPattern;
@@ -39,6 +41,7 @@ import static consulo.language.pattern.StandardPatterns.or;
 /**
  * @author vnikolaenko
  */
+@ExtensionImpl
 public final class RegExpCompletionContributor extends CompletionContributor
 {
 	private static final Image emptyIcon = Image.empty(Image.DEFAULT_ICON_SIZE);
@@ -114,7 +117,7 @@ public final class RegExpCompletionContributor extends CompletionContributor
 		public void addCompletions(@Nonnull CompletionParameters parameters, ProcessingContext context, @Nonnull CompletionResultSet result)
 		{
 
-			for(String[] completion : RegExpLanguageHosts.getInstance().getPosixCharacterClasses(parameters.getPosition()))
+			for(String[] completion : RegExpLanguageHosts.INSTANCE.getPosixCharacterClasses(parameters.getPosition()))
 			{
 				result.addElement(LookupElementBuilder.create(completion[0]).withTypeText((completion.length > 1) ? completion[1] : null).withIcon(emptyIcon).withInsertHandler(new
 																																														InsertHandler<LookupElement>()
@@ -143,7 +146,7 @@ public final class RegExpCompletionContributor extends CompletionContributor
 		@Override
 		public void addCompletions(@Nonnull final CompletionParameters parameters, final ProcessingContext context, @Nonnull final CompletionResultSet result)
 		{
-			for(String[] stringArray : RegExpLanguageHosts.getInstance().getAllKnownProperties(parameters.getPosition()))
+			for(String[] stringArray : RegExpLanguageHosts.INSTANCE.getAllKnownProperties(parameters.getPosition()))
 			{
 				result.addElement(TailTypeDecorator.withTail(createLookupElement(stringArray[0], null, emptyIcon), TailType.createSimpleTailType('}')));
 			}
@@ -157,7 +160,7 @@ public final class RegExpCompletionContributor extends CompletionContributor
 		@Override
 		public void addCompletions(@Nonnull final CompletionParameters parameters, final ProcessingContext context, @Nonnull final CompletionResultSet result)
 		{
-			for(String[] stringArray : RegExpLanguageHosts.getInstance().getAllKnownProperties(parameters.getPosition()))
+			for(String[] stringArray : RegExpLanguageHosts.INSTANCE.getAllKnownProperties(parameters.getPosition()))
 			{
 				addLookupElement(result, "{" + stringArray[0] + "}", stringArray.length > 1 ? stringArray[1] : null, AllIcons.Nodes.Property);
 			}
@@ -171,12 +174,12 @@ public final class RegExpCompletionContributor extends CompletionContributor
 		@Override
 		public void addCompletions(@Nonnull final CompletionParameters parameters, final ProcessingContext context, @Nonnull final CompletionResultSet result)
 		{
-			for(final String[] completion : RegExpLanguageHosts.getInstance().getKnownCharacterClasses(parameters.getPosition()))
+			for(final String[] completion : RegExpLanguageHosts.INSTANCE.getKnownCharacterClasses(parameters.getPosition()))
 			{
 				addLookupElement(result, completion[0], completion[1], emptyIcon);
 			}
 
-			for(String[] stringArray : RegExpLanguageHosts.getInstance().getAllKnownProperties(parameters.getPosition()))
+			for(String[] stringArray : RegExpLanguageHosts.INSTANCE.getAllKnownProperties(parameters.getPosition()))
 			{
 				addLookupElement(result, "p{" + stringArray[0] + "}", stringArray.length > 1 ? stringArray[1] : null, AllIcons.Nodes.Property);
 			}
@@ -214,5 +217,12 @@ public final class RegExpCompletionContributor extends CompletionContributor
 				ProgressManager.checkCanceled();
 			});
 		}
+	}
+
+	@Nonnull
+	@Override
+	public Language getLanguage()
+	{
+		return RegExpLanguage.INSTANCE;
 	}
 }

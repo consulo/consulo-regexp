@@ -15,8 +15,10 @@
  */
 package org.intellij.lang.regexp;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.disposer.Disposable;
 import consulo.disposer.Disposer;
+import consulo.language.Language;
 import consulo.language.ast.*;
 import consulo.language.file.FileViewProvider;
 import consulo.language.impl.psi.ASTWrapperPsiElement;
@@ -33,6 +35,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
+@ExtensionImpl
 public class RegExpParserDefinition implements ParserDefinition
 {
 	private static final TokenSet COMMENT_TOKENS = TokenSet.create(RegExpTT.COMMENT);
@@ -47,6 +50,13 @@ public class RegExpParserDefinition implements ParserDefinition
 			CAPABILITIES.add(capability);
 			Disposer.register(parentDisposable, () -> CAPABILITIES.remove(capability));
 		}
+	}
+
+	@Nonnull
+	@Override
+	public Language getLanguage()
+	{
+		return RegExpLanguage.INSTANCE;
 	}
 
 	@Nonnull

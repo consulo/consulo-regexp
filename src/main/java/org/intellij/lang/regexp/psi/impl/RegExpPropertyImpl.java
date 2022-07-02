@@ -106,7 +106,7 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
             if (categoryNode != null && categoryNode.getText().startsWith("In") && !categoryNode.getText().startsWith("Intelli")) {
                 return UNICODE_BLOCKS;
             } else {
-              final String[][] knownProperties = RegExpLanguageHosts.getInstance().getAllKnownProperties(getElement());
+              final String[][] knownProperties = RegExpLanguageHosts.INSTANCE.getAllKnownProperties(getElement());
               final Object[] objects = new Object[knownProperties.length];
                 for (int i = 0; i < objects.length; i++) {
                     final String[] prop = knownProperties[i];

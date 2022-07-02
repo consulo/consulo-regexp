@@ -167,7 +167,7 @@ public class CheckRegExpForm
 		int flags = 0;
 		if(host != null)
 		{
-			for(RegExpModifierProvider provider : RegExpModifierProvider.EP.allForLanguage(host.getLanguage()))
+			for(RegExpModifierProvider provider : RegExpModifierProvider.forLanguage(host.getLanguage()))
 			{
 				flags = provider.getFlags(host, regexpFile);
 				if(flags > 0)

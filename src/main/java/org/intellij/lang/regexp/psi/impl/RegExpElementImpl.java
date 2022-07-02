@@ -21,7 +21,6 @@ import consulo.language.ast.IElementType;
 import consulo.language.impl.psi.ASTWrapperPsiElement;
 import consulo.language.inject.InjectedLanguageManager;
 import consulo.language.inject.InjectedLanguageManagerUtil;
-import consulo.language.parser.LanguageParserDefinitions;
 import consulo.language.parser.ParserDefinition;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiElementVisitor;
@@ -91,7 +90,7 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
       return false;
     }
     final IElementType elementType = astNode.getElementType();
-    final ParserDefinition parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(context.getLanguage());
+    final ParserDefinition parserDefinition = ParserDefinition.forLanguage(context.getLanguage());
     return parserDefinition.getStringLiteralElements(context.getLanguageVersion()).contains(elementType);
   }
 }

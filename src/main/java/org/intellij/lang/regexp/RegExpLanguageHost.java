@@ -15,17 +15,55 @@
  */
 package org.intellij.lang.regexp;
 
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ExtensionAPI;
+import consulo.application.Application;
+import consulo.application.extension.ByClassGrouper;
+import consulo.component.extension.ExtensionPointCacheKey;
 import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
 import org.intellij.lang.regexp.psi.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.function.Function;
 
 /**
  * @author yole
  */
+@ExtensionAPI(ComponentScope.APPLICATION)
 public interface RegExpLanguageHost
 {
+	ExtensionPointCacheKey<RegExpLanguageHost, Function<Class, RegExpLanguageHost>> KEY =
+			ExtensionPointCacheKey.create("RegExpLanguageHost", ByClassGrouper.build(RegExpLanguageHost::getHostClass));
+
+	@Nullable
+	@SuppressWarnings("unchecked")
+	public static RegExpLanguageHost findRegExpHost(@Nullable PsiElement element)
+	{
+		if(element == null)
+		{
+			return null;
+		}
+
+		final PsiFile file = element.getContainingFile();
+		final PsiElement context = file.getContext();
+		if(context instanceof RegExpLanguageHost)
+		{
+			return (RegExpLanguageHost) context;
+		}
+
+		if(context != null)
+		{
+			Function<Class, RegExpLanguageHost> call = Application.get().getExtensionPoint(RegExpLanguageHost.class).getOrBuildCache(KEY);
+			return call.apply(context.getClass());
+		}
+		return null;
+	}
+
+	@Nonnull
+	Class getHostClass();
+
 	boolean characterNeedsEscaping(char c);
 
 	boolean supportsPerl5EmbeddedComments();

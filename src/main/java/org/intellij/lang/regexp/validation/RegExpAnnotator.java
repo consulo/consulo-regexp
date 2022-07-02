@@ -45,7 +45,7 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
 
 	public RegExpAnnotator()
 	{
-		myLanguageHosts = RegExpLanguageHosts.getInstance();
+		myLanguageHosts = RegExpLanguageHosts.INSTANCE;
 	}
 
 	@Override

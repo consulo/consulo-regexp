@@ -1,5 +1,5 @@
 /*
- * Copyright 2000-2009 JetBrains s.r.o.
+ * Copyright 2013-2022 must-be.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.intellij.lang.regexp;
+
+package org.intellij.plugins.intelliLang.inject.config.ui;
 
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.Language;
-import consulo.language.editor.highlight.SingleLazyInstanceSyntaxHighlighterFactory;
-import consulo.language.editor.highlight.SyntaxHighlighter;
-import consulo.language.parser.ParserDefinition;
-import jakarta.inject.Inject;
+import consulo.language.editor.annotation.Annotator;
+import consulo.language.editor.annotation.AnnotatorFactory;
+import org.intellij.lang.regexp.RegExpLanguage;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+/**
+ * @author VISTALL
+ * @since 28-Jun-22
+ */
 @ExtensionImpl
-public class RegExpSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHighlighterFactory
+public class ValueRegExpAnnotatorFactory implements AnnotatorFactory
 {
-	private final ParserDefinition myParserDefinition;
-
-	@Inject
-	public RegExpSyntaxHighlighterFactory()
+	@Nullable
+	@Override
+	public Annotator createAnnotator()
 	{
-		this(RegExpLanguage.INSTANCE);
+		return new ValueRegExpAnnotator();
 	}
 
 	@Nonnull
@@ -40,17 +44,5 @@ public class RegExpSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHigh
 	public Language getLanguage()
 	{
 		return RegExpLanguage.INSTANCE;
-	}
-
-	protected RegExpSyntaxHighlighterFactory(@Nonnull Language language)
-	{
-		myParserDefinition = ParserDefinition.forLanguage(language);
-	}
-
-
-	@Nonnull
-	protected SyntaxHighlighter createHighlighter()
-	{
-		return new RegExpHighlighter(myParserDefinition);
 	}
 }

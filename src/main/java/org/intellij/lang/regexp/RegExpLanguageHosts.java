@@ -15,14 +15,10 @@
  */
 package org.intellij.lang.regexp;
 
-import consulo.application.ApplicationManager;
-import consulo.application.extension.ClassExtension;
 import consulo.language.psi.PsiComment;
 import consulo.language.psi.PsiElement;
-import consulo.language.psi.PsiFile;
 import org.intellij.lang.regexp.psi.*;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.TestOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,52 +26,17 @@ import javax.annotation.Nullable;
 /**
  * @author yole
  */
-public final class RegExpLanguageHosts extends ClassExtension<RegExpLanguageHost>
+public final class RegExpLanguageHosts
 {
-	private static final RegExpLanguageHosts INSTANCE = new RegExpLanguageHosts();
-	private final DefaultRegExpPropertiesProvider myDefaultProvider;
-	private static RegExpLanguageHost myHost;
+	public static final RegExpLanguageHosts INSTANCE = new RegExpLanguageHosts();
 
-	public static RegExpLanguageHosts getInstance()
-	{
-		return INSTANCE;
-	}
-
-	private RegExpLanguageHosts()
-	{
-		super("com.intellij.regexp.languageHost");
-		myDefaultProvider = DefaultRegExpPropertiesProvider.getInstance();
-	}
-
-	@TestOnly
-	public static void setRegExpHost(@Nullable RegExpLanguageHost host)
-	{
-		myHost = host;
-	}
+	private final DefaultRegExpPropertiesProvider myDefaultProvider = DefaultRegExpPropertiesProvider.getInstance();
 
 	@Contract("null -> null")
 	@Nullable
 	private static RegExpLanguageHost findRegExpHost(@Nullable final PsiElement element)
 	{
-		if(element == null)
-		{
-			return null;
-		}
-		if(ApplicationManager.getApplication().isUnitTestMode() && myHost != null)
-		{
-			return myHost;
-		}
-		final PsiFile file = element.getContainingFile();
-		final PsiElement context = file.getContext();
-		if(context instanceof RegExpLanguageHost)
-		{
-			return (RegExpLanguageHost) context;
-		}
-		if(context != null)
-		{
-			return INSTANCE.forClass(context.getClass());
-		}
-		return null;
+		return RegExpLanguageHost.findRegExpHost(element);
 	}
 
 	public boolean isRedundantEscape(@Nonnull final RegExpChar ch, @Nonnull final String text)

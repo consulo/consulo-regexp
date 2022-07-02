@@ -15,11 +15,20 @@
  */
 package org.intellij.lang.regexp;
 
-import consulo.language.LanguageExtension;
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ExtensionAPI;
+import consulo.application.Application;
+import consulo.component.extension.ExtensionPointCacheKey;
+import consulo.language.Language;
+import consulo.language.extension.ByLanguageValue;
+import consulo.language.extension.LanguageExtension;
+import consulo.language.extension.LanguageOneToMany;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import org.intellij.lang.annotations.MagicConstant;
 
+import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -28,9 +37,16 @@ import java.util.regex.Pattern;
  *
  * @author Anna Bulenkova
  */
-public interface RegExpModifierProvider
+@ExtensionAPI(ComponentScope.APPLICATION)
+public interface RegExpModifierProvider extends LanguageExtension
 {
-	LanguageExtension<RegExpModifierProvider> EP = new LanguageExtension<RegExpModifierProvider>("com.intellij.regexp.modifierProvider");
+	ExtensionPointCacheKey<RegExpModifierProvider, ByLanguageValue<List<RegExpModifierProvider>>> KEY = ExtensionPointCacheKey.create("RegExpModifierProvider", LanguageOneToMany.build(false));
+
+	static List<RegExpModifierProvider> forLanguage(@Nonnull Language language)
+	{
+		ByLanguageValue<List<RegExpModifierProvider>> value = Application.get().getExtensionPoint(RegExpModifierProvider.class).getOrBuildCache(KEY);
+		return value.requiredGet(language);
+	}
 
 	@MagicConstant(flagsFromClass = Pattern.class)
 	int getFlags(PsiElement elementInHost, PsiFile regexp);

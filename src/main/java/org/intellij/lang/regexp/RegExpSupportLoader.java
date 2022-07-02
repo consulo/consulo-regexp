@@ -16,11 +16,13 @@
 
 package org.intellij.lang.regexp;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.virtualFileSystem.fileType.FileTypeConsumer;
 import consulo.virtualFileSystem.fileType.FileTypeFactory;
 
 import javax.annotation.Nonnull;
 
+@ExtensionImpl
 public class RegExpSupportLoader extends FileTypeFactory
 {
 	public static final RegExpLanguage LANGUAGE = RegExpLanguage.INSTANCE;
