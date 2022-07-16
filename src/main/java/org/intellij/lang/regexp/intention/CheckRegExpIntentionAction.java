@@ -15,12 +15,15 @@
  */
 package org.intellij.lang.regexp.intention;
 
+import consulo.annotation.access.RequiredReadAction;
+import consulo.annotation.component.ExtensionImpl;
 import consulo.codeEditor.Editor;
 import consulo.component.util.Iconable;
 import consulo.document.Document;
 import consulo.document.util.TextRange;
 import consulo.language.Language;
 import consulo.language.editor.impl.intention.QuickEditAction;
+import consulo.language.editor.intention.IntentionMetaData;
 import consulo.language.psi.PsiDocumentManager;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
@@ -37,8 +40,11 @@ import javax.swing.*;
  * @author Konstantin Bulenkov
  * @author Anna Bulenkova
  */
+@ExtensionImpl
+@IntentionMetaData(ignoreId = "regexp.check.regexp", categories = "RegExp", fileExtensions = "regexp")
 public class CheckRegExpIntentionAction extends QuickEditAction implements Iconable
 {
+	@RequiredReadAction
 	@Override
 	public boolean isAvailable(@Nonnull Project project, Editor editor, PsiFile file)
 	{

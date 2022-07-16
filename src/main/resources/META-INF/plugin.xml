@@ -6,11 +6,4 @@
 	<tags>
 		<tag>pattern.language</tag>
 	</tags>
-
-	<extensions defaultExtensionNs="consulo">
-		<intentionAction>
-			<className>org.intellij.lang.regexp.intention.CheckRegExpIntentionAction</className>
-			<category>Declaration</category>
-		</intentionAction>
-	</extensions>
 </consulo-plugin>
