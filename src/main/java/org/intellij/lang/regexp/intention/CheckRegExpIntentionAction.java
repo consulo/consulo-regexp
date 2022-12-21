@@ -41,7 +41,7 @@ import javax.swing.*;
  * @author Anna Bulenkova
  */
 @ExtensionImpl
-@IntentionMetaData(ignoreId = "regexp.check.regexp", categories = "RegExp", fileExtensions = "regexp")
+@IntentionMetaData(ignoreId = "regexp.CheckRegExpIntentionAction", categories = "RegExp", fileExtensions = "regexp")
 public class CheckRegExpIntentionAction extends QuickEditAction implements Iconable
 {
 	@RequiredReadAction
@@ -82,13 +82,6 @@ public class CheckRegExpIntentionAction extends QuickEditAction implements Icona
 	public String getText()
 	{
 		return "Check RegExp";
-	}
-
-	@Nonnull
-	@Override
-	public String getFamilyName()
-	{
-		return getText();
 	}
 
 	@Override
