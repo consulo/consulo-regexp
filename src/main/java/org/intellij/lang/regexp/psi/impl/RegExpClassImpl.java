@@ -15,17 +15,17 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import consulo.language.ast.ASTNode;
 import org.intellij.lang.regexp.RegExpElementTypes;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpClass;
 import org.intellij.lang.regexp.psi.RegExpClassElement;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
+
 import javax.annotation.Nonnull;
-import com.intellij.lang.ASTNode;
 
 public class RegExpClassImpl extends RegExpElementImpl implements RegExpClass
 {
-
 	public RegExpClassImpl(ASTNode astNode)
 	{
 		super(astNode);

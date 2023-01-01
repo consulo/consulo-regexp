@@ -15,44 +15,69 @@
  */
 package org.intellij.lang.regexp;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.documentation.AbstractDocumentationProvider;
-import com.intellij.psi.PsiElement;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.Language;
+import consulo.language.ast.ASTNode;
+import consulo.language.editor.documentation.AbstractDocumentationProvider;
+import consulo.language.editor.documentation.LanguageDocumentationProvider;
+import consulo.language.psi.PsiElement;
 import org.intellij.lang.regexp.psi.RegExpElement;
 import org.intellij.lang.regexp.psi.RegExpGroup;
 import org.intellij.lang.regexp.psi.RegExpProperty;
+
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
  * @author vnikolaenko
  */
-public final class RegExpDocumentationProvider extends AbstractDocumentationProvider {
-  @Override
-  @Nullable
-  public String generateDoc(PsiElement element, @Nullable PsiElement originalElement) {
-    if (element instanceof RegExpProperty) {
-      final RegExpProperty prop = (RegExpProperty)element;
-      final ASTNode node = prop.getCategoryNode();
-      if (node != null) {
-        final String description = RegExpLanguageHosts.getInstance().getPropertyDescription(node.getPsi(), node.getText());
-        if (description != null) {
-          if (prop.isNegated()) {
-            return "Property block stands for characters not matching " + description;
-          } else {
-            return "Property block stands for " + description;
-          }
-        }
-      }
-    }
-    return null;
-  }
+@ExtensionImpl
+public final class RegExpDocumentationProvider extends AbstractDocumentationProvider implements LanguageDocumentationProvider
+{
+	@Override
+	@Nullable
+	public String generateDoc(PsiElement element, @Nullable PsiElement originalElement)
+	{
+		if(element instanceof RegExpProperty)
+		{
+			final RegExpProperty prop = (RegExpProperty) element;
+			final ASTNode node = prop.getCategoryNode();
+			if(node != null)
+			{
+				final String description = RegExpLanguageHosts.INSTANCE.getPropertyDescription(node.getPsi(), node.getText());
+				if(description != null)
+				{
+					if(prop.isNegated())
+					{
+						return "Property block stands for characters not matching " + description;
+					}
+					else
+					{
+						return "Property block stands for " + description;
+					}
+				}
+			}
+		}
+		return null;
+	}
 
-  @Nullable
-  public String getQuickNavigateInfo(PsiElement element, PsiElement originalElement) {
-    if (element instanceof RegExpGroup) {
-      return "Capturing Group: " + ((RegExpElement)element).getUnescapedText();
-    } else {
-      return null;
-    }
-  }
+	@Nullable
+	public String getQuickNavigateInfo(PsiElement element, PsiElement originalElement)
+	{
+		if(element instanceof RegExpGroup)
+		{
+			return "Capturing Group: " + ((RegExpElement) element).getUnescapedText();
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	@Nonnull
+	@Override
+	public Language getLanguage()
+	{
+		return RegExpLanguage.INSTANCE;
+	}
 }

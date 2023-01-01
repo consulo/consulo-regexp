@@ -15,9 +15,9 @@
  */
 package org.intellij.lang.regexp;
 
-import com.intellij.psi.StringEscapesTokenTypes;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
+import consulo.language.ast.IElementType;
+import consulo.language.ast.StringEscapesTokenTypes;
+import consulo.language.ast.TokenSet;
 
 public interface RegExpTT
 {

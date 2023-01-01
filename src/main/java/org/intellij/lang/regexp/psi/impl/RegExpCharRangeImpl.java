@@ -15,15 +15,14 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.tree.TokenSet;
-
+import consulo.language.ast.ASTNode;
+import consulo.language.ast.TokenSet;
+import consulo.language.psi.PsiElement;
 import org.intellij.lang.regexp.RegExpElementTypes;
 import org.intellij.lang.regexp.psi.RegExpCharRange;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
+
+import javax.annotation.Nonnull;
 
 public class RegExpCharRangeImpl extends RegExpElementImpl implements RegExpCharRange {
     private static final TokenSet E = TokenSet.create(RegExpElementTypes.CHAR, RegExpElementTypes.SIMPLE_CLASS);

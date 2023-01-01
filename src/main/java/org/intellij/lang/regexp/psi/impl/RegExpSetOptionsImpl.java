@@ -15,13 +15,12 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.tree.TokenSet;
-
-import org.intellij.lang.regexp.psi.RegExpElementVisitor;
-import org.intellij.lang.regexp.psi.RegExpSetOptions;
-import org.intellij.lang.regexp.psi.RegExpOptions;
+import consulo.language.ast.ASTNode;
+import consulo.language.ast.TokenSet;
 import org.intellij.lang.regexp.RegExpElementTypes;
+import org.intellij.lang.regexp.psi.RegExpElementVisitor;
+import org.intellij.lang.regexp.psi.RegExpOptions;
+import org.intellij.lang.regexp.psi.RegExpSetOptions;
 
 public class RegExpSetOptionsImpl extends RegExpElementImpl implements RegExpSetOptions {
     public RegExpSetOptionsImpl(ASTNode astNode) {

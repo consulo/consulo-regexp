@@ -15,16 +15,16 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
-import com.intellij.psi.tree.TokenSet;
+import consulo.language.ast.ASTNode;
+import consulo.language.ast.TokenSet;
+import consulo.language.psi.PsiReference;
+import consulo.language.psi.ReferenceProvidersRegistry;
 import org.intellij.lang.regexp.RegExpElementTypes;
 import org.intellij.lang.regexp.psi.RegExpBranch;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpPattern;
+
+import javax.annotation.Nonnull;
 
 public class RegExpPatternImpl extends RegExpElementImpl implements RegExpPattern {
     private static final TokenSet BRANCH = TokenSet.create(RegExpElementTypes.BRANCH);

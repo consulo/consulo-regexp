@@ -15,9 +15,9 @@
  */
 package org.intellij.plugins.intelliLang.util;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiFileFactory;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiFileFactory;
+import consulo.project.Project;
 import org.intellij.lang.regexp.RegExpFileType;
 import org.intellij.lang.regexp.psi.RegExpAtom;
 import org.intellij.lang.regexp.psi.RegExpBranch;

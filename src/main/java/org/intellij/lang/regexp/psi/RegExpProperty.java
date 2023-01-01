@@ -15,7 +15,8 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import com.intellij.lang.ASTNode;
+import consulo.language.ast.ASTNode;
+
 import javax.annotation.Nullable;
 
 /**
@@ -31,5 +32,5 @@ public interface RegExpProperty extends RegExpAtom, RegExpClassElement {
      * The node the represents the category name, e.g. "Digit"
      */
     @Nullable
-    ASTNode getCategoryNode();
+	ASTNode getCategoryNode();
 }

@@ -15,12 +15,13 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import consulo.language.ast.ASTNode;
+import consulo.language.ast.IElementType;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpBoundary;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
+
 import javax.annotation.Nonnull;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.tree.IElementType;
 
 public class RegExpBoundaryImpl extends RegExpElementImpl implements RegExpBoundary
 {

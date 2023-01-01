@@ -15,12 +15,14 @@
  */
 package org.intellij.lang.regexp;
 
-import com.intellij.lang.Language;
+import consulo.language.Language;
 
-public class RegExpLanguage extends Language {
-    public static final RegExpLanguage INSTANCE = new RegExpLanguage();
+public class RegExpLanguage extends Language
+{
+	public static final RegExpLanguage INSTANCE = new RegExpLanguage();
 
-    protected RegExpLanguage() {
-        super("RegExp");
-    }
+	private RegExpLanguage()
+	{
+		super("RegExp");
+	}
 }

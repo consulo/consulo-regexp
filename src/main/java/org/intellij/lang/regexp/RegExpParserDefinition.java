@@ -15,29 +15,27 @@
  */
 package org.intellij.lang.regexp;
 
-import java.util.EnumSet;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.disposer.Disposable;
+import consulo.disposer.Disposer;
+import consulo.language.Language;
+import consulo.language.ast.*;
+import consulo.language.file.FileViewProvider;
+import consulo.language.impl.psi.ASTWrapperPsiElement;
+import consulo.language.lexer.Lexer;
+import consulo.language.parser.ParserDefinition;
+import consulo.language.parser.PsiParser;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.version.LanguageVersion;
+import org.intellij.lang.regexp.psi.impl.*;
+import org.jetbrains.annotations.TestOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 
-import org.intellij.lang.regexp.psi.impl.*;
-import org.jetbrains.annotations.TestOnly;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.ParserDefinition;
-import com.intellij.lang.PsiParser;
-import com.intellij.lexer.Lexer;
-import consulo.disposer.Disposable;
-import com.intellij.psi.FileViewProvider;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.TokenType;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.IFileElementType;
-import com.intellij.psi.tree.TokenSet;
-import consulo.disposer.Disposer;
-import consulo.lang.LanguageVersion;
-
+@ExtensionImpl
 public class RegExpParserDefinition implements ParserDefinition
 {
 	private static final TokenSet COMMENT_TOKENS = TokenSet.create(RegExpTT.COMMENT);
@@ -52,6 +50,13 @@ public class RegExpParserDefinition implements ParserDefinition
 			CAPABILITIES.add(capability);
 			Disposer.register(parentDisposable, () -> CAPABILITIES.remove(capability));
 		}
+	}
+
+	@Nonnull
+	@Override
+	public Language getLanguage()
+	{
+		return RegExpLanguage.INSTANCE;
 	}
 
 	@Nonnull

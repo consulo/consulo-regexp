@@ -15,21 +15,23 @@
  */
 package org.intellij.lang.regexp;
 
+import consulo.language.Language;
+import consulo.language.file.FileViewProvider;
+import consulo.language.impl.psi.PsiFileBase;
+import consulo.virtualFileSystem.fileType.FileType;
+
 import javax.annotation.Nonnull;
 
-import com.intellij.extapi.psi.PsiFileBase;
-import com.intellij.lang.Language;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.psi.FileViewProvider;
+public class RegExpFile extends PsiFileBase
+{
+	public RegExpFile(FileViewProvider viewProvider, final Language language)
+	{
+		super(viewProvider, language);
+	}
 
-public class RegExpFile extends PsiFileBase {
-
-    public RegExpFile(FileViewProvider viewProvider, final Language language) {
-        super(viewProvider, language);
-    }
-
-    @Nonnull
-    public FileType getFileType() {
-        return RegExpFileType.INSTANCE;
-    }
+	@Nonnull
+	public FileType getFileType()
+	{
+		return RegExpFileType.INSTANCE;
+	}
 }

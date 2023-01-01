@@ -15,100 +15,117 @@
  */
 package org.intellij.lang.regexp.surroundWith;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.surroundWith.Surrounder;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiFileFactory;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.IncorrectOperationException;
+import consulo.codeEditor.Editor;
+import consulo.document.Document;
+import consulo.document.util.TextRange;
+import consulo.language.ast.ASTNode;
+import consulo.language.editor.surroundWith.Surrounder;
+import consulo.language.psi.PsiDocumentManager;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiFileFactory;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.language.util.IncorrectOperationException;
+import consulo.project.Project;
+import consulo.util.lang.StringUtil;
 import org.intellij.lang.regexp.RegExpFileType;
 import org.intellij.lang.regexp.psi.RegExpAtom;
 import org.intellij.lang.regexp.psi.RegExpPattern;
 import org.intellij.lang.regexp.psi.impl.RegExpElementImpl;
 
-class GroupSurrounder implements Surrounder {
-    private final String myTitle;
-    private final String myGroupStart;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-    public GroupSurrounder(String title, String groupStart) {
-        myTitle = title;
-        myGroupStart = groupStart;
-    }
+class GroupSurrounder implements Surrounder
+{
+	private final String myTitle;
+	private final String myGroupStart;
 
-    public String getTemplateDescription() {
-        return myTitle;
-    }
+	public GroupSurrounder(String title, String groupStart)
+	{
+		myTitle = title;
+		myGroupStart = groupStart;
+	}
 
-    public boolean isApplicable(@Nonnull PsiElement[] elements) {
-        return elements.length == 1 || PsiTreeUtil.findCommonParent(elements) == elements[0].getParent();
-    }
+	public String getTemplateDescription()
+	{
+		return myTitle;
+	}
 
-    @Nullable
-    public TextRange surroundElements(@Nonnull Project project, @Nonnull Editor editor, @Nonnull PsiElement[] elements) throws IncorrectOperationException {
-        assert elements.length == 1 || PsiTreeUtil.findCommonParent(elements) == elements[0].getParent();
-        final PsiElement e = elements[0];
-        final ASTNode node = e.getNode();
-        assert node != null;
+	public boolean isApplicable(@Nonnull PsiElement[] elements)
+	{
+		return elements.length == 1 || PsiTreeUtil.findCommonParent(elements) == elements[0].getParent();
+	}
 
-        final ASTNode parent = node.getTreeParent();
+	@Nullable
+	public TextRange surroundElements(@Nonnull Project project, @Nonnull Editor editor, @Nonnull PsiElement[] elements) throws IncorrectOperationException
+	{
+		assert elements.length == 1 || PsiTreeUtil.findCommonParent(elements) == elements[0].getParent();
+		final PsiElement e = elements[0];
+		final ASTNode node = e.getNode();
+		assert node != null;
 
-        final StringBuilder s = new StringBuilder();
-        for (int i = 0; i < elements.length; i++) {
-            final PsiElement element = elements[i];
-            if (element instanceof RegExpElementImpl) {
-                s.append(((RegExpElementImpl)element).getUnescapedText());
-            } else {
-                s.append(element.getText());
-            }
-            if (i > 0) {
-                final ASTNode child = element.getNode();
-                assert child != null;
-                parent.removeChild(child);
-            }
-        }
-        final PsiFileFactory factory = PsiFileFactory.getInstance(project);
+		final ASTNode parent = node.getTreeParent();
 
-        final PsiFile f = factory.createFileFromText("dummy.regexp", RegExpFileType.INSTANCE, makeReplacement(s));
-        final RegExpPattern pattern = PsiTreeUtil.getChildOfType(f, RegExpPattern.class);
-        assert pattern != null;
+		final StringBuilder s = new StringBuilder();
+		for(int i = 0; i < elements.length; i++)
+		{
+			final PsiElement element = elements[i];
+			if(element instanceof RegExpElementImpl)
+			{
+				s.append(((RegExpElementImpl) element).getUnescapedText());
+			}
+			else
+			{
+				s.append(element.getText());
+			}
+			if(i > 0)
+			{
+				final ASTNode child = element.getNode();
+				assert child != null;
+				parent.removeChild(child);
+			}
+		}
+		final PsiFileFactory factory = PsiFileFactory.getInstance(project);
 
-        final RegExpAtom element = pattern.getBranches()[0].getAtoms()[0];
+		final PsiFile f = factory.createFileFromText("dummy.regexp", RegExpFileType.INSTANCE, makeReplacement(s));
+		final RegExpPattern pattern = PsiTreeUtil.getChildOfType(f, RegExpPattern.class);
+		assert pattern != null;
 
-        if (isInsideStringLiteral(e)) {
-            final Document doc = editor.getDocument();
-            PsiDocumentManager.getInstance(project).doPostponedOperationsAndUnblockDocument(doc);
-            final TextRange tr = e.getTextRange();
-            doc.replaceString(tr.getStartOffset(), tr.getEndOffset(),
-                    StringUtil.escapeStringCharacters(element.getText()));
+		final RegExpAtom element = pattern.getBranches()[0].getAtoms()[0];
 
-            return TextRange.from(e.getTextRange().getEndOffset(), 0);
-        } else {
-            final PsiElement n = e.replace(element);
-            return TextRange.from(n.getTextRange().getEndOffset(), 0);
-        }
-    }
+		if(isInsideStringLiteral(e))
+		{
+			final Document doc = editor.getDocument();
+			PsiDocumentManager.getInstance(project).doPostponedOperationsAndUnblockDocument(doc);
+			final TextRange tr = e.getTextRange();
+			doc.replaceString(tr.getStartOffset(), tr.getEndOffset(),
+					StringUtil.escapeStringCharacters(element.getText()));
 
-    private static boolean isInsideStringLiteral(PsiElement context) {
-      while (context != null) {
-        if (RegExpElementImpl.isLiteralExpression(context)) {
-          return true;
-        }
-        context = context.getContext();
-      }
-      return false;
-    }
+			return TextRange.from(e.getTextRange().getEndOffset(), 0);
+		}
+		else
+		{
+			final PsiElement n = e.replace(element);
+			return TextRange.from(n.getTextRange().getEndOffset(), 0);
+		}
+	}
 
-    protected String makeReplacement(StringBuilder s) {
-        return myGroupStart + s + ")";
-    }
+	private static boolean isInsideStringLiteral(PsiElement context)
+	{
+		while(context != null)
+		{
+			if(RegExpElementImpl.isLiteralExpression(context))
+			{
+				return true;
+			}
+			context = context.getContext();
+		}
+		return false;
+	}
+
+	protected String makeReplacement(StringBuilder s)
+	{
+		return myGroupStart + s + ")";
+	}
 }

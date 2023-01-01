@@ -15,12 +15,12 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import javax.annotation.Nullable;
-
+import consulo.language.ast.ASTNode;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpOptions;
-import com.intellij.lang.ASTNode;
+
+import javax.annotation.Nullable;
 
 public class RegExpOptionsImpl extends RegExpElementImpl implements RegExpOptions
 {

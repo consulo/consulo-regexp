@@ -15,75 +15,28 @@
  */
 package org.intellij.lang.regexp;
 
-import javax.annotation.Nonnull;
-
-import org.intellij.lang.regexp.psi.RegExpBoundary;
-import org.intellij.lang.regexp.psi.RegExpChar;
-import org.intellij.lang.regexp.psi.RegExpGroup;
-import org.intellij.lang.regexp.psi.RegExpNamedCharacter;
-import org.intellij.lang.regexp.psi.RegExpNamedGroupRef;
-import org.intellij.lang.regexp.psi.RegExpPyCondRef;
-import org.intellij.lang.regexp.psi.RegExpQuantifier;
-import org.intellij.lang.regexp.psi.RegExpSimpleClass;
+import consulo.language.psi.PsiComment;
+import consulo.language.psi.PsiElement;
+import org.intellij.lang.regexp.psi.*;
 import org.jetbrains.annotations.Contract;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.jetbrains.annotations.TestOnly;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.util.ClassExtension;
-import com.intellij.psi.PsiComment;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 
 /**
  * @author yole
  */
-public final class RegExpLanguageHosts extends ClassExtension<RegExpLanguageHost>
+public final class RegExpLanguageHosts
 {
-	private static final RegExpLanguageHosts INSTANCE = new RegExpLanguageHosts();
-	private final DefaultRegExpPropertiesProvider myDefaultProvider;
-	private static RegExpLanguageHost myHost;
+	public static final RegExpLanguageHosts INSTANCE = new RegExpLanguageHosts();
 
-	public static RegExpLanguageHosts getInstance()
-	{
-		return INSTANCE;
-	}
-
-	private RegExpLanguageHosts()
-	{
-		super("com.intellij.regexp.languageHost");
-		myDefaultProvider = DefaultRegExpPropertiesProvider.getInstance();
-	}
-
-	@TestOnly
-	public static void setRegExpHost(@Nullable RegExpLanguageHost host)
-	{
-		myHost = host;
-	}
+	private final DefaultRegExpPropertiesProvider myDefaultProvider = DefaultRegExpPropertiesProvider.getInstance();
 
 	@Contract("null -> null")
 	@Nullable
 	private static RegExpLanguageHost findRegExpHost(@Nullable final PsiElement element)
 	{
-		if(element == null)
-		{
-			return null;
-		}
-		if(ApplicationManager.getApplication().isUnitTestMode() && myHost != null)
-		{
-			return myHost;
-		}
-		final PsiFile file = element.getContainingFile();
-		final PsiElement context = file.getContext();
-		if(context instanceof RegExpLanguageHost)
-		{
-			return (RegExpLanguageHost) context;
-		}
-		if(context != null)
-		{
-			return INSTANCE.forClass(context.getClass());
-		}
-		return null;
+		return RegExpLanguageHost.findRegExpHost(element);
 	}
 
 	public boolean isRedundantEscape(@Nonnull final RegExpChar ch, @Nonnull final String text)

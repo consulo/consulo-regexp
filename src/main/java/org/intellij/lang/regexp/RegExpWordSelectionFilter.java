@@ -15,18 +15,21 @@
  */
 package org.intellij.lang.regexp;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.Condition;
-import com.intellij.psi.PsiElement;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.ast.ASTNode;
+import consulo.language.editor.action.WordSelectionerFilter;
+import consulo.language.psi.PsiElement;
 import org.intellij.lang.regexp.psi.RegExpChar;
+
 import javax.annotation.Nonnull;
 
 /**
  * @author yole
  */
-public class RegExpWordSelectionFilter implements Condition<PsiElement> {
+@ExtensionImpl
+public class RegExpWordSelectionFilter implements WordSelectionerFilter {
   @Override
-  public boolean value(@Nonnull PsiElement element) {
+  public boolean canSelect(@Nonnull PsiElement element) {
     final ASTNode node = element.getNode();
     if ((node != null && node.getElementType() == RegExpTT.CHARACTER) || element instanceof RegExpChar) {
       return false;

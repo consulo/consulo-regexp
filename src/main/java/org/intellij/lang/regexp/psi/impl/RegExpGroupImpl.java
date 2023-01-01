@@ -15,17 +15,18 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import consulo.language.ast.ASTNode;
+import consulo.language.ast.IElementType;
+import consulo.language.psi.PsiElement;
+import consulo.language.util.IncorrectOperationException;
 import org.intellij.lang.regexp.RegExpElementTypes;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpGroup;
 import org.intellij.lang.regexp.psi.RegExpPattern;
 import org.jetbrains.annotations.NonNls;
+
 import javax.annotation.Nonnull;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.util.IncorrectOperationException;
 
 public class RegExpGroupImpl extends RegExpElementImpl implements RegExpGroup
 {

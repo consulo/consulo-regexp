@@ -15,21 +15,21 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.util.PsiElementFilter;
-import com.intellij.psi.search.PsiElementProcessor;
-import com.intellij.util.IncorrectOperationException;
-import com.intellij.util.ArrayUtil;
-
-import org.intellij.lang.regexp.psi.RegExpElementVisitor;
-import org.intellij.lang.regexp.psi.RegExpElement;
-import org.intellij.lang.regexp.psi.RegExpGroup;
+import consulo.document.util.TextRange;
+import consulo.language.ast.ASTNode;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReference;
+import consulo.language.psi.resolve.PsiElementProcessor;
+import consulo.language.psi.util.PsiElementFilter;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.language.util.IncorrectOperationException;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.lang.Comparing;
 import org.intellij.lang.regexp.psi.RegExpBackref;
+import org.intellij.lang.regexp.psi.RegExpElement;
+import org.intellij.lang.regexp.psi.RegExpElementVisitor;
+import org.intellij.lang.regexp.psi.RegExpGroup;
+
 import javax.annotation.Nonnull;
 
 public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackref {
@@ -85,7 +85,8 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
                 return getElement().getText();
             }
 
-            public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+            public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException
+			{
                 throw new IncorrectOperationException();
             }
 

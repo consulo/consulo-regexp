@@ -15,32 +15,29 @@
  */
 package org.intellij.lang.regexp.validation;
 
-import java.math.BigInteger;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
+import consulo.document.util.TextRange;
+import consulo.language.ast.ASTNode;
+import consulo.language.editor.annotation.Annotation;
+import consulo.language.editor.annotation.AnnotationHolder;
+import consulo.language.editor.annotation.Annotator;
+import consulo.language.editor.inspection.ProblemHighlightType;
+import consulo.language.editor.intention.IntentionAction;
+import consulo.language.psi.PsiComment;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.util.PsiTreeUtil;
 import org.intellij.lang.regexp.RegExpLanguageHosts;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.*;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.codeInspection.ProblemHighlightType;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.annotation.Annotation;
-import com.intellij.lang.annotation.AnnotationHolder;
-import com.intellij.lang.annotation.Annotator;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiComment;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.containers.ContainerUtil;
+import java.math.BigInteger;
+import java.util.HashSet;
+import java.util.Set;
 
 public final class RegExpAnnotator extends RegExpElementVisitor implements Annotator
 {
-	private static final Set<String> POSIX_CHARACTER_CLASSES = ContainerUtil.newHashSet("alnum", "alpha", "ascii", "blank", "cntrl", "digit", "graph", "lower", "print", "punct", "space", "upper",
+	private static final Set<String> POSIX_CHARACTER_CLASSES = Set.of("alnum", "alpha", "ascii", "blank", "cntrl", "digit", "graph", "lower", "print", "punct", "space", "upper",
 			"word", "xdigit");
 	private static final String ILLEGAL_CHARACTER_RANGE_TO_FROM = "Illegal character range (to < from)";
 	private AnnotationHolder myHolder;
@@ -48,7 +45,7 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
 
 	public RegExpAnnotator()
 	{
-		myLanguageHosts = RegExpLanguageHosts.getInstance();
+		myLanguageHosts = RegExpLanguageHosts.INSTANCE;
 	}
 
 	@Override

@@ -15,11 +15,12 @@
  */
 package org.intellij.lang.regexp;
 
-import com.intellij.psi.tree.IElementType;
-import com.intellij.lang.Language;
+import consulo.language.ast.IElementType;
 
-public class RegExpElementType extends IElementType {
-    RegExpElementType(String s) {
-        super(s, Language.findInstance(RegExpLanguage.class));
-    }
+public class RegExpElementType extends IElementType
+{
+	RegExpElementType(String s)
+	{
+		super(s, RegExpLanguage.INSTANCE);
+	}
 }

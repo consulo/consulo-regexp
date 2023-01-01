@@ -15,23 +15,55 @@
  */
 package org.intellij.lang.regexp;
 
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ExtensionAPI;
+import consulo.application.Application;
+import consulo.component.extension.ByClassGrouper;
+import consulo.component.extension.ExtensionPointCacheKey;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import org.intellij.lang.regexp.psi.*;
+
 import javax.annotation.Nonnull;
-
-import org.intellij.lang.regexp.psi.RegExpBoundary;
-import org.intellij.lang.regexp.psi.RegExpChar;
-import org.intellij.lang.regexp.psi.RegExpGroup;
-import org.intellij.lang.regexp.psi.RegExpNamedCharacter;
-import org.intellij.lang.regexp.psi.RegExpNamedGroupRef;
-import org.intellij.lang.regexp.psi.RegExpSimpleClass;
-
 import javax.annotation.Nullable;
-import com.intellij.psi.PsiElement;
+import java.util.function.Function;
 
 /**
  * @author yole
  */
+@ExtensionAPI(ComponentScope.APPLICATION)
 public interface RegExpLanguageHost
 {
+	ExtensionPointCacheKey<RegExpLanguageHost, Function<Class, RegExpLanguageHost>> KEY =
+			ExtensionPointCacheKey.create("RegExpLanguageHost", ByClassGrouper.build(RegExpLanguageHost::getHostClass));
+
+	@Nullable
+	@SuppressWarnings("unchecked")
+	public static RegExpLanguageHost findRegExpHost(@Nullable PsiElement element)
+	{
+		if(element == null)
+		{
+			return null;
+		}
+
+		final PsiFile file = element.getContainingFile();
+		final PsiElement context = file.getContext();
+		if(context instanceof RegExpLanguageHost)
+		{
+			return (RegExpLanguageHost) context;
+		}
+
+		if(context != null)
+		{
+			Function<Class, RegExpLanguageHost> call = Application.get().getExtensionPoint(RegExpLanguageHost.class).getOrBuildCache(KEY);
+			return call.apply(context.getClass());
+		}
+		return null;
+	}
+
+	@Nonnull
+	Class getHostClass();
+
 	boolean characterNeedsEscaping(char c);
 
 	boolean supportsPerl5EmbeddedComments();

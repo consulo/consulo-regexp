@@ -15,9 +15,10 @@
  */
 package org.intellij.lang.regexp;
 
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.IFileElementType;
-import com.intellij.psi.tree.TokenSet;
+
+import consulo.language.ast.IElementType;
+import consulo.language.ast.IFileElementType;
+import consulo.language.ast.TokenSet;
 
 public interface RegExpElementTypes
 {

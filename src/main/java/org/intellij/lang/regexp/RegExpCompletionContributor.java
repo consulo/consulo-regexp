@@ -15,33 +15,33 @@
  */
 package org.intellij.lang.regexp;
 
-import com.intellij.codeInsight.TailType;
-import com.intellij.codeInsight.completion.*;
-import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.codeInsight.lookup.TailTypeDecorator;
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.patterns.ElementPattern;
-import com.intellij.patterns.PsiElementPattern;
-import com.intellij.psi.PsiElement;
-import com.intellij.util.ProcessingContext;
 import consulo.annotation.access.RequiredReadAction;
-import consulo.codeInsight.completion.CompletionProvider;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.application.AllIcons;
+import consulo.application.progress.ProgressManager;
+import consulo.codeEditor.Editor;
+import consulo.component.util.UnicodeCharacterRegistry;
+import consulo.document.Document;
+import consulo.document.util.TextRange;
+import consulo.language.Language;
+import consulo.language.editor.completion.*;
+import consulo.language.editor.completion.lookup.*;
+import consulo.language.pattern.ElementPattern;
+import consulo.language.pattern.PsiElementPattern;
+import consulo.language.psi.PsiElement;
+import consulo.language.util.ProcessingContext;
 import consulo.ui.image.Image;
 import org.jetbrains.annotations.NonNls;
 
 import javax.annotation.Nonnull;
 
-import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static com.intellij.patterns.StandardPatterns.or;
+import static consulo.language.pattern.PlatformPatterns.psiElement;
+import static consulo.language.pattern.StandardPatterns.or;
 
 /**
  * @author vnikolaenko
  */
+@ExtensionImpl
 public final class RegExpCompletionContributor extends CompletionContributor
 {
 	private static final Image emptyIcon = Image.empty(Image.DEFAULT_ICON_SIZE);
@@ -117,7 +117,7 @@ public final class RegExpCompletionContributor extends CompletionContributor
 		public void addCompletions(@Nonnull CompletionParameters parameters, ProcessingContext context, @Nonnull CompletionResultSet result)
 		{
 
-			for(String[] completion : RegExpLanguageHosts.getInstance().getPosixCharacterClasses(parameters.getPosition()))
+			for(String[] completion : RegExpLanguageHosts.INSTANCE.getPosixCharacterClasses(parameters.getPosition()))
 			{
 				result.addElement(LookupElementBuilder.create(completion[0]).withTypeText((completion.length > 1) ? completion[1] : null).withIcon(emptyIcon).withInsertHandler(new
 																																														InsertHandler<LookupElement>()
@@ -146,7 +146,7 @@ public final class RegExpCompletionContributor extends CompletionContributor
 		@Override
 		public void addCompletions(@Nonnull final CompletionParameters parameters, final ProcessingContext context, @Nonnull final CompletionResultSet result)
 		{
-			for(String[] stringArray : RegExpLanguageHosts.getInstance().getAllKnownProperties(parameters.getPosition()))
+			for(String[] stringArray : RegExpLanguageHosts.INSTANCE.getAllKnownProperties(parameters.getPosition()))
 			{
 				result.addElement(TailTypeDecorator.withTail(createLookupElement(stringArray[0], null, emptyIcon), TailType.createSimpleTailType('}')));
 			}
@@ -160,7 +160,7 @@ public final class RegExpCompletionContributor extends CompletionContributor
 		@Override
 		public void addCompletions(@Nonnull final CompletionParameters parameters, final ProcessingContext context, @Nonnull final CompletionResultSet result)
 		{
-			for(String[] stringArray : RegExpLanguageHosts.getInstance().getAllKnownProperties(parameters.getPosition()))
+			for(String[] stringArray : RegExpLanguageHosts.INSTANCE.getAllKnownProperties(parameters.getPosition()))
 			{
 				addLookupElement(result, "{" + stringArray[0] + "}", stringArray.length > 1 ? stringArray[1] : null, AllIcons.Nodes.Property);
 			}
@@ -174,12 +174,12 @@ public final class RegExpCompletionContributor extends CompletionContributor
 		@Override
 		public void addCompletions(@Nonnull final CompletionParameters parameters, final ProcessingContext context, @Nonnull final CompletionResultSet result)
 		{
-			for(final String[] completion : RegExpLanguageHosts.getInstance().getKnownCharacterClasses(parameters.getPosition()))
+			for(final String[] completion : RegExpLanguageHosts.INSTANCE.getKnownCharacterClasses(parameters.getPosition()))
 			{
 				addLookupElement(result, completion[0], completion[1], emptyIcon);
 			}
 
-			for(String[] stringArray : RegExpLanguageHosts.getInstance().getAllKnownProperties(parameters.getPosition()))
+			for(String[] stringArray : RegExpLanguageHosts.INSTANCE.getAllKnownProperties(parameters.getPosition()))
 			{
 				addLookupElement(result, "p{" + stringArray[0] + "}", stringArray.length > 1 ? stringArray[1] : null, AllIcons.Nodes.Property);
 			}
@@ -200,13 +200,14 @@ public final class RegExpCompletionContributor extends CompletionContributor
 		@Override
 		public void addCompletions(@Nonnull CompletionParameters parameters, ProcessingContext context, @Nonnull CompletionResultSet result)
 		{
-			UnicodeCharacterNames.iterate(name -> {
+			UnicodeCharacterRegistry.listCharacters().forEach(character -> {
+				String name = character.getName();
 				if(result.getPrefixMatcher().prefixMatches(name))
 				{
-					final String type = new String(new int[]{UnicodeCharacterNames.getCodePoint(name)}, 0, 1);
+					final String type = new String(new int[]{character.getCodePoint()}, 0, 1);
 					if(myEmbrace)
 					{
-						result.addElement(createLookupElement("{" + name + "}", type, emptyIcon));
+						result.addElement(createLookupElement("{" + character + "}", type, emptyIcon));
 					}
 					else
 					{
@@ -216,5 +217,12 @@ public final class RegExpCompletionContributor extends CompletionContributor
 				ProgressManager.checkCanceled();
 			});
 		}
+	}
+
+	@Nonnull
+	@Override
+	public Language getLanguage()
+	{
+		return RegExpLanguage.INSTANCE;
 	}
 }
