@@ -28,12 +28,10 @@ import javax.annotation.Nonnull;
  */
 @ExtensionImpl
 public class RegExpWordSelectionFilter implements WordSelectionerFilter {
-  @Override
-  public boolean canSelect(@Nonnull PsiElement element) {
-    final ASTNode node = element.getNode();
-    if ((node != null && node.getElementType() == RegExpTT.CHARACTER) || element instanceof RegExpChar) {
-      return false;
+    @Override
+    public boolean canSelect(@Nonnull PsiElement element) {
+        final ASTNode node = element.getNode();
+        return (node == null || node.getElementType() != RegExpTT.CHARACTER)
+            && !(element instanceof RegExpChar);
     }
-    return true;
-  }
 }

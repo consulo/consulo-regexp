@@ -32,117 +32,102 @@ import java.util.function.Function;
  * @author yole
  */
 @ExtensionAPI(ComponentScope.APPLICATION)
-public interface RegExpLanguageHost
-{
-	ExtensionPointCacheKey<RegExpLanguageHost, Function<Class, RegExpLanguageHost>> KEY =
-			ExtensionPointCacheKey.create("RegExpLanguageHost", ByClassGrouper.build(RegExpLanguageHost::getHostClass));
+public interface RegExpLanguageHost {
+    ExtensionPointCacheKey<RegExpLanguageHost, Function<Class, RegExpLanguageHost>> KEY =
+        ExtensionPointCacheKey.create("RegExpLanguageHost", ByClassGrouper.build(RegExpLanguageHost::getHostClass));
 
-	@Nullable
-	@SuppressWarnings("unchecked")
-	public static RegExpLanguageHost findRegExpHost(@Nullable PsiElement element)
-	{
-		if(element == null)
-		{
-			return null;
-		}
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public static RegExpLanguageHost findRegExpHost(@Nullable PsiElement element) {
+        if (element == null) {
+            return null;
+        }
 
-		final PsiFile file = element.getContainingFile();
-		final PsiElement context = file.getContext();
-		if(context instanceof RegExpLanguageHost)
-		{
-			return (RegExpLanguageHost) context;
-		}
+        final PsiFile file = element.getContainingFile();
+        final PsiElement context = file.getContext();
+        if (context instanceof RegExpLanguageHost) {
+            return (RegExpLanguageHost)context;
+        }
 
-		if(context != null)
-		{
-			Function<Class, RegExpLanguageHost> call = Application.get().getExtensionPoint(RegExpLanguageHost.class).getOrBuildCache(KEY);
-			return call.apply(context.getClass());
-		}
-		return null;
-	}
+        if (context != null) {
+            Function<Class, RegExpLanguageHost> call = Application.get().getExtensionPoint(RegExpLanguageHost.class).getOrBuildCache(KEY);
+            return call.apply(context.getClass());
+        }
+        return null;
+    }
 
-	@Nonnull
-	Class getHostClass();
+    @Nonnull
+    Class getHostClass();
 
-	boolean characterNeedsEscaping(char c);
+    boolean characterNeedsEscaping(char c);
 
-	boolean supportsPerl5EmbeddedComments();
+    boolean supportsPerl5EmbeddedComments();
 
-	boolean supportsPossessiveQuantifiers();
+    boolean supportsPossessiveQuantifiers();
 
-	boolean supportsPythonConditionalRefs();
+    boolean supportsPythonConditionalRefs();
 
-	boolean supportsNamedGroupSyntax(RegExpGroup group);
+    boolean supportsNamedGroupSyntax(RegExpGroup group);
 
-	boolean supportsNamedGroupRefSyntax(RegExpNamedGroupRef ref);
+    boolean supportsNamedGroupRefSyntax(RegExpNamedGroupRef ref);
 
-	boolean supportsExtendedHexCharacter(RegExpChar regExpChar);
+    boolean supportsExtendedHexCharacter(RegExpChar regExpChar);
 
-	default boolean isValidGroupName(String name, @Nonnull PsiElement context)
-	{
-		for(int i = 0, length = name.length(); i < length; i++)
-		{
-			final char c = name.charAt(i);
-			if(!AsciiUtil.isLetterOrDigit(c) && c != '_')
-			{
-				return false;
-			}
-		}
-		return true;
-	}
+    default boolean isValidGroupName(String name, @Nonnull PsiElement context) {
+        for (int i = 0, length = name.length(); i < length; i++) {
+            final char c = name.charAt(i);
+            if (!AsciiUtil.isLetterOrDigit(c) && c != '_') {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	default boolean supportsSimpleClass(RegExpSimpleClass simpleClass)
-	{
-		return true;
-	}
+    default boolean supportsSimpleClass(RegExpSimpleClass simpleClass) {
+        return true;
+    }
 
-	default boolean supportsNamedCharacters(RegExpNamedCharacter namedCharacter)
-	{
-		return false;
-	}
+    default boolean supportsNamedCharacters(RegExpNamedCharacter namedCharacter) {
+        return false;
+    }
 
-	default boolean isValidNamedCharacter(RegExpNamedCharacter namedCharacter)
-	{
-		return supportsNamedCharacters(namedCharacter);
-	}
+    default boolean isValidNamedCharacter(RegExpNamedCharacter namedCharacter) {
+        return supportsNamedCharacters(namedCharacter);
+    }
 
-	default boolean supportsBoundary(RegExpBoundary boundary)
-	{
-		switch(boundary.getType())
-		{
-			case UNICODE_EXTENDED_GRAPHEME:
-				return false;
-			case LINE_START:
-			case LINE_END:
-			case WORD:
-			case NON_WORD:
-			case BEGIN:
-			case END:
-			case END_NO_LINE_TERM:
-			case PREVIOUS_MATCH:
-			default:
-				return true;
-		}
-	}
+    default boolean supportsBoundary(RegExpBoundary boundary) {
+        switch (boundary.getType()) {
+            case UNICODE_EXTENDED_GRAPHEME:
+                return false;
+            case LINE_START:
+            case LINE_END:
+            case WORD:
+            case NON_WORD:
+            case BEGIN:
+            case END:
+            case END_NO_LINE_TERM:
+            case PREVIOUS_MATCH:
+            default:
+                return true;
+        }
+    }
 
-	default boolean supportsLiteralBackspace(RegExpChar aChar)
-	{
-		return true;
-	}
+    default boolean supportsLiteralBackspace(RegExpChar aChar) {
+        return true;
+    }
 
-	default boolean supportsInlineOptionFlag(char flag, PsiElement context)
-	{
-		return true;
-	}
+    default boolean supportsInlineOptionFlag(char flag, PsiElement context) {
+        return true;
+    }
 
-	boolean isValidCategory(@Nonnull String category);
+    boolean isValidCategory(@Nonnull String category);
 
-	@Nonnull
-	String[][] getAllKnownProperties();
+    @Nonnull
+    String[][] getAllKnownProperties();
 
-	@Nullable
-	String getPropertyDescription(@Nullable final String name);
+    @Nullable
+    String getPropertyDescription(@Nullable final String name);
 
-	@Nonnull
-	String[][] getKnownCharacterClasses();
+    @Nonnull
+    String[][] getKnownCharacterClasses();
 }

@@ -32,52 +32,32 @@ import javax.annotation.Nullable;
  * @author vnikolaenko
  */
 @ExtensionImpl
-public final class RegExpDocumentationProvider extends AbstractDocumentationProvider implements LanguageDocumentationProvider
-{
-	@Override
-	@Nullable
-	public String generateDoc(PsiElement element, @Nullable PsiElement originalElement)
-	{
-		if(element instanceof RegExpProperty)
-		{
-			final RegExpProperty prop = (RegExpProperty) element;
-			final ASTNode node = prop.getCategoryNode();
-			if(node != null)
-			{
-				final String description = RegExpLanguageHosts.INSTANCE.getPropertyDescription(node.getPsi(), node.getText());
-				if(description != null)
-				{
-					if(prop.isNegated())
-					{
-						return "Property block stands for characters not matching " + description;
-					}
-					else
-					{
-						return "Property block stands for " + description;
-					}
-				}
-			}
-		}
-		return null;
-	}
+public final class RegExpDocumentationProvider extends AbstractDocumentationProvider implements LanguageDocumentationProvider {
+    @Override
+    @Nullable
+    public String generateDoc(PsiElement element, @Nullable PsiElement originalElement) {
+        if (element instanceof RegExpProperty prop) {
+            final ASTNode node = prop.getCategoryNode();
+            if (node != null) {
+                final String description = RegExpLanguageHosts.INSTANCE.getPropertyDescription(node.getPsi(), node.getText());
+                if (description != null) {
+                    return prop.isNegated()
+                        ? "Property block stands for characters not matching " + description
+                        : "Property block stands for " + description;
+                }
+            }
+        }
+        return null;
+    }
 
-	@Nullable
-	public String getQuickNavigateInfo(PsiElement element, PsiElement originalElement)
-	{
-		if(element instanceof RegExpGroup)
-		{
-			return "Capturing Group: " + ((RegExpElement) element).getUnescapedText();
-		}
-		else
-		{
-			return null;
-		}
-	}
+    @Nullable
+    public String getQuickNavigateInfo(PsiElement element, PsiElement originalElement) {
+        return element instanceof RegExpGroup regExpGroup ? "Capturing Group: " + regExpGroup.getUnescapedText() : null;
+    }
 
-	@Nonnull
-	@Override
-	public Language getLanguage()
-	{
-		return RegExpLanguage.INSTANCE;
-	}
+    @Nonnull
+    @Override
+    public Language getLanguage() {
+        return RegExpLanguage.INSTANCE;
+    }
 }

@@ -17,12 +17,10 @@ package org.intellij.lang.regexp;
 
 import consulo.language.Language;
 
-public class RegExpLanguage extends Language
-{
-	public static final RegExpLanguage INSTANCE = new RegExpLanguage();
+public class RegExpLanguage extends Language {
+    public static final RegExpLanguage INSTANCE = new RegExpLanguage();
 
-	private RegExpLanguage()
-	{
-		super("RegExp");
-	}
+    private RegExpLanguage() {
+        super("RegExp");
+    }
 }

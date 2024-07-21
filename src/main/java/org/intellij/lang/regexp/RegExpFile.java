@@ -22,16 +22,13 @@ import consulo.virtualFileSystem.fileType.FileType;
 
 import javax.annotation.Nonnull;
 
-public class RegExpFile extends PsiFileBase
-{
-	public RegExpFile(FileViewProvider viewProvider, final Language language)
-	{
-		super(viewProvider, language);
-	}
+public class RegExpFile extends PsiFileBase {
+    public RegExpFile(FileViewProvider viewProvider, final Language language) {
+        super(viewProvider, language);
+    }
 
-	@Nonnull
-	public FileType getFileType()
-	{
-		return RegExpFileType.INSTANCE;
-	}
+    @Nonnull
+    public FileType getFileType() {
+        return RegExpFileType.INSTANCE;
+    }
 }

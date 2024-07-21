@@ -30,19 +30,16 @@ import javax.annotation.Nullable;
  * @since 28-Jun-22
  */
 @ExtensionImpl
-public class ValueRegExpAnnotatorFactory implements AnnotatorFactory
-{
-	@Nullable
-	@Override
-	public Annotator createAnnotator()
-	{
-		return new ValueRegExpAnnotator();
-	}
+public class ValueRegExpAnnotatorFactory implements AnnotatorFactory {
+    @Nullable
+    @Override
+    public Annotator createAnnotator() {
+        return new ValueRegExpAnnotator();
+    }
 
-	@Nonnull
-	@Override
-	public Language getLanguage()
-	{
-		return RegExpLanguage.INSTANCE;
-	}
+    @Nonnull
+    @Override
+    public Language getLanguage() {
+        return RegExpLanguage.INSTANCE;
+    }
 }
