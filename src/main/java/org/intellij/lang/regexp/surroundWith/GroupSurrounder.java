@@ -36,96 +36,86 @@ import org.intellij.lang.regexp.psi.impl.RegExpElementImpl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-class GroupSurrounder implements Surrounder
-{
-	private final String myTitle;
-	private final String myGroupStart;
+class GroupSurrounder implements Surrounder {
+    private final String myTitle;
+    private final String myGroupStart;
 
-	public GroupSurrounder(String title, String groupStart)
-	{
-		myTitle = title;
-		myGroupStart = groupStart;
-	}
+    public GroupSurrounder(String title, String groupStart) {
+        myTitle = title;
+        myGroupStart = groupStart;
+    }
 
-	public String getTemplateDescription()
-	{
-		return myTitle;
-	}
+    public String getTemplateDescription() {
+        return myTitle;
+    }
 
-	public boolean isApplicable(@Nonnull PsiElement[] elements)
-	{
-		return elements.length == 1 || PsiTreeUtil.findCommonParent(elements) == elements[0].getParent();
-	}
+    public boolean isApplicable(@Nonnull PsiElement[] elements) {
+        return elements.length == 1 || PsiTreeUtil.findCommonParent(elements) == elements[0].getParent();
+    }
 
-	@Nullable
-	public TextRange surroundElements(@Nonnull Project project, @Nonnull Editor editor, @Nonnull PsiElement[] elements) throws IncorrectOperationException
-	{
-		assert elements.length == 1 || PsiTreeUtil.findCommonParent(elements) == elements[0].getParent();
-		final PsiElement e = elements[0];
-		final ASTNode node = e.getNode();
-		assert node != null;
+    @Nullable
+    public TextRange surroundElements(
+        @Nonnull Project project,
+        @Nonnull Editor editor,
+        @Nonnull PsiElement[] elements
+    ) throws IncorrectOperationException {
+        assert elements.length == 1 || PsiTreeUtil.findCommonParent(elements) == elements[0].getParent();
+        final PsiElement e = elements[0];
+        final ASTNode node = e.getNode();
+        assert node != null;
 
-		final ASTNode parent = node.getTreeParent();
+        final ASTNode parent = node.getTreeParent();
 
-		final StringBuilder s = new StringBuilder();
-		for(int i = 0; i < elements.length; i++)
-		{
-			final PsiElement element = elements[i];
-			if(element instanceof RegExpElementImpl)
-			{
-				s.append(((RegExpElementImpl) element).getUnescapedText());
-			}
-			else
-			{
-				s.append(element.getText());
-			}
-			if(i > 0)
-			{
-				final ASTNode child = element.getNode();
-				assert child != null;
-				parent.removeChild(child);
-			}
-		}
-		final PsiFileFactory factory = PsiFileFactory.getInstance(project);
+        final StringBuilder s = new StringBuilder();
+        for (int i = 0; i < elements.length; i++) {
+            final PsiElement element = elements[i];
+            if (element instanceof RegExpElementImpl regExpElement) {
+                s.append(regExpElement.getUnescapedText());
+            }
+            else {
+                s.append(element.getText());
+            }
+            if (i > 0) {
+                final ASTNode child = element.getNode();
+                assert child != null;
+                parent.removeChild(child);
+            }
+        }
+        final PsiFileFactory factory = PsiFileFactory.getInstance(project);
 
-		final PsiFile f = factory.createFileFromText("dummy.regexp", RegExpFileType.INSTANCE, makeReplacement(s));
-		final RegExpPattern pattern = PsiTreeUtil.getChildOfType(f, RegExpPattern.class);
-		assert pattern != null;
+        final PsiFile f = factory.createFileFromText("dummy.regexp", RegExpFileType.INSTANCE, makeReplacement(s));
+        final RegExpPattern pattern = PsiTreeUtil.getChildOfType(f, RegExpPattern.class);
+        assert pattern != null;
 
-		final RegExpAtom element = pattern.getBranches()[0].getAtoms()[0];
+        final RegExpAtom element = pattern.getBranches()[0].getAtoms()[0];
 
-		if(isInsideStringLiteral(e))
-		{
-			final Document doc = editor.getDocument();
-			PsiDocumentManager.getInstance(project).doPostponedOperationsAndUnblockDocument(doc);
-			final TextRange tr = e.getTextRange();
-			doc.replaceString(tr.getStartOffset(), tr.getEndOffset(),
-					StringUtil.escapeStringCharacters(element.getText()));
+        if (isInsideStringLiteral(e)) {
+            final Document doc = editor.getDocument();
+            PsiDocumentManager.getInstance(project).doPostponedOperationsAndUnblockDocument(doc);
+            final TextRange tr = e.getTextRange();
+            doc.replaceString(tr.getStartOffset(), tr.getEndOffset(),
+                StringUtil.escapeStringCharacters(element.getText())
+            );
 
-			return TextRange.from(e.getTextRange().getEndOffset(), 0);
-		}
-		else
-		{
-			final PsiElement n = e.replace(element);
-			return TextRange.from(n.getTextRange().getEndOffset(), 0);
-		}
-	}
+            return TextRange.from(e.getTextRange().getEndOffset(), 0);
+        }
+        else {
+            final PsiElement n = e.replace(element);
+            return TextRange.from(n.getTextRange().getEndOffset(), 0);
+        }
+    }
 
-	private static boolean isInsideStringLiteral(PsiElement context)
-	{
-		while(context != null)
-		{
-			if(RegExpElementImpl.isLiteralExpression(context))
-			{
-				return true;
-			}
-			context = context.getContext();
-		}
-		return false;
-	}
+    private static boolean isInsideStringLiteral(PsiElement context) {
+        while (context != null) {
+            if (RegExpElementImpl.isLiteralExpression(context)) {
+                return true;
+            }
+            context = context.getContext();
+        }
+        return false;
+    }
 
-	protected String makeReplacement(StringBuilder s)
-	{
-		return myGroupStart + s + ")";
-	}
+    protected String makeReplacement(StringBuilder s) {
+        return myGroupStart + s + ")";
+    }
 }

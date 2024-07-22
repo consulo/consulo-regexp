@@ -22,11 +22,10 @@ import javax.annotation.Nullable;
 /**
  * @author Bas Leijdekkers
  */
-public interface RegExpNamedCharacter extends RegExpAtom, RegExpClassElement
-{
-	@Nullable
-	ASTNode getNameNode();
+public interface RegExpNamedCharacter extends RegExpAtom, RegExpClassElement {
+    @Nullable
+    ASTNode getNameNode();
 
-	@Nullable
-	String getName();
+    @Nullable
+    String getName();
 }

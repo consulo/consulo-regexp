@@ -29,8 +29,7 @@ import org.intellij.lang.regexp.psi.RegExpQuantifier;
 
 import javax.annotation.Nonnull;
 
-class SimplifyQuantifierAction implements IntentionAction
-{
+class SimplifyQuantifierAction implements IntentionAction {
     private final RegExpQuantifier myQuantifier;
     private final String myReplacement;
 
@@ -53,14 +52,17 @@ class SimplifyQuantifierAction implements IntentionAction
         return myQuantifier.isValid();
     }
 
-    public void invoke(@Nonnull Project project, Editor editor, PsiFile file) throws IncorrectOperationException
-	{
+    public void invoke(@Nonnull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
         if (myReplacement == null) {
             myQuantifier.delete();
-        } else {
+        }
+        else {
             final PsiFileFactory factory = PsiFileFactory.getInstance(project);
 
-            final PsiFile f = factory.createFileFromText("dummy.regexp", RegExpFileType.INSTANCE, "a" + myReplacement + myQuantifier.getType().getToken());
+            final PsiFile f = factory.createFileFromText("dummy.regexp",
+                RegExpFileType.INSTANCE,
+                "a" + myReplacement + myQuantifier.getType().getToken()
+            );
             final RegExpPattern pattern = PsiTreeUtil.getChildOfType(f, RegExpPattern.class);
             assert pattern != null;
 

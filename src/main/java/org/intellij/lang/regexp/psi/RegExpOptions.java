@@ -22,25 +22,24 @@ import javax.annotation.Nullable;
 /**
  * Represents an inline options element (?x) or (?-x). Returned from {@link org.intellij.lang.regexp.psi.RegExpSetOptions}
  */
-public interface RegExpOptions extends RegExpElement
-{
-	/**
-	 * @param flag the flag to check, e.g. 'i'
-	 * @return true, when the specified flag is switched on, false otherwise.
-	 */
-	boolean isSwitchedOn(char flag);
+public interface RegExpOptions extends RegExpElement {
+    /**
+     * @param flag the flag to check, e.g. 'i'
+     * @return true, when the specified flag is switched on, false otherwise.
+     */
+    boolean isSwitchedOn(char flag);
 
-	/**
-	 * It's possible for a flag to be both switched on and switched off.
-	 *
-	 * @param flag the flag to check, e.g. 'd'
-	 * @return true, when the specified flag is switched off, false otherwise.
-	 */
-	boolean isSwitchedOff(char flag);
+    /**
+     * It's possible for a flag to be both switched on and switched off.
+     *
+     * @param flag the flag to check, e.g. 'd'
+     * @return true, when the specified flag is switched off, false otherwise.
+     */
+    boolean isSwitchedOff(char flag);
 
-	@Nullable
-	ASTNode getOptionsOn();
+    @Nullable
+    ASTNode getOptionsOn();
 
-	@Nullable
-	ASTNode getOptionsOff();
+    @Nullable
+    ASTNode getOptionsOff();
 }

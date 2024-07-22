@@ -22,9 +22,7 @@ import javax.annotation.Nonnull;
  *
  * @author Bas Leijdekkers
  */
-public interface RegExpUnion extends RegExpClassElement
-{
-
-	@Nonnull
-	RegExpClassElement[] getElements();
+public interface RegExpUnion extends RegExpClassElement {
+    @Nonnull
+    RegExpClassElement[] getElements();
 }
