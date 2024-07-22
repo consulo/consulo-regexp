@@ -111,6 +111,7 @@ public class RegExpHighlighter extends SyntaxHighlighterBase {
 
     @Override
     @Nonnull
+    @RequiredReadAction
     public Lexer getHighlightingLexer() {
         return myParserDefinition.createLexer(LanguageVersionUtil.findDefaultVersion(RegExpLanguage.INSTANCE));
     }

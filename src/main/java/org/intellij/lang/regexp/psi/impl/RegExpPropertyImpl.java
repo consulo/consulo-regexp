@@ -15,6 +15,8 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import consulo.annotation.access.RequiredReadAction;
+import consulo.annotation.access.RequiredWriteAction;
 import consulo.application.AllIcons;
 import consulo.document.util.TextRange;
 import consulo.language.ast.ASTNode;
@@ -45,7 +47,9 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
 
     public PsiReference getReference() {
         final ASTNode lbrace = getNode().findChildByType(RegExpTT.LBRACE);
-        if (lbrace == null) return null;
+        if (lbrace == null) {
+            return null;
+        }
         return new MyPsiReference();
     }
 
@@ -63,11 +67,14 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
         visitor.visitRegExpProperty(this);
     }
 
-  private class MyPsiReference implements PsiReference {
+    private class MyPsiReference implements PsiReference {
+        @RequiredReadAction
         public PsiElement getElement() {
             return RegExpPropertyImpl.this;
         }
 
+        @Nonnull
+        @RequiredReadAction
         public TextRange getRangeInElement() {
             final ASTNode lbrace = getNode().findChildByType(RegExpTT.LBRACE);
             assert lbrace != null;
@@ -79,35 +86,43 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
         }
 
         @Nullable
+        @RequiredReadAction
         public PsiElement resolve() {
             return RegExpPropertyImpl.this;
         }
 
         @Nonnull
+        @RequiredReadAction
         public String getCanonicalText() {
             return getRangeInElement().substring(getElement().getText());
         }
 
-        public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException	{
+        @RequiredWriteAction
+        public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
             throw new IncorrectOperationException();
         }
 
+        @RequiredWriteAction
         public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException {
             throw new IncorrectOperationException();
         }
 
+        @RequiredReadAction
         public boolean isReferenceTo(PsiElement element) {
             return false;
         }
 
         @Nonnull
+        @RequiredReadAction
         public Object[] getVariants() {
             final ASTNode categoryNode = getCategoryNode();
-            if (categoryNode != null && categoryNode.getText().startsWith("In") && !categoryNode.getText().startsWith("Intelli")) {
+            if (categoryNode != null && categoryNode.getText().startsWith("In")
+                && !categoryNode.getText().startsWith("Intelli")) {
                 return UNICODE_BLOCKS;
-            } else {
-              final String[][] knownProperties = RegExpLanguageHosts.INSTANCE.getAllKnownProperties(getElement());
-              final Object[] objects = new Object[knownProperties.length];
+            }
+            else {
+                final String[][] knownProperties = RegExpLanguageHosts.INSTANCE.getAllKnownProperties(getElement());
+                final Object[] objects = new Object[knownProperties.length];
                 for (int i = 0; i < objects.length; i++) {
                     final String[] prop = knownProperties[i];
                     objects[i] = new MyLookupValue(prop);
@@ -117,12 +132,13 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
             }
         }
 
+        @RequiredReadAction
         public boolean isSoft() {
             return true;
         }
 
-        private class MyLookupValue extends LookupValueFactory.LookupValueWithIcon implements LookupValueWithPriority, LookupValueWithUIHint
-		{
+        private class MyLookupValue extends LookupValueFactory.LookupValueWithIcon
+            implements LookupValueWithPriority, LookupValueWithUIHint {
             private final String[] myProp;
 
             public MyLookupValue(String[] prop) {
@@ -142,8 +158,12 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
 
             public int getPriority() {
                 final String name = myProp[0];
-                if (name.equals("all")) return HIGH + 1;
-                if (name.startsWith("java")) return HIGHER;
+                if (name.equals("all")) {
+                    return HIGH + 1;
+                }
+                if (name.startsWith("java")) {
+                    return HIGHER;
+                }
                 return name.length() > 2 ? HIGH : NORMAL;
             }
 
@@ -164,9 +184,10 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
 
 
     private static final String[] UNICODE_BLOCKS;
+
     static {
         final Field[] fields = Character.UnicodeBlock.class.getFields();
-        final List<String> unicodeBlocks = new ArrayList<String>(fields.length);
+        final List<String> unicodeBlocks = new ArrayList<>(fields.length);
         for (Field field : fields) {
             if (field.getType().equals(Character.UnicodeBlock.class)) {
                 if (Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers())) {
@@ -174,6 +195,6 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
                 }
             }
         }
-      UNICODE_BLOCKS = ArrayUtil.toStringArray(unicodeBlocks);
+        UNICODE_BLOCKS = ArrayUtil.toStringArray(unicodeBlocks);
     }
 }

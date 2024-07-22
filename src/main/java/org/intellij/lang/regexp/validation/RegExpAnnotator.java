@@ -15,13 +15,13 @@
  */
 package org.intellij.lang.regexp.validation;
 
+import consulo.annotation.access.RequiredReadAction;
 import consulo.document.util.TextRange;
 import consulo.language.ast.ASTNode;
-import consulo.language.editor.annotation.Annotation;
 import consulo.language.editor.annotation.AnnotationHolder;
 import consulo.language.editor.annotation.Annotator;
+import consulo.language.editor.annotation.HighlightSeverity;
 import consulo.language.editor.inspection.ProblemHighlightType;
-import consulo.language.editor.intention.IntentionAction;
 import consulo.language.psi.PsiComment;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.util.PsiTreeUtil;
@@ -63,11 +63,13 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
     }
 
     @Override
+    @RequiredReadAction
     public void visitRegExpOptions(RegExpOptions options) {
         checkValidFlag(options.getOptionsOn(), options);
         checkValidFlag(options.getOptionsOff(), options);
     }
 
+    @RequiredReadAction
     private void checkValidFlag(@Nullable ASTNode optionsNode, @Nonnull RegExpOptions context) {
         if (optionsNode == null) {
             return;
@@ -78,12 +80,14 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
             final int c = text.codePointAt(i);
             if (!Character.isBmpCodePoint(c) || !myLanguageHosts.supportsInlineOptionFlag((char)c, context)) {
                 final int offset = optionsNode.getStartOffset() + i;
-                myHolder.createErrorAnnotation(new TextRange(offset, offset + 1), "Unknown inline option flag");
+                myHolder.newAnnotation(HighlightSeverity.ERROR, "Unknown inline option flag")
+                    .range(new TextRange(offset, offset + 1));
             }
         }
     }
 
     @Override
+    @RequiredReadAction
     public void visitRegExpCharRange(RegExpCharRange range) {
         final RegExpCharRange.Endpoint from = range.getFrom();
         final RegExpCharRange.Endpoint to = range.getTo();
@@ -97,21 +101,23 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
                     if (handleSurrogates(range, f, t)) {
                         return;
                     }
-                    myHolder.createErrorAnnotation(range, ILLEGAL_CHARACTER_RANGE_TO_FROM);
+                    myHolder.newAnnotation(HighlightSeverity.ERROR, ILLEGAL_CHARACTER_RANGE_TO_FROM).range(range);
                 }
                 else if (t == f) {
-                    myHolder.createWarningAnnotation(range, "Redundant character range");
+                    myHolder.newAnnotation(HighlightSeverity.WARNING, "Redundant character range").range(range);
                 }
             }
         }
         else if (a != b) {
-            myHolder.createErrorAnnotation(range, "Character class (e.g. '\\\\w') may not be used inside character range");
+            myHolder.newAnnotation(HighlightSeverity.ERROR, "Character class (e.g. '\\\\w') may not be used inside character range")
+                .range(range);
         }
         else if (from.getText().equals(to.getText())) {
-            myHolder.createWarningAnnotation(range, "Redundant character range");
+            myHolder.newAnnotation(HighlightSeverity.WARNING, "Redundant character range").range(range);
         }
     }
 
+    @RequiredReadAction
     private boolean handleSurrogates(RegExpCharRange range, Character f, Character t) {
         // \ud800\udc00-\udbff\udfff
         PsiElement prevSibling = range.getPrevSibling();
@@ -126,8 +132,8 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
                 if (Character.toCodePoint(prevSiblingValue, f) > Character.toCodePoint(t, nextSiblingValue)) {
                     TextRange prevSiblingRange = prevSibling.getTextRange();
                     TextRange nextSiblingRange = nextSibling.getTextRange();
-                    TextRange errorRange = new TextRange(prevSiblingRange.getStartOffset(), nextSiblingRange.getEndOffset());
-                    myHolder.createErrorAnnotation(errorRange, ILLEGAL_CHARACTER_RANGE_TO_FROM);
+                    myHolder.newAnnotation(HighlightSeverity.ERROR, ILLEGAL_CHARACTER_RANGE_TO_FROM)
+                        .range(new TextRange(prevSiblingRange.getStartOffset(), nextSiblingRange.getEndOffset()));
                 }
                 return true;
             }
@@ -136,31 +142,36 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
     }
 
     @Override
+    @RequiredReadAction
     public void visitRegExpBoundary(RegExpBoundary boundary) {
         if (!myLanguageHosts.supportsBoundary(boundary)) {
-            myHolder.createErrorAnnotation(boundary, "Unsupported boundary");
+            myHolder.newAnnotation(HighlightSeverity.ERROR, "Unsupported boundary").range(boundary);
         }
     }
 
     @Override
+    @RequiredReadAction
     public void visitSimpleClass(RegExpSimpleClass simpleClass) {
         if (!myLanguageHosts.supportsSimpleClass(simpleClass)) {
-            myHolder.createErrorAnnotation(simpleClass, "Illegal/unsupported escape sequence");
+            myHolder.newAnnotation(HighlightSeverity.ERROR, "Illegal/unsupported escape sequence").range(simpleClass);
         }
     }
 
     @Override
+    @RequiredReadAction
     public void visitRegExpClass(RegExpClass regExpClass) {
         if (!(regExpClass.getParent() instanceof RegExpClass)) {
             checkForDuplicates(regExpClass, new HashSet<>());
         }
     }
 
+    @RequiredReadAction
     private void checkForDuplicates(RegExpClassElement element, Set<Character> seen) {
         if (element instanceof RegExpChar regExpChar) {
             final Character value = regExpChar.getValue();
             if (value != null && !seen.add(value)) {
-                myHolder.createWarningAnnotation(regExpChar, "Duplicate character '" + regExpChar.getText() + "' in character class");
+                myHolder.newAnnotation(HighlightSeverity.WARNING, "Duplicate character '" + regExpChar.getText() + "' in character class")
+                    .range(regExpChar);
             }
         }
         else if (element instanceof RegExpClass regExpClass) {
@@ -176,21 +187,22 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
     }
 
     @Override
+    @RequiredReadAction
     public void visitRegExpChar(final RegExpChar ch) {
         final Character value = ch.getValue();
         if (value == null || (value == '\b' && !myLanguageHosts.supportsLiteralBackspace(ch))) {
             switch (ch.getType()) {
                 case CHAR:
-                    myHolder.createErrorAnnotation(ch, "Illegal/unsupported escape sequence");
+                    myHolder.newAnnotation(HighlightSeverity.ERROR, "Illegal/unsupported escape sequence");
                     break;
                 case HEX:
-                    myHolder.createErrorAnnotation(ch, "Illegal hexadecimal escape sequence");
+                    myHolder.newAnnotation(HighlightSeverity.ERROR, "Illegal hexadecimal escape sequence");
                     break;
                 case OCT:
-                    myHolder.createErrorAnnotation(ch, "Illegal octal escape sequence");
+                    myHolder.newAnnotation(HighlightSeverity.ERROR, "Illegal octal escape sequence");
                     break;
                 case UNICODE:
-                    myHolder.createErrorAnnotation(ch, "Illegal unicode escape sequence");
+                    myHolder.newAnnotation(HighlightSeverity.ERROR, "Illegal unicode escape sequence");
                     break;
                 case INVALID:
                     // produces a parser error. already handled by IDEA and possibly suppressed by IntelliLang
@@ -202,97 +214,109 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
             if (text.startsWith("\\") && myLanguageHosts.isRedundantEscape(ch, text)) {
                 final ASTNode astNode = ch.getNode().getFirstChildNode();
                 if (astNode != null && astNode.getElementType() == RegExpTT.REDUNDANT_ESCAPE) {
-                    final Annotation a = myHolder.createWeakWarningAnnotation(ch, "Redundant character escape");
-                    registerFix(a, new RemoveRedundantEscapeAction(ch));
+                    myHolder.newAnnotation(HighlightSeverity.WEAK_WARNING, "Redundant character escape")
+                        .range(ch)
+                        .withFix(new RemoveRedundantEscapeAction(ch));
                 }
             }
             if (ch.getType() == RegExpChar.Type.HEX && text.charAt(text.length() - 1) == '}'
                 && !myLanguageHosts.supportsExtendedHexCharacter(ch)) {
-                myHolder.createErrorAnnotation(ch, "This hex character syntax is not supported");
+                myHolder.newAnnotation(HighlightSeverity.ERROR, "This hex character syntax is not supported").range(ch);
             }
         }
     }
 
     @Override
+    @RequiredReadAction
     public void visitRegExpProperty(RegExpProperty property) {
         final ASTNode category = property.getCategoryNode();
         if (category == null) {
             return;
         }
         if (!myLanguageHosts.isValidCategory(category.getPsi(), category.getText())) {
-            final Annotation a = myHolder.createErrorAnnotation(category, "Unknown character category");
-            a.setHighlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
+            myHolder.newAnnotation(HighlightSeverity.ERROR, "Unknown character category")
+                .range(category)
+                .highlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
         }
     }
 
     @Override
+    @RequiredReadAction
     public void visitRegExpNamedCharacter(RegExpNamedCharacter namedCharacter) {
         if (!myLanguageHosts.supportsNamedCharacters(namedCharacter)) {
-            myHolder.createErrorAnnotation(namedCharacter, "Named Unicode characters are not allowed in this regular expression dialect");
+            myHolder.newAnnotation(HighlightSeverity.ERROR, "Named Unicode characters are not allowed in this regular expression dialect")
+                .range(namedCharacter);
         }
         else if (!myLanguageHosts.isValidNamedCharacter(namedCharacter)) {
             final ASTNode node = namedCharacter.getNameNode();
             if (node != null) {
-                final Annotation a = myHolder.createErrorAnnotation(node, "Unknown character name");
-                a.setHighlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
+                myHolder.newAnnotation(HighlightSeverity.ERROR, "Unknown character name")
+                    .range(node)
+                    .highlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
             }
         }
     }
 
     @Override
+    @RequiredReadAction
     public void visitRegExpBackref(final RegExpBackref backref) {
         final RegExpGroup group = backref.resolve();
         if (group == null) {
-            final Annotation a = myHolder.createErrorAnnotation(backref, "Unresolved back reference");
-            a.setHighlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
+            myHolder.newAnnotation(HighlightSeverity.ERROR, "Unresolved back reference")
+                .range(backref)
+                .highlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
         }
         else if (PsiTreeUtil.isAncestor(group, backref, true)) {
-            myHolder.createWarningAnnotation(backref, "Back reference is nested into the capturing group it refers to");
+            myHolder.newAnnotation(HighlightSeverity.WARNING, "Back reference is nested into the capturing group it refers to")
+                .range(backref);
         }
     }
 
     @Override
+    @RequiredReadAction
     public void visitRegExpIntersection(RegExpIntersection intersection) {
         if (intersection.getOperands().length == 0) {
-            myHolder.createErrorAnnotation(intersection, "Illegal empty intersection");
+            myHolder.newAnnotation(HighlightSeverity.ERROR, "Illegal empty intersection").range(intersection);
         }
     }
 
     @Override
+    @RequiredReadAction
     public void visitRegExpGroup(RegExpGroup group) {
         final RegExpPattern pattern = group.getPattern();
         if (pattern != null) {
             final RegExpBranch[] branches = pattern.getBranches();
             if (isEmpty(branches)) {
                 // catches "()" as well as "(|)"
-                myHolder.createWarningAnnotation(group, "Empty group");
+                myHolder.newAnnotation(HighlightSeverity.WARNING, "Empty group").range(group);
             }
             else if (branches.length == 1) {
                 final RegExpAtom[] atoms = branches[0].getAtoms();
                 if (atoms.length == 1 && atoms[0] instanceof RegExpGroup innerGroup
                     && group.isSimple() && group.isCapturing() == innerGroup.isCapturing()) {
-                    myHolder.createWarningAnnotation(group, "Redundant group nesting");
+                    myHolder.newAnnotation(HighlightSeverity.WARNING, "Redundant group nesting").range(group);
                 }
             }
         }
         if (group.isPythonNamedGroup() || group.isRubyNamedGroup()) {
             if (!myLanguageHosts.supportsNamedGroupSyntax(group)) {
-                myHolder.createErrorAnnotation(group, "This named group syntax is not supported");
+                myHolder.newAnnotation(HighlightSeverity.ERROR, "This named group syntax is not supported").range(group);
             }
         }
         final String name = group.getName();
         if (name != null && !myLanguageHosts.isValidGroupName(name, group)) {
             final ASTNode node = group.getNode().findChildByType(RegExpTT.NAME);
             if (node != null) {
-                myHolder.createErrorAnnotation(node, "Invalid group name");
+                myHolder.newAnnotation(HighlightSeverity.ERROR, "Invalid group name").range(node);
             }
         }
     }
 
     @Override
+    @RequiredReadAction
     public void visitRegExpNamedGroupRef(RegExpNamedGroupRef groupRef) {
         if (!myLanguageHosts.supportsNamedGroupRefSyntax(groupRef)) {
-            myHolder.createErrorAnnotation(groupRef, "This named group reference syntax is not supported");
+            myHolder.newAnnotation(HighlightSeverity.ERROR, "This named group reference syntax is not supported").range(groupRef);
             return;
         }
         if (groupRef.getGroupName() == null) {
@@ -302,28 +326,32 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
         if (group == null) {
             final ASTNode node = groupRef.getNode().findChildByType(RegExpTT.NAME);
             if (node != null) {
-                final Annotation a = myHolder.createErrorAnnotation(node, "Unresolved named group reference");
-                a.setHighlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
+                myHolder.newAnnotation(HighlightSeverity.ERROR, "Unresolved named group reference")
+                    .range(node)
+                    .highlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
             }
         }
         else if (PsiTreeUtil.isAncestor(group, groupRef, true)) {
-            myHolder.createWarningAnnotation(groupRef, "Group reference is nested into the named group it refers to");
+            myHolder.newAnnotation(HighlightSeverity.WARNING, "Group reference is nested into the named group it refers to")
+                .range(groupRef);
         }
     }
 
     @Override
+    @RequiredReadAction
     public void visitComment(PsiComment comment) {
         if (comment.getText().startsWith("(?#")) {
             if (!myLanguageHosts.supportsPerl5EmbeddedComments(comment)) {
-                myHolder.createErrorAnnotation(comment, "Embedded comments are not supported");
+                myHolder.newAnnotation(HighlightSeverity.ERROR, "Embedded comments are not supported").range(comment);
             }
         }
     }
 
     @Override
+    @RequiredReadAction
     public void visitRegExpPyCondRef(RegExpPyCondRef condRef) {
         if (!myLanguageHosts.supportsPythonConditionalRefs(condRef)) {
-            myHolder.createErrorAnnotation(condRef, "Conditional references are not supported");
+            myHolder.newAnnotation(HighlightSeverity.ERROR, "Conditional references are not supported").range(condRef);
         }
     }
 
@@ -337,6 +365,7 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
     }
 
     @Override
+    @RequiredReadAction
     public void visitRegExpQuantifier(RegExpQuantifier quantifier) {
         final RegExpQuantifier.Count count = quantifier.getCount();
         if (!(count instanceof RegExpQuantifier.SimpleCount)) {
@@ -344,65 +373,65 @@ public final class RegExpAnnotator extends RegExpElementVisitor implements Annot
             String max = count.getMax();
             if (max.equals(min)) {
                 if ("1".equals(max)) { // TODO: is this safe when reluctant or possessive modifier is present?
-                    final Annotation a = myHolder.createWeakWarningAnnotation(quantifier, "Single repetition");
-                    registerFix(a, new SimplifyQuantifierAction(quantifier, null));
+                    myHolder.newAnnotation(HighlightSeverity.WEAK_WARNING, "Single repetition")
+                        .range(quantifier)
+                        .withFix(new SimplifyQuantifierAction(quantifier, null));
                 }
                 else {
                     final ASTNode node = quantifier.getNode();
                     if (node.findChildByType(RegExpTT.COMMA) != null) {
-                        final Annotation a = myHolder.createWeakWarningAnnotation(quantifier, "Fixed repetition range");
-                        registerFix(a, new SimplifyQuantifierAction(quantifier, "{" + max + "}"));
+                        myHolder.newAnnotation(HighlightSeverity.WEAK_WARNING, "Fixed repetition range")
+                            .range(quantifier)
+                            .withFix(new SimplifyQuantifierAction(quantifier, "{" + max + "}"));
                     }
                 }
             }
             else if ("0".equals(min) && "1".equals(max)) {
-                final Annotation a = myHolder.createWeakWarningAnnotation(quantifier, "Repetition range replaceable by '?'");
-                registerFix(a, new SimplifyQuantifierAction(quantifier, "?"));
+                myHolder.newAnnotation(HighlightSeverity.WEAK_WARNING, "Repetition range replaceable by '?'")
+                    .range(quantifier)
+                    .withFix(new SimplifyQuantifierAction(quantifier, "?"));
             }
             else if ("0".equals(min) && max.isEmpty()) {
-                final Annotation a = myHolder.createWeakWarningAnnotation(quantifier, "Repetition range replaceable by '*'");
-                registerFix(a, new SimplifyQuantifierAction(quantifier, "*"));
+                myHolder.newAnnotation(HighlightSeverity.WEAK_WARNING, "Repetition range replaceable by '*'")
+                    .range(quantifier)
+                    .withFix(new SimplifyQuantifierAction(quantifier, "*"));
             }
             else if ("1".equals(min) && max.isEmpty()) {
-                final Annotation a = myHolder.createWeakWarningAnnotation(quantifier, "Repetition range replaceable by '+'");
-                registerFix(a, new SimplifyQuantifierAction(quantifier, "+"));
+                myHolder.newAnnotation(HighlightSeverity.WEAK_WARNING, "Repetition range replaceable by '+'")
+                    .range(quantifier)
+                    .withFix(new SimplifyQuantifierAction(quantifier, "+"));
             }
             else if (!min.isEmpty() && !max.isEmpty()) {
                 try {
                     BigInteger minInt = new BigInteger(min);
                     BigInteger maxInt = new BigInteger(max);
                     if (maxInt.compareTo(minInt) < 0) {
-                        myHolder.createErrorAnnotation(quantifier, "Illegal repetition range");
+                        myHolder.newAnnotation(HighlightSeverity.ERROR, "Illegal repetition range").range(quantifier);
                     }
                 }
                 catch (NumberFormatException ex) {
-                    myHolder.createErrorAnnotation(quantifier, "Illegal repetition value");
+                    myHolder.newAnnotation(HighlightSeverity.ERROR, "Illegal repetition value").range(quantifier);
                 }
             }
         }
         if (quantifier.getType() == RegExpQuantifier.Type.POSSESSIVE) {
             if (!myLanguageHosts.supportsPossessiveQuantifiers(quantifier)) {
-                myHolder.createErrorAnnotation(quantifier, "Nested quantifier in regexp");
+                myHolder.newAnnotation(HighlightSeverity.ERROR, "Nested quantifier in regexp").range(quantifier);
             }
         }
     }
 
     @Override
+    @RequiredReadAction
     public void visitPosixBracketExpression(RegExpPosixBracketExpression posixBracketExpression) {
         final String className = posixBracketExpression.getClassName();
         if (!POSIX_CHARACTER_CLASSES.contains(className)) {
             final ASTNode node = posixBracketExpression.getNode().findChildByType(RegExpTT.NAME);
             if (node != null) {
-                final Annotation annotation = myHolder.createErrorAnnotation(node, "Unknown POSIX character class");
-                annotation.setHighlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
+                myHolder.newAnnotation(HighlightSeverity.ERROR, "Unknown POSIX character class")
+                    .range(node)
+                    .highlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
             }
-        }
-    }
-
-    private static void registerFix(Annotation a, IntentionAction action) {
-        if (a != null) {
-            // IDEA-9381
-            a.registerFix(action);
         }
     }
 }

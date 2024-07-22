@@ -15,6 +15,7 @@
  */
 package org.intellij.lang.regexp.surroundWith;
 
+import consulo.annotation.access.RequiredReadAction;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.Language;
 import consulo.language.editor.surroundWith.SurroundDescriptor;
@@ -43,6 +44,7 @@ public class SimpleSurroundDescriptor implements SurroundDescriptor {
     };
 
     @Nonnull
+    @RequiredReadAction
     public PsiElement[] getElementsToSurround(PsiFile file, int startOffset, int endOffset) {
         return findElementsInRange(file, startOffset, endOffset);
     }
@@ -57,6 +59,7 @@ public class SimpleSurroundDescriptor implements SurroundDescriptor {
         return false;
     }
 
+    @RequiredReadAction
     private PsiElement[] findElementsInRange(PsiFile file, int startOffset, int endOffset) {
         // adjust start/end
         PsiElement element1 = file.findElementAt(startOffset);
@@ -101,6 +104,7 @@ public class SimpleSurroundDescriptor implements SurroundDescriptor {
     }
 
     @Nullable
+    @RequiredReadAction
     private static <T extends RegExpElement> T findElementAtStrict(PsiFile file, int startOffset, int endOffset, Class<T> clazz) {
         T element = PsiTreeUtil.findElementOfClassAtRange(file, startOffset, endOffset, clazz);
         if (element == null || element.getTextRange().getEndOffset() < endOffset) {

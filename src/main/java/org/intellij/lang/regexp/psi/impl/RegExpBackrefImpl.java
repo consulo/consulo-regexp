@@ -15,6 +15,8 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import consulo.annotation.access.RequiredReadAction;
+import consulo.annotation.access.RequiredWriteAction;
 import consulo.document.util.TextRange;
 import consulo.language.ast.ASTNode;
 import consulo.language.psi.PsiElement;
@@ -37,6 +39,7 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
         super(astNode);
     }
 
+    @RequiredReadAction
     public int getIndex() {
         final String s = getUnescapedText();
         assert s.charAt(0) == '\\';
@@ -47,6 +50,7 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
         visitor.visitRegExpBackref(this);
     }
 
+    @RequiredReadAction
     public RegExpGroup resolve() {
         final int index = getIndex();
 
@@ -70,40 +74,50 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
 
     public PsiReference getReference() {
         return new PsiReference() {
+            @RequiredReadAction
             public PsiElement getElement() {
                 return RegExpBackrefImpl.this;
             }
 
+            @Nonnull
+            @RequiredReadAction
             public TextRange getRangeInElement() {
                 return TextRange.from(0, getElement().getTextLength());
             }
 
             @Nonnull
+            @RequiredReadAction
             public String getCanonicalText() {
                 return getElement().getText();
             }
 
+            @RequiredWriteAction
             public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
                 throw new IncorrectOperationException();
             }
 
+            @RequiredWriteAction
             public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException {
                 throw new IncorrectOperationException();
             }
 
+            @RequiredReadAction
             public boolean isReferenceTo(PsiElement element) {
                 return Comparing.equal(element, resolve());
             }
 
+            @RequiredReadAction
             public boolean isSoft() {
                 return false;
             }
 
+            @RequiredReadAction
             public PsiElement resolve() {
                 return RegExpBackrefImpl.this.resolve();
             }
 
             @Nonnull
+            @RequiredReadAction
             public Object[] getVariants() {
                 return ArrayUtil.EMPTY_OBJECT_ARRAY;
             }

@@ -15,6 +15,7 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import consulo.annotation.access.RequiredReadAction;
 import consulo.language.Language;
 import consulo.language.ast.ASTNode;
 import consulo.language.ast.IElementType;
@@ -38,6 +39,7 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
     }
 
     @Nonnull
+    @RequiredReadAction
     public Language getLanguage() {
         return RegExpLanguage.INSTANCE;
     }
@@ -48,6 +50,7 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
         return super.getNode();
     }
 
+    @RequiredReadAction
     public String toString() {
         return getClass().getSimpleName() + ": <" + getText() + ">";
     }
@@ -76,6 +79,7 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
         getNode().getTreeParent().removeChild(getNode());
     }
 
+    @RequiredReadAction
     public final String getUnescapedText() {
         if (InjectedLanguageManagerUtil.isInInjectedLanguagePrefixSuffix(this)) {
             // do not attempt to decode text if PsiElement is part of prefix/suffix
@@ -84,6 +88,7 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
         return InjectedLanguageManager.getInstance(getProject()).getUnescapedText(this);
     }
 
+    @RequiredReadAction
     public static boolean isLiteralExpression(@Nullable PsiElement context) {
         if (context == null) {
             return false;
