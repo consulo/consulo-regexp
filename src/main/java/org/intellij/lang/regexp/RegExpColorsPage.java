@@ -32,62 +32,55 @@ import java.util.Map;
  * @author traff
  */
 @ExtensionImpl
-public class RegExpColorsPage implements ColorSettingsPage
-{
-	private static final AttributesDescriptor[] ATTRS = new AttributesDescriptor[]{
-			new AttributesDescriptor("Keyword", RegExpHighlighter.META),
-			new AttributesDescriptor("Escaped character", RegExpHighlighter.ESC_CHARACTER),
-			new AttributesDescriptor("Invalid escape sequence", RegExpHighlighter.INVALID_CHARACTER_ESCAPE),
-			new AttributesDescriptor("Redundant escape sequence", RegExpHighlighter.REDUNDANT_ESCAPE),
-			new AttributesDescriptor("Brace", RegExpHighlighter.BRACES),
-			new AttributesDescriptor("Bracket", RegExpHighlighter.BRACKETS),
-			new AttributesDescriptor("Parenthesis", RegExpHighlighter.PARENTHS),
-			new AttributesDescriptor("Comma", RegExpHighlighter.COMMA),
-			new AttributesDescriptor("Bad character", RegExpHighlighter.BAD_CHARACTER),
-			new AttributesDescriptor("Character class", RegExpHighlighter.CHAR_CLASS),
-			new AttributesDescriptor("Quote character", RegExpHighlighter.QUOTE_CHARACTER),
-			new AttributesDescriptor("Comment", RegExpHighlighter.COMMENT)
-	};
+public class RegExpColorsPage implements ColorSettingsPage {
+    private static final AttributesDescriptor[] ATTRS = new AttributesDescriptor[]{
+        new AttributesDescriptor("Keyword", RegExpHighlighter.META),
+        new AttributesDescriptor("Escaped character", RegExpHighlighter.ESC_CHARACTER),
+        new AttributesDescriptor("Invalid escape sequence", RegExpHighlighter.INVALID_CHARACTER_ESCAPE),
+        new AttributesDescriptor("Redundant escape sequence", RegExpHighlighter.REDUNDANT_ESCAPE),
+        new AttributesDescriptor("Brace", RegExpHighlighter.BRACES),
+        new AttributesDescriptor("Bracket", RegExpHighlighter.BRACKETS),
+        new AttributesDescriptor("Parenthesis", RegExpHighlighter.PARENTHS),
+        new AttributesDescriptor("Comma", RegExpHighlighter.COMMA),
+        new AttributesDescriptor("Bad character", RegExpHighlighter.BAD_CHARACTER),
+        new AttributesDescriptor("Character class", RegExpHighlighter.CHAR_CLASS),
+        new AttributesDescriptor("Quote character", RegExpHighlighter.QUOTE_CHARACTER),
+        new AttributesDescriptor("Comment", RegExpHighlighter.COMMENT)
+    };
 
-	@NonNls
-	private static final HashMap<String, TextAttributesKey> ourTagToDescriptorMap = new HashMap<String, TextAttributesKey>();
+    @NonNls
+    private static final HashMap<String, TextAttributesKey> ourTagToDescriptorMap = new HashMap<String, TextAttributesKey>();
 
-	@Nonnull
-	public String getDisplayName()
-	{
-		return "RegExp";
-	}
+    @Nonnull
+    public String getDisplayName() {
+        return "RegExp";
+    }
 
-	@Nonnull
-	public AttributesDescriptor[] getAttributeDescriptors()
-	{
-		return ATTRS;
-	}
+    @Nonnull
+    public AttributesDescriptor[] getAttributeDescriptors() {
+        return ATTRS;
+    }
 
-	@Nonnull
-	public ColorDescriptor[] getColorDescriptors()
-	{
-		return ColorDescriptor.EMPTY_ARRAY;
-	}
+    @Nonnull
+    public ColorDescriptor[] getColorDescriptors() {
+        return ColorDescriptor.EMPTY_ARRAY;
+    }
 
-	@Nonnull
-	public SyntaxHighlighter getHighlighter()
-	{
-		final SyntaxHighlighter highlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(RegExpFileType.INSTANCE, null, null);
-		assert highlighter != null;
-		return highlighter;
-	}
+    @Nonnull
+    public SyntaxHighlighter getHighlighter() {
+        final SyntaxHighlighter highlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(RegExpFileType.INSTANCE, null, null);
+        assert highlighter != null;
+        return highlighter;
+    }
 
-	@Nonnull
-	public String getDemoText()
-	{
-		return
-				"^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}\\x0g\\#\\p{alpha}\\Q\\E$";
+    @Nonnull
+    public String getDemoText() {
+        return
+            "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}\\x0g\\#\\p{alpha}\\Q\\E$";
 
-	}
+    }
 
-	public Map<String, TextAttributesKey> getAdditionalHighlightingTagToDescriptorMap()
-	{
-		return ourTagToDescriptorMap;
-	}
+    public Map<String, TextAttributesKey> getAdditionalHighlightingTagToDescriptorMap() {
+        return ourTagToDescriptorMap;
+    }
 }

@@ -38,16 +38,16 @@ import java.util.regex.Pattern;
  * @author Anna Bulenkova
  */
 @ExtensionAPI(ComponentScope.APPLICATION)
-public interface RegExpModifierProvider extends LanguageExtension
-{
-	ExtensionPointCacheKey<RegExpModifierProvider, ByLanguageValue<List<RegExpModifierProvider>>> KEY = ExtensionPointCacheKey.create("RegExpModifierProvider", LanguageOneToMany.build(false));
+public interface RegExpModifierProvider extends LanguageExtension {
+    ExtensionPointCacheKey<RegExpModifierProvider, ByLanguageValue<List<RegExpModifierProvider>>> KEY =
+        ExtensionPointCacheKey.create("RegExpModifierProvider", LanguageOneToMany.build(false));
 
-	static List<RegExpModifierProvider> forLanguage(@Nonnull Language language)
-	{
-		ByLanguageValue<List<RegExpModifierProvider>> value = Application.get().getExtensionPoint(RegExpModifierProvider.class).getOrBuildCache(KEY);
-		return value.requiredGet(language);
-	}
+    static List<RegExpModifierProvider> forLanguage(@Nonnull Language language) {
+        ByLanguageValue<List<RegExpModifierProvider>> value =
+            Application.get().getExtensionPoint(RegExpModifierProvider.class).getOrBuildCache(KEY);
+        return value.requiredGet(language);
+    }
 
-	@MagicConstant(flagsFromClass = Pattern.class)
-	int getFlags(PsiElement elementInHost, PsiFile regexp);
+    @MagicConstant(flagsFromClass = Pattern.class)
+    int getFlags(PsiElement elementInHost, PsiFile regexp);
 }

@@ -17,10 +17,8 @@ package org.intellij.lang.regexp;
 
 import consulo.language.ast.IElementType;
 
-public class RegExpElementType extends IElementType
-{
-	RegExpElementType(String s)
-	{
-		super(s, RegExpLanguage.INSTANCE);
-	}
+public class RegExpElementType extends IElementType {
+    RegExpElementType(String s) {
+        super(s, RegExpLanguage.INSTANCE);
+    }
 }

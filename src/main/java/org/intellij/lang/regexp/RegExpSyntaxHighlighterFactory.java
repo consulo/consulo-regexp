@@ -25,32 +25,27 @@ import jakarta.inject.Inject;
 import javax.annotation.Nonnull;
 
 @ExtensionImpl
-public class RegExpSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHighlighterFactory
-{
-	private final ParserDefinition myParserDefinition;
+public class RegExpSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHighlighterFactory {
+    private final ParserDefinition myParserDefinition;
 
-	@Inject
-	public RegExpSyntaxHighlighterFactory()
-	{
-		this(RegExpLanguage.INSTANCE);
-	}
+    @Inject
+    public RegExpSyntaxHighlighterFactory() {
+        this(RegExpLanguage.INSTANCE);
+    }
 
-	@Nonnull
-	@Override
-	public Language getLanguage()
-	{
-		return RegExpLanguage.INSTANCE;
-	}
+    @Nonnull
+    @Override
+    public Language getLanguage() {
+        return RegExpLanguage.INSTANCE;
+    }
 
-	protected RegExpSyntaxHighlighterFactory(@Nonnull Language language)
-	{
-		myParserDefinition = ParserDefinition.forLanguage(language);
-	}
+    protected RegExpSyntaxHighlighterFactory(@Nonnull Language language) {
+        myParserDefinition = ParserDefinition.forLanguage(language);
+    }
 
 
-	@Nonnull
-	protected SyntaxHighlighter createHighlighter()
-	{
-		return new RegExpHighlighter(myParserDefinition);
-	}
+    @Nonnull
+    protected SyntaxHighlighter createHighlighter() {
+        return new RegExpHighlighter(myParserDefinition);
+    }
 }

@@ -32,47 +32,34 @@ import javax.annotation.Nonnull;
  * Annotator that is used to validate the "Value-Pattern" textfield: The regex entered there should contain exactly
  * one capturing group that determines the text-range the configured language will be injected into.
  */
-public class ValueRegExpAnnotator implements Annotator
-{
-	@Override
-	@RequiredReadAction
-	public void annotate(@Nonnull PsiElement psiElement, @Nonnull AnnotationHolder holder)
-	{
-		if(psiElement instanceof RegExpFile && psiElement.getCopyableUserData(InjectedLanguageManagerUtil.VALUE_PATTERN_KEY_FOR_ADVANCED_INJECT) == Boolean.TRUE)
-		{
-			final PsiElement pattern = psiElement.getFirstChild();
-			if(!(pattern instanceof RegExpPattern))
-			{
-				return;
-			}
+public class ValueRegExpAnnotator implements Annotator {
+    @Override
+    @RequiredReadAction
+    public void annotate(@Nonnull PsiElement psiElement, @Nonnull AnnotationHolder holder) {
+        if (psiElement instanceof RegExpFile
+            && psiElement.getCopyableUserData(InjectedLanguageManagerUtil.VALUE_PATTERN_KEY_FOR_ADVANCED_INJECT) == Boolean.TRUE
+            && psiElement.getFirstChild() instanceof RegExpPattern pattern) {
+            final RegExpBranch[] branches = pattern.getBranches();
+            if (branches.length == 1 && branches[0].getAtoms().length == 0) {
+                return;
+            }
 
-			final RegExpBranch[] branches = ((RegExpPattern) pattern).getBranches();
-			if(branches.length == 1 && branches[0].getAtoms().length == 0)
-			{
-				return;
-			}
+            for (RegExpBranch branch : branches) {
+                final int[] count = new int[1];
+                branch.accept(new RegExpRecursiveElementVisitor() {
+                    @Override
+                    public void visitRegExpGroup(RegExpGroup group) {
+                        if (group.isCapturing()) {
+                            count[0]++;
+                        }
+                        super.visitRegExpGroup(group);
+                    }
+                });
 
-			for(RegExpBranch branch : branches)
-			{
-				final int[] count = new int[1];
-				branch.accept(new RegExpRecursiveElementVisitor()
-				{
-					@Override
-					public void visitRegExpGroup(RegExpGroup group)
-					{
-						if(group.isCapturing())
-						{
-							count[0]++;
-						}
-						super.visitRegExpGroup(group);
-					}
-				});
-
-				if(count[0] != 1)
-				{
-					holder.createWarningAnnotation(branch, "The pattern should contain exactly one capturing group");
-				}
-			}
-		}
-	}
+                if (count[0] != 1) {
+                    holder.createWarningAnnotation(branch, "The pattern should contain exactly one capturing group");
+                }
+            }
+        }
+    }
 }
