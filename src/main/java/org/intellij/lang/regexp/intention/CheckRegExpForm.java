@@ -46,144 +46,125 @@ import java.util.regex.Pattern;
 /**
  * @author Konstantin Bulenkov
  */
-public class CheckRegExpForm
-{
-	private static final String LAST_EDITED_REGEXP = "last.edited.regexp";
-	private final PsiFile myRegexpFile;
+public class CheckRegExpForm {
+    private static final String LAST_EDITED_REGEXP = "last.edited.regexp";
+    private final PsiFile myRegexpFile;
 
-	private EditorTextField mySampleText;
-	private EditorTextField myRegExp;
+    private EditorTextField mySampleText;
+    private EditorTextField myRegExp;
 
-	private JPanel myRootPanel;
-	private JBLabel myMessage;
-	private Project myProject;
+    private JPanel myRootPanel;
+    private JBLabel myMessage;
+    private Project myProject;
 
-	public CheckRegExpForm(PsiFile file)
-	{
-		myRegexpFile = file;
+    public CheckRegExpForm(PsiFile file) {
+        myRegexpFile = file;
 
-		myProject = myRegexpFile.getProject();
+        myProject = myRegexpFile.getProject();
 
-		Document document = PsiDocumentManager.getInstance(myProject).getDocument(myRegexpFile);
+        Document document = PsiDocumentManager.getInstance(myProject).getDocument(myRegexpFile);
 
-		myRegExp = new EditorTextField(document, myProject, RegExpLanguage.INSTANCE.getAssociatedFileType());
-		myRegExp.setPreferredWidth(Math.max(300, myRegExp.getPreferredSize().width));
-		final String sampleText = ProjectPropertiesComponent.getInstance(myProject).getValue(LAST_EDITED_REGEXP, "Sample Text");
-		mySampleText = new EditorTextField(sampleText, myProject, PlainTextFileType.INSTANCE);
+        myRegExp = new EditorTextField(document, myProject, RegExpLanguage.INSTANCE.getAssociatedFileType());
+        myRegExp.setPreferredWidth(Math.max(300, myRegExp.getPreferredSize().width));
+        final String sampleText = ProjectPropertiesComponent.getInstance(myProject).getValue(LAST_EDITED_REGEXP, "Sample Text");
+        mySampleText = new EditorTextField(sampleText, myProject, PlainTextFileType.INSTANCE);
 
-		myRootPanel = new JPanel(new VerticalFlowLayout())
-		{
-			Disposable disposable;
+        myRootPanel = new JPanel(new VerticalFlowLayout()) {
+            Disposable disposable;
 
-			@Override
-			public void addNotify()
-			{
-				super.addNotify();
-				disposable = Disposable.newDisposable();
+            @Override
+            public void addNotify() {
+                super.addNotify();
+                disposable = Disposable.newDisposable();
 
-				IdeFocusManager.getGlobalInstance().requestFocus(mySampleText, true);
+                IdeFocusManager.getGlobalInstance().requestFocus(mySampleText, true);
 
-				new AnAction()
-				{
-					@RequiredUIAccess
-					@Override
-					public void actionPerformed(AnActionEvent e)
-					{
-						IdeFocusManager.findInstance().requestFocus(myRegExp.getFocusTarget(), true);
-					}
-				}.registerCustomShortcutSet(CustomShortcutSet.fromString("shift TAB"), mySampleText);
+                new AnAction() {
+                    @RequiredUIAccess
+                    @Override
+                    public void actionPerformed(AnActionEvent e) {
+                        IdeFocusManager.findInstance().requestFocus(myRegExp.getFocusTarget(), true);
+                    }
+                }.registerCustomShortcutSet(CustomShortcutSet.fromString("shift TAB"), mySampleText);
 
-				final Alarm updater = new Alarm(Alarm.ThreadToUse.SWING_THREAD, disposable);
-				DocumentAdapter documentListener = new DocumentAdapter()
-				{
-					@Override
-					public void documentChanged(DocumentEvent e)
-					{
-						updater.cancelAllRequests();
-						if(!updater.isDisposed())
-						{
-							updater.addRequest(() -> updateBalloon(), 200);
-						}
-					}
-				};
-				myRegExp.addDocumentListener(documentListener);
-				mySampleText.addDocumentListener(documentListener);
+                final Alarm updater = new Alarm(Alarm.ThreadToUse.SWING_THREAD, disposable);
+                DocumentAdapter documentListener = new DocumentAdapter() {
+                    @Override
+                    public void documentChanged(DocumentEvent e) {
+                        updater.cancelAllRequests();
+                        if (!updater.isDisposed()) {
+                            updater.addRequest(() -> updateBalloon(), 200);
+                        }
+                    }
+                };
+                myRegExp.addDocumentListener(documentListener);
+                mySampleText.addDocumentListener(documentListener);
 
-				updateBalloon();
-				mySampleText.selectAll();
-			}
+                updateBalloon();
+                mySampleText.selectAll();
+            }
 
-			@Override
-			public void removeNotify()
-			{
-				super.removeNotify();
-				Disposer.dispose(disposable);
-				ProjectPropertiesComponent.getInstance(myProject).setValue(LAST_EDITED_REGEXP, mySampleText.getText());
-			}
-		};
-		myRootPanel.setOpaque(false);
+            @Override
+            public void removeNotify() {
+                super.removeNotify();
+                Disposer.dispose(disposable);
+                ProjectPropertiesComponent.getInstance(myProject).setValue(LAST_EDITED_REGEXP, mySampleText.getText());
+            }
+        };
+        myRootPanel.setOpaque(false);
 
-		myMessage = new JBLabel();
+        myMessage = new JBLabel();
 
-		mySampleText.setOneLineMode(true);
+        mySampleText.setOneLineMode(true);
 
-		LabeledComponent<EditorTextField> regExpLabeled = LabeledComponent.create(myRegExp, "RegExp");
-		regExpLabeled.setOpaque(false);
-		myRootPanel.add(regExpLabeled);
-		LabeledComponent<EditorTextField> sampleLabeled = LabeledComponent.create(mySampleText, "Sample");
-		sampleLabeled.setOpaque(false);
-		myRootPanel.add(sampleLabeled);
-		BorderLayoutPanel borderLayoutPanel = new BorderLayoutPanel();
-		borderLayoutPanel.setOpaque(false);
+        LabeledComponent<EditorTextField> regExpLabeled = LabeledComponent.create(myRegExp, "RegExp");
+        regExpLabeled.setOpaque(false);
+        myRootPanel.add(regExpLabeled);
+        LabeledComponent<EditorTextField> sampleLabeled = LabeledComponent.create(mySampleText, "Sample");
+        sampleLabeled.setOpaque(false);
+        myRootPanel.add(sampleLabeled);
+        BorderLayoutPanel borderLayoutPanel = new BorderLayoutPanel();
+        borderLayoutPanel.setOpaque(false);
 
-		myRootPanel.add(borderLayoutPanel.addToRight(myMessage));
-	}
+        myRootPanel.add(borderLayoutPanel.addToRight(myMessage));
+    }
 
-	public JPanel getRootPanel()
-	{
-		return myRootPanel;
-	}
+    public JPanel getRootPanel() {
+        return myRootPanel;
+    }
 
-	private void updateBalloon()
-	{
-		boolean correct = isMatchingText(myRegexpFile, mySampleText.getText());
+    private void updateBalloon() {
+        boolean correct = isMatchingText(myRegexpFile, mySampleText.getText());
 
-		mySampleText.setBackground(correct ? LightColors.GREEN : LightColors.RED);
-		myMessage.setText(correct ? "Matches!" : "no match");
-		myRootPanel.revalidate();
-	}
+        mySampleText.setBackground(correct ? LightColors.GREEN : LightColors.RED);
+        myMessage.setText(correct ? "Matches!" : "no match");
+        myRootPanel.revalidate();
+    }
 
-	@TestOnly
-	public static boolean isMatchingTextTest(@Nonnull PsiFile regexpFile, @Nonnull String sampleText)
-	{
-		return isMatchingText(regexpFile, sampleText);
-	}
+    @TestOnly
+    public static boolean isMatchingTextTest(@Nonnull PsiFile regexpFile, @Nonnull String sampleText) {
+        return isMatchingText(regexpFile, sampleText);
+    }
 
-	private static boolean isMatchingText(@Nonnull PsiFile regexpFile, @Nonnull String sampleText)
-	{
-		final String regExp = regexpFile.getText();
+    private static boolean isMatchingText(@Nonnull PsiFile regexpFile, @Nonnull String sampleText) {
+        final String regExp = regexpFile.getText();
 
-		PsiLanguageInjectionHost host = InjectedLanguageManagerUtil.findInjectionHost(regexpFile);
-		int flags = 0;
-		if(host != null)
-		{
-			for(RegExpModifierProvider provider : RegExpModifierProvider.forLanguage(host.getLanguage()))
-			{
-				flags = provider.getFlags(host, regexpFile);
-				if(flags > 0)
-				{
-					break;
-				}
-			}
-		}
-		try
-		{
-			return Pattern.compile(regExp, flags).matcher(sampleText).matches();
-		}
-		catch(Exception ignore)
-		{
-		}
+        PsiLanguageInjectionHost host = InjectedLanguageManagerUtil.findInjectionHost(regexpFile);
+        int flags = 0;
+        if (host != null) {
+            for (RegExpModifierProvider provider : RegExpModifierProvider.forLanguage(host.getLanguage())) {
+                flags = provider.getFlags(host, regexpFile);
+                if (flags > 0) {
+                    break;
+                }
+            }
+        }
+        try {
+            return Pattern.compile(regExp, flags).matcher(sampleText).matches();
+        }
+        catch (Exception ignore) {
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

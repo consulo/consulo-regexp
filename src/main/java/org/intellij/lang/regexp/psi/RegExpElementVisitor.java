@@ -17,109 +17,87 @@ package org.intellij.lang.regexp.psi;
 
 import consulo.language.psi.PsiElementVisitor;
 
-public class RegExpElementVisitor extends PsiElementVisitor
-{
-	public void visitRegExpElement(RegExpElement element)
-	{
-	}
+public class RegExpElementVisitor extends PsiElementVisitor {
+    public void visitRegExpElement(RegExpElement element) {
+    }
 
-	public void visitRegExpChar(RegExpChar ch)
-	{
-		visitRegExpElement(ch);
-	}
+    public void visitRegExpChar(RegExpChar ch) {
+        visitRegExpElement(ch);
+    }
 
-	public void visitRegExpCharRange(RegExpCharRange range)
-	{
-		visitRegExpElement(range);
-	}
+    public void visitRegExpCharRange(RegExpCharRange range) {
+        visitRegExpElement(range);
+    }
 
-	public void visitSimpleClass(RegExpSimpleClass simpleClass)
-	{
-		visitRegExpElement(simpleClass);
-	}
+    public void visitSimpleClass(RegExpSimpleClass simpleClass) {
+        visitRegExpElement(simpleClass);
+    }
 
-	public void visitRegExpClass(RegExpClass expClass)
-	{
-		visitRegExpElement(expClass);
-	}
+    public void visitRegExpClass(RegExpClass expClass) {
+        visitRegExpElement(expClass);
+    }
 
-	public void visitRegExpGroup(RegExpGroup group)
-	{
-		visitRegExpElement(group);
-	}
+    public void visitRegExpGroup(RegExpGroup group) {
+        visitRegExpElement(group);
+    }
 
-	public void visitRegExpOptions(RegExpOptions options)
-	{
-		visitRegExpElement(options);
-	}
+    public void visitRegExpOptions(RegExpOptions options) {
+        visitRegExpElement(options);
+    }
 
-	public void visitRegExpProperty(RegExpProperty property)
-	{
-		visitRegExpElement(property);
-	}
+    public void visitRegExpProperty(RegExpProperty property) {
+        visitRegExpElement(property);
+    }
 
-	public void visitRegExpNamedCharacter(RegExpNamedCharacter namedCharacter)
-	{
-		visitRegExpElement(namedCharacter);
-	}
+    public void visitRegExpNamedCharacter(RegExpNamedCharacter namedCharacter) {
+        visitRegExpElement(namedCharacter);
+    }
 
-	public void visitRegExpBranch(RegExpBranch branch)
-	{
-		visitRegExpElement(branch);
-	}
+    public void visitRegExpBranch(RegExpBranch branch) {
+        visitRegExpElement(branch);
+    }
 
-	public void visitRegExpPattern(RegExpPattern pattern)
-	{
-		visitRegExpElement(pattern);
-	}
+    public void visitRegExpPattern(RegExpPattern pattern) {
+        visitRegExpElement(pattern);
+    }
 
-	public void visitRegExpBackref(RegExpBackref backref)
-	{
-		visitRegExpElement(backref);
-	}
+    public void visitRegExpBackref(RegExpBackref backref) {
+        visitRegExpElement(backref);
+    }
 
-	public void visitRegExpClosure(RegExpClosure closure)
-	{
-		visitRegExpElement(closure);
-	}
+    public void visitRegExpClosure(RegExpClosure closure) {
+        visitRegExpElement(closure);
+    }
 
-	public void visitRegExpQuantifier(RegExpQuantifier quantifier)
-	{
-		visitRegExpElement(quantifier);
-	}
+    public void visitRegExpQuantifier(RegExpQuantifier quantifier) {
+        visitRegExpElement(quantifier);
+    }
 
-	public void visitRegExpBoundary(RegExpBoundary boundary)
-	{
-		visitRegExpElement(boundary);
-	}
+    public void visitRegExpBoundary(RegExpBoundary boundary) {
+        visitRegExpElement(boundary);
+    }
 
-	public void visitRegExpSetOptions(RegExpSetOptions options)
-	{
-		visitRegExpElement(options);
-	}
+    public void visitRegExpSetOptions(RegExpSetOptions options) {
+        visitRegExpElement(options);
+    }
 
-	public void visitRegExpIntersection(RegExpIntersection intersection)
-	{
-		visitRegExpElement(intersection);
-	}
+    public void visitRegExpIntersection(RegExpIntersection intersection) {
+        visitRegExpElement(intersection);
+    }
 
-	public void visitRegExpUnion(RegExpUnion union)
-	{
-		visitRegExpElement(union);
-	}
+    public void visitRegExpUnion(RegExpUnion union) {
+        visitRegExpElement(union);
+    }
 
-	public void visitRegExpNamedGroupRef(RegExpNamedGroupRef groupRef)
-	{
-		visitRegExpElement(groupRef);
-	}
+    public void visitRegExpNamedGroupRef(RegExpNamedGroupRef groupRef) {
+        visitRegExpElement(groupRef);
+    }
 
-	public void visitRegExpPyCondRef(RegExpPyCondRef condRef)
-	{
-		visitRegExpElement(condRef);
-	}
+    public void visitRegExpPyCondRef(RegExpPyCondRef condRef) {
+        visitRegExpElement(condRef);
+    }
 
-	public void visitPosixBracketExpression(RegExpPosixBracketExpression posixBracketExpression)
-	{
-		visitRegExpElement(posixBracketExpression);
-	}
+    public void visitPosixBracketExpression(RegExpPosixBracketExpression posixBracketExpression) {
+        visitRegExpElement(posixBracketExpression);
+    }
 }

@@ -25,30 +25,25 @@ import javax.annotation.Nullable;
 /**
  * @author Bas Leijdekkers
  */
-public class RegExpNamedCharacterImpl extends RegExpElementImpl implements RegExpNamedCharacter
-{
-	public RegExpNamedCharacterImpl(ASTNode node)
-	{
-		super(node);
-	}
+public class RegExpNamedCharacterImpl extends RegExpElementImpl implements RegExpNamedCharacter {
+    public RegExpNamedCharacterImpl(ASTNode node) {
+        super(node);
+    }
 
-	@Nullable
-	@Override
-	public ASTNode getNameNode()
-	{
-		return getNode().findChildByType(RegExpTT.NAME);
-	}
+    @Nullable
+    @Override
+    public ASTNode getNameNode() {
+        return getNode().findChildByType(RegExpTT.NAME);
+    }
 
-	@Override
-	public String getName()
-	{
-		final ASTNode node = getNameNode();
-		return (node == null) ? null : node.getText();
-	}
+    @Override
+    public String getName() {
+        final ASTNode node = getNameNode();
+        return (node == null) ? null : node.getText();
+    }
 
-	@Override
-	public void accept(RegExpElementVisitor visitor)
-	{
-		visitor.visitRegExpNamedCharacter(this);
-	}
+    @Override
+    public void accept(RegExpElementVisitor visitor) {
+        visitor.visitRegExpNamedCharacter(this);
+    }
 }

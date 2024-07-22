@@ -39,38 +39,42 @@ public class RegExpCharImpl extends RegExpElementImpl implements RegExpChar {
         final IElementType t = child.getElementType();
         if (OCT_CHARS.contains(t)) {
             return Type.OCT;
-        } else if (HEX_CHARS.contains(t)) {
+        }
+        else if (HEX_CHARS.contains(t)) {
             return Type.HEX;
-        } else if (UNICODE_CHARS.contains(t)) {
+        }
+        else if (UNICODE_CHARS.contains(t)) {
             return Type.UNICODE;
-        } else if (t == TokenType.ERROR_ELEMENT) {
+        }
+        else if (t == TokenType.ERROR_ELEMENT) {
             return Type.INVALID;
-        } else {
+        }
+        else {
             return Type.CHAR;
         }
     }
 
     @Nullable
     public Character getValue() {
-      final String s = getUnescapedText();
-      if (s.equals("\\") && getType() == Type.CHAR) {
-        return '\\';
-      }
-      // special case for valid octal escaped sequences (see RUBY-12161)
-      if (s.startsWith("\\") && s.length() > 1) {
-        final ASTNode child = getNode().getFirstChildNode();
-        assert child != null;
-        final IElementType t = child.getElementType();
-        if (t == RegExpTT.OCT_CHAR) {
-          try {
-            return (char) Integer.parseInt(s.substring(1), 8);
-          }
-          catch (NumberFormatException e) {
-            // do nothing
-          }
+        final String s = getUnescapedText();
+        if (s.equals("\\") && getType() == Type.CHAR) {
+            return '\\';
         }
-      }
-      return unescapeChar(s);
+        // special case for valid octal escaped sequences (see RUBY-12161)
+        if (s.startsWith("\\") && s.length() > 1) {
+            final ASTNode child = getNode().getFirstChildNode();
+            assert child != null;
+            final IElementType t = child.getElementType();
+            if (t == RegExpTT.OCT_CHAR) {
+                try {
+                    return (char)Integer.parseInt(s.substring(1), 8);
+                }
+                catch (NumberFormatException e) {
+                    // do nothing
+                }
+            }
+        }
+        return unescapeChar(s);
     }
 
     @Nullable
@@ -83,32 +87,34 @@ public class RegExpCharImpl extends RegExpElementImpl implements RegExpChar {
             if (!escaped) {
                 if (ch == '\\') {
                     escaped = true;
-                } else {
+                }
+                else {
                     return ch;
                 }
-            } else {
+            }
+            else {
                 switch (ch) {
-                    case'n':
+                    case 'n':
                         return '\n';
-                    case'r':
+                    case 'r':
                         return '\r';
-                    case't':
+                    case 't':
                         return '\t';
-                    case'a':
+                    case 'a':
                         return '\u0007';
-                    case'e':
+                    case 'e':
                         return '\u001b';
-                    case'f':
+                    case 'f':
                         return '\f';
                     case 'b':
                         return '\b';
-                    case'c':
+                    case 'c':
                         return (char)(ch ^ 64);
-                    case'x':
+                    case 'x':
                         return parseNumber(idx, s, 16, 2, true);
-                    case'u':
+                    case 'u':
                         return parseNumber(idx, s, 16, 4, true);
-                    case'0':
+                    case '0':
                         return parseNumber(idx, s, 8, 3, false);
                     default:
                         if (Character.isLetter(ch)) {
@@ -132,9 +138,12 @@ public class RegExpCharImpl extends RegExpElementImpl implements RegExpChar {
                 sum *= radix;
                 sum += Integer.valueOf(s.substring(i, i + 1), radix);
             }
-            if (i-start == 0) return null;
-            return i-start < len && strict ? null : (char)sum;
-        } catch (NumberFormatException e1) {
+            if (i - start == 0) {
+                return null;
+            }
+            return i - start < len && strict ? null : (char)sum;
+        }
+        catch (NumberFormatException e1) {
             return null;
         }
     }

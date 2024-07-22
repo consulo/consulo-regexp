@@ -22,23 +22,19 @@ import org.intellij.lang.regexp.psi.RegExpIntersection;
 
 import javax.annotation.Nonnull;
 
-public class RegExpIntersectionImpl extends RegExpElementImpl implements RegExpIntersection
-{
-	public RegExpIntersectionImpl(ASTNode astNode)
-	{
-		super(astNode);
-	}
+public class RegExpIntersectionImpl extends RegExpElementImpl implements RegExpIntersection {
+    public RegExpIntersectionImpl(ASTNode astNode) {
+        super(astNode);
+    }
 
-	@Override
-	public void accept(RegExpElementVisitor visitor)
-	{
-		visitor.visitRegExpIntersection(this);
-	}
+    @Override
+    public void accept(RegExpElementVisitor visitor) {
+        visitor.visitRegExpIntersection(this);
+    }
 
-	@Override
-	@Nonnull
-	public RegExpClassElement[] getOperands()
-	{
-		return findChildrenByClass(RegExpClassElement.class);
-	}
+    @Override
+    @Nonnull
+    public RegExpClassElement[] getOperands() {
+        return findChildrenByClass(RegExpClassElement.class);
+    }
 }

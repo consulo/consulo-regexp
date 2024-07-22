@@ -22,44 +22,37 @@ import org.intellij.lang.regexp.psi.RegExpOptions;
 
 import javax.annotation.Nullable;
 
-public class RegExpOptionsImpl extends RegExpElementImpl implements RegExpOptions
-{
-	public RegExpOptionsImpl(ASTNode astNode)
-	{
-		super(astNode);
-	}
+public class RegExpOptionsImpl extends RegExpElementImpl implements RegExpOptions {
+    public RegExpOptionsImpl(ASTNode astNode) {
+        super(astNode);
+    }
 
-	@Override
-	public void accept(RegExpElementVisitor visitor)
-	{
-		visitor.visitRegExpOptions(this);
-	}
+    @Override
+    public void accept(RegExpElementVisitor visitor) {
+        visitor.visitRegExpOptions(this);
+    }
 
-	@Override
-	public boolean isSwitchedOn(char flag)
-	{
-		final ASTNode node = getOptionsOn();
-		return node != null && node.getText().indexOf(flag) >= 0;
-	}
+    @Override
+    public boolean isSwitchedOn(char flag) {
+        final ASTNode node = getOptionsOn();
+        return node != null && node.getText().indexOf(flag) >= 0;
+    }
 
-	@Override
-	public boolean isSwitchedOff(char flag)
-	{
-		final ASTNode node = getOptionsOff();
-		return node != null && node.getText().indexOf(flag) > 0;
-	}
+    @Override
+    public boolean isSwitchedOff(char flag) {
+        final ASTNode node = getOptionsOff();
+        return node != null && node.getText().indexOf(flag) > 0;
+    }
 
-	@Override
-	@Nullable
-	public ASTNode getOptionsOn()
-	{
-		return getNode().findChildByType(RegExpTT.OPTIONS_ON);
-	}
+    @Override
+    @Nullable
+    public ASTNode getOptionsOn() {
+        return getNode().findChildByType(RegExpTT.OPTIONS_ON);
+    }
 
-	@Override
-	@Nullable
-	public ASTNode getOptionsOff()
-	{
-		return getNode().findChildByType(RegExpTT.OPTIONS_OFF);
-	}
+    @Override
+    @Nullable
+    public ASTNode getOptionsOff() {
+        return getNode().findChildByType(RegExpTT.OPTIONS_OFF);
+    }
 }

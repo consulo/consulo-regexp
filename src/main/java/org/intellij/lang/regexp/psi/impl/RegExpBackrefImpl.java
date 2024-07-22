@@ -50,24 +50,22 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
     public RegExpGroup resolve() {
         final int index = getIndex();
 
-        final PsiElementProcessor.FindFilteredElement<RegExpElement> processor = new PsiElementProcessor.FindFilteredElement<RegExpElement>(new PsiElementFilter() {
-            int groupCount;
+        final PsiElementProcessor.FindFilteredElement<RegExpElement> processor =
+            new PsiElementProcessor.FindFilteredElement<>(new PsiElementFilter() {
+                int groupCount;
 
-            public boolean isAccepted(PsiElement element) {
-                if (element instanceof RegExpGroup) {
-                    if (((RegExpGroup)element).isCapturing() && ++groupCount == index) {
-                        return true;
+                public boolean isAccepted(PsiElement element) {
+                    if (element instanceof RegExpGroup group) {
+                        if (group.isCapturing() && ++groupCount == index) {
+                            return true;
+                        }
                     }
+                    return element == RegExpBackrefImpl.this;
                 }
-                return element == RegExpBackrefImpl.this;
-            }
-        });
+            });
 
         PsiTreeUtil.processElements(getContainingFile(), processor);
-        if (processor.getFoundElement() instanceof RegExpGroup) {
-            return (RegExpGroup)processor.getFoundElement();
-        }
-        return null;
+        return processor.getFoundElement() instanceof RegExpGroup group ? group : null;
     }
 
     public PsiReference getReference() {
@@ -85,8 +83,7 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
                 return getElement().getText();
             }
 
-            public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException
-			{
+            public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
                 throw new IncorrectOperationException();
             }
 
@@ -105,7 +102,7 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
             public PsiElement resolve() {
                 return RegExpBackrefImpl.this.resolve();
             }
-            
+
             @Nonnull
             public Object[] getVariants() {
                 return ArrayUtil.EMPTY_OBJECT_ARRAY;

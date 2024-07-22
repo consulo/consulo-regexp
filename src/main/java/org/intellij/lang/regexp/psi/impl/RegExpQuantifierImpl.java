@@ -51,20 +51,25 @@ public class RegExpQuantifierImpl extends RegExpElementImpl implements RegExpQua
         final IElementType type = nodes[0].getElementType();
         if (type == RegExpTT.QUEST) {
             return SimpleCount.ONE_OR_ZERO;
-        } else if (type == RegExpTT.STAR) {
+        }
+        else if (type == RegExpTT.STAR) {
             return SimpleCount.ZERO_OR_MORE;
-        } else if (type == RegExpTT.PLUS) {
+        }
+        else if (type == RegExpTT.PLUS) {
             return SimpleCount.ONE_OR_MORE;
-        } else if (type == RegExpTT.LBRACE) {
+        }
+        else if (type == RegExpTT.LBRACE) {
             final ASTNode[] numbers = getNode().getChildren(TokenSet.create(RegExpTT.NUMBER));
             if (numbers.length >= 1) {
                 final String min = numbers[0].getText();
                 final String max;
                 if (numbers.length == 2) {
                     max = numbers[1].getText();
-                } else if (getNode().findChildByType(RegExpTT.COMMA) != null) {
+                }
+                else if (getNode().findChildByType(RegExpTT.COMMA) != null) {
                     max = "";
-                } else {
+                }
+                else {
                     max = min;
                 }
                 return new RepeatedCount(min, max);
@@ -84,7 +89,8 @@ public class RegExpQuantifierImpl extends RegExpElementImpl implements RegExpQua
             final IElementType type = nodes[1].getElementType();
             if (type == RegExpTT.QUEST) {
                 return Type.RELUCTANT;
-            } else if (type == RegExpTT.PLUS) {
+            }
+            else if (type == RegExpTT.PLUS) {
                 return Type.POSSESSIVE;
             }
         }

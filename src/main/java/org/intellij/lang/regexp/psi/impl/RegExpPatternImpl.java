@@ -47,9 +47,9 @@ public class RegExpPatternImpl extends RegExpElementImpl implements RegExpPatter
         return branches;
     }
 
-  @Nonnull
-  @Override
-  public PsiReference[] getReferences() {
-    return ReferenceProvidersRegistry.getReferencesFromProviders(this, RegExpPattern.class);
-  }
+    @Nonnull
+    @Override
+    public PsiReference[] getReferences() {
+        return ReferenceProvidersRegistry.getReferencesFromProviders(this, RegExpPattern.class);
+    }
 }

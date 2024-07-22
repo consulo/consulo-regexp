@@ -19,21 +19,20 @@ import consulo.language.psi.PsiNamedElement;
 
 import javax.annotation.Nullable;
 
-public interface RegExpGroup extends RegExpAtom, PsiNamedElement
-{
-	boolean isCapturing();
+public interface RegExpGroup extends RegExpAtom, PsiNamedElement {
+    boolean isCapturing();
 
-	boolean isSimple();
+    boolean isSimple();
 
-	@Nullable
-	RegExpPattern getPattern();
+    @Nullable
+    RegExpPattern getPattern();
 
-	boolean isPythonNamedGroup();
+    boolean isPythonNamedGroup();
 
-	boolean isRubyNamedGroup();
+    boolean isRubyNamedGroup();
 
-	boolean isNamedGroup();
+    boolean isNamedGroup();
 
-	@Nullable
-	String getGroupName();
+    @Nullable
+    String getGroupName();
 }

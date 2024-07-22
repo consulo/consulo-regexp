@@ -35,6 +35,7 @@ public class RegExpCharRangeImpl extends RegExpElementImpl implements RegExpChar
     public Endpoint getFrom() {
         return (Endpoint)getCharNode(0);
     }
+
     @Nonnull
     public Endpoint getTo() {
         return (Endpoint)getCharNode(1);
