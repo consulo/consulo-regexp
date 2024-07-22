@@ -18,7 +18,6 @@ package org.intellij.lang.regexp.psi;
 import javax.annotation.Nonnull;
 
 public interface RegExpQuantifier extends RegExpAtom {
-
     @Nonnull
     RegExpAtom getAtom();
 
@@ -32,7 +31,7 @@ public interface RegExpQuantifier extends RegExpAtom {
     Count getCount();
 
     /**
-     * The "greedyness" type of the quantifier.  
+     * The "greedyness" type of the quantifier.
      */
     @Nonnull
     Type getType();
@@ -40,6 +39,7 @@ public interface RegExpQuantifier extends RegExpAtom {
     interface Count {
         @Nonnull
         String getMin();
+
         @Nonnull
         String getMax();
     }
@@ -64,6 +64,7 @@ public interface RegExpQuantifier extends RegExpAtom {
         public String getMin() {
             return myMin;
         }
+
         @Nonnull
         public String getMax() {
             return myMax;
@@ -78,9 +79,11 @@ public interface RegExpQuantifier extends RegExpAtom {
         POSSESSIVE("+");
 
         private final String myToken;
+
         Type(String ch) {
             myToken = ch;
         }
+
         public String getToken() {
             return myToken;
         }

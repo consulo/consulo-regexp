@@ -29,8 +29,7 @@ import org.intellij.lang.regexp.psi.impl.RegExpElementImpl;
 
 import javax.annotation.Nonnull;
 
-class RemoveRedundantEscapeAction implements IntentionAction
-{
+class RemoveRedundantEscapeAction implements IntentionAction {
     private final RegExpChar myChar;
 
     public RemoveRedundantEscapeAction(RegExpChar ch) {
@@ -51,8 +50,7 @@ class RemoveRedundantEscapeAction implements IntentionAction
         return myChar.isValid() && myChar.getUnescapedText().startsWith("\\");
     }
 
-    public void invoke(@Nonnull Project project, Editor editor, PsiFile file) throws IncorrectOperationException
-	{
+    public void invoke(@Nonnull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
         final Character v = myChar.getValue();
         assert v != null;
 
@@ -65,13 +63,13 @@ class RemoveRedundantEscapeAction implements IntentionAction
     private String replacement(Character v) {
         final PsiElement context = myChar.getContainingFile().getContext();
         return RegExpElementImpl.isLiteralExpression(context) ?
-                StringUtil.escapeStringCharacters(v.toString()) :
+            StringUtil.escapeStringCharacters(v.toString()) :
                 /*(context instanceof XmlElement ?
                         XmlStringUtil.escapeString(v.toString()) : */
-                        v.toString()/*)*/;
+            v.toString()/*)*/;
     }
 
-  public boolean startInWriteAction() {
+    public boolean startInWriteAction() {
         return true;
     }
 }

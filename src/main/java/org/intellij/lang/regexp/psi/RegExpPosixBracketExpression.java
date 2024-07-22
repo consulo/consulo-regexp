@@ -18,7 +18,6 @@ package org.intellij.lang.regexp.psi;
 /**
  * @author Bas Leijdekkers
  */
-public interface RegExpPosixBracketExpression extends RegExpClassElement
-{
-	String getClassName();
+public interface RegExpPosixBracketExpression extends RegExpClassElement {
+    String getClassName();
 }

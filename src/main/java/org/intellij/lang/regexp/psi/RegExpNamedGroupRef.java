@@ -20,17 +20,16 @@ import javax.annotation.Nullable;
 /**
  * @author yole
  */
-public interface RegExpNamedGroupRef extends RegExpAtom
-{
-	@Nullable
-	RegExpGroup resolve();
+public interface RegExpNamedGroupRef extends RegExpAtom {
+    @Nullable
+    RegExpGroup resolve();
 
-	@Nullable
-	String getGroupName();
+    @Nullable
+    String getGroupName();
 
-	boolean isPythonNamedGroupRef();
+    boolean isPythonNamedGroupRef();
 
-	boolean isRubyNamedGroupRef();
+    boolean isRubyNamedGroupRef();
 
-	boolean isNamedGroupRef();
+    boolean isNamedGroupRef();
 }

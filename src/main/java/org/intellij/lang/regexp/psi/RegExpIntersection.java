@@ -20,9 +20,7 @@ import javax.annotation.Nonnull;
 /**
  * Represents an intersection of class elements: [a-z&&[^cd]]
  */
-public interface RegExpIntersection extends RegExpClassElement
-{
-
-	@Nonnull
-	RegExpClassElement[] getOperands();
+public interface RegExpIntersection extends RegExpClassElement {
+    @Nonnull
+    RegExpClassElement[] getOperands();
 }

@@ -32,5 +32,5 @@ public interface RegExpProperty extends RegExpAtom, RegExpClassElement {
      * The node the represents the category name, e.g. "Digit"
      */
     @Nullable
-	ASTNode getCategoryNode();
+    ASTNode getCategoryNode();
 }
