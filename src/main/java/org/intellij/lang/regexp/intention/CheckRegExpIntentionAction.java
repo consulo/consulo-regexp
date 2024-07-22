@@ -42,51 +42,43 @@ import javax.swing.*;
  */
 @ExtensionImpl
 @IntentionMetaData(ignoreId = "regexp.CheckRegExpIntentionAction", categories = "RegExp", fileExtensions = "regexp")
-public class CheckRegExpIntentionAction extends QuickEditAction implements Iconable
-{
-	@RequiredReadAction
-	@Override
-	public boolean isAvailable(@Nonnull Project project, Editor editor, PsiFile file)
-	{
-		final Pair<PsiElement, TextRange> pair = getRangePair(file, editor);
-		/*super.isAvailable(project, editor, file) && */
-		if(pair != null && pair.first != null)
-		{
-			Language language = pair.first.getLanguage();
-			Language baseLanguage = language.getBaseLanguage();
-			return language == RegExpLanguage.INSTANCE || baseLanguage == RegExpLanguage.INSTANCE;
-		}
-		return false;
-	}
+public class CheckRegExpIntentionAction extends QuickEditAction implements Iconable {
+    @RequiredReadAction
+    @Override
+    public boolean isAvailable(@Nonnull Project project, Editor editor, PsiFile file) {
+        final Pair<PsiElement, TextRange> pair = getRangePair(file, editor);
+        /*super.isAvailable(project, editor, file) && */
+        if (pair != null && pair.first != null) {
+            Language language = pair.first.getLanguage();
+            Language baseLanguage = language.getBaseLanguage();
+            return language == RegExpLanguage.INSTANCE || baseLanguage == RegExpLanguage.INSTANCE;
+        }
+        return false;
+    }
 
-	@Override
-	public boolean isShowInBalloon()
-	{
-		return true;
-	}
+    @Override
+    public boolean isShowInBalloon() {
+        return true;
+    }
 
-	@Override
-	public JComponent createBalloonComponent(PsiFile file)
-	{
-		final Project project = file.getProject();
-		final Document document = PsiDocumentManager.getInstance(project).getDocument(file);
-		if(document != null)
-		{
-			return new CheckRegExpForm(file).getRootPanel();
-		}
-		return null;
-	}
+    @Override
+    public JComponent createBalloonComponent(PsiFile file) {
+        final Project project = file.getProject();
+        final Document document = PsiDocumentManager.getInstance(project).getDocument(file);
+        if (document != null) {
+            return new CheckRegExpForm(file).getRootPanel();
+        }
+        return null;
+    }
 
-	@Nonnull
-	@Override
-	public String getText()
-	{
-		return "Check RegExp";
-	}
+    @Nonnull
+    @Override
+    public String getText() {
+        return "Check RegExp";
+    }
 
-	@Override
-	public Image getIcon(int flags)
-	{
-		return RegExpIconGroup.regexp();
-	}
+    @Override
+    public Image getIcon(int flags) {
+        return RegExpIconGroup.regexp();
+    }
 }

@@ -20,10 +20,9 @@ import consulo.language.psi.PsiElement;
 
 import javax.annotation.Nonnull;
 
-public interface RegExpElement extends PsiElement
-{
-	@Nonnull
-	ASTNode getNode();
+public interface RegExpElement extends PsiElement {
+    @Nonnull
+    ASTNode getNode();
 
-	String getUnescapedText();
+    String getUnescapedText();
 }

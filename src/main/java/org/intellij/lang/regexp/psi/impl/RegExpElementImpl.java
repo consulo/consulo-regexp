@@ -43,7 +43,7 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
     }
 
     @Nonnull
-    @SuppressWarnings({ "ConstantConditions", "EmptyMethod" })
+    @SuppressWarnings({"ConstantConditions", "EmptyMethod"})
     public ASTNode getNode() {
         return super.getNode();
     }
@@ -55,7 +55,8 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
     public void accept(@Nonnull PsiElementVisitor visitor) {
         if (visitor instanceof RegExpElementVisitor) {
             accept((RegExpElementVisitor)visitor);
-        } else {
+        }
+        else {
             super.accept(visitor);
         }
     }
@@ -83,14 +84,16 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
         return InjectedLanguageManager.getInstance(getProject()).getUnescapedText(this);
     }
 
-  public static boolean isLiteralExpression(@Nullable PsiElement context) {
-    if (context == null) return false;
-    final ASTNode astNode = context.getNode();
-    if (astNode == null) {
-      return false;
+    public static boolean isLiteralExpression(@Nullable PsiElement context) {
+        if (context == null) {
+            return false;
+        }
+        final ASTNode astNode = context.getNode();
+        if (astNode == null) {
+            return false;
+        }
+        final IElementType elementType = astNode.getElementType();
+        final ParserDefinition parserDefinition = ParserDefinition.forLanguage(context.getLanguage());
+        return parserDefinition.getStringLiteralElements(context.getLanguageVersion()).contains(elementType);
     }
-    final IElementType elementType = astNode.getElementType();
-    final ParserDefinition parserDefinition = ParserDefinition.forLanguage(context.getLanguage());
-    return parserDefinition.getStringLiteralElements(context.getLanguageVersion()).contains(elementType);
-  }
 }

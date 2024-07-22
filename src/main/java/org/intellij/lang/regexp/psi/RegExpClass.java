@@ -20,14 +20,12 @@ import javax.annotation.Nonnull;
 /**
  * Represents a class indicated by [...]
  */
-public interface RegExpClass extends RegExpAtom, RegExpClassElement
-{
+public interface RegExpClass extends RegExpAtom, RegExpClassElement {
+    /**
+     * @return true, if the class is negated: [^...]
+     */
+    boolean isNegated();
 
-	/**
-	 * @return true, if the class is negated: [^...]
-	 */
-	boolean isNegated();
-
-	@Nonnull
-	RegExpClassElement[] getElements();
+    @Nonnull
+    RegExpClassElement[] getElements();
 }

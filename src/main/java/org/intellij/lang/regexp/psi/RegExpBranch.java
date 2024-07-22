@@ -23,7 +23,8 @@ import javax.annotation.Nonnull;
 public interface RegExpBranch extends RegExpElement {
     /**
      * Returns the atoms making up the branch.
-     * @see org.intellij.lang.regexp.psi.RegExpAtom 
+     *
+     * @see org.intellij.lang.regexp.psi.RegExpAtom
      */
     @Nonnull
     RegExpAtom[] getAtoms();

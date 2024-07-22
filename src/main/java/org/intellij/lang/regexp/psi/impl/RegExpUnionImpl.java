@@ -25,24 +25,20 @@ import javax.annotation.Nonnull;
 /**
  * @author Bas Leijdekkers
  */
-public class RegExpUnionImpl extends RegExpElementImpl implements RegExpUnion
-{
+public class RegExpUnionImpl extends RegExpElementImpl implements RegExpUnion {
 
-	public RegExpUnionImpl(ASTNode astNode)
-	{
-		super(astNode);
-	}
+    public RegExpUnionImpl(ASTNode astNode) {
+        super(astNode);
+    }
 
-	@Override
-	public void accept(RegExpElementVisitor visitor)
-	{
-		visitor.visitRegExpUnion(this);
-	}
+    @Override
+    public void accept(RegExpElementVisitor visitor) {
+        visitor.visitRegExpUnion(this);
+    }
 
-	@Nonnull
-	@Override
-	public RegExpClassElement[] getElements()
-	{
-		return findChildrenByClass(RegExpClassElement.class);
-	}
+    @Nonnull
+    @Override
+    public RegExpClassElement[] getElements() {
+        return findChildrenByClass(RegExpClassElement.class);
+    }
 }

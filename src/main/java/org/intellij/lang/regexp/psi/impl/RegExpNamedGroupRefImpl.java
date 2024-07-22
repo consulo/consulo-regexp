@@ -36,138 +36,125 @@ import javax.annotation.Nullable;
 /**
  * @author yole
  */
-public class RegExpNamedGroupRefImpl extends RegExpElementImpl implements RegExpNamedGroupRef
-{
-	private static final TokenSet RUBY_GROUP_REF_TOKENS = TokenSet.create(RegExpTT.RUBY_NAMED_GROUP_REF, RegExpTT.RUBY_QUOTED_NAMED_GROUP_REF, RegExpTT.RUBY_NAMED_GROUP_CALL, RegExpTT
-			.RUBY_QUOTED_NAMED_GROUP_CALL);
-	private static final TokenSet GROUP_REF_TOKENS = TokenSet.create(RegExpTT.PYTHON_NAMED_GROUP_REF, RegExpTT.RUBY_NAMED_GROUP_REF, RegExpTT.RUBY_QUOTED_NAMED_GROUP_REF, RegExpTT
-			.RUBY_NAMED_GROUP_CALL, RegExpTT.RUBY_QUOTED_NAMED_GROUP_CALL);
+public class RegExpNamedGroupRefImpl extends RegExpElementImpl implements RegExpNamedGroupRef {
+    private static final TokenSet RUBY_GROUP_REF_TOKENS = TokenSet.create(
+        RegExpTT.RUBY_NAMED_GROUP_REF,
+        RegExpTT.RUBY_QUOTED_NAMED_GROUP_REF,
+        RegExpTT.RUBY_NAMED_GROUP_CALL,
+        RegExpTT.RUBY_QUOTED_NAMED_GROUP_CALL
+    );
+    private static final TokenSet GROUP_REF_TOKENS = TokenSet.create(
+        RegExpTT.PYTHON_NAMED_GROUP_REF,
+        RegExpTT.RUBY_NAMED_GROUP_REF,
+        RegExpTT.RUBY_QUOTED_NAMED_GROUP_REF,
+        RegExpTT.RUBY_NAMED_GROUP_CALL,
+        RegExpTT.RUBY_QUOTED_NAMED_GROUP_CALL
+    );
 
-	public RegExpNamedGroupRefImpl(ASTNode node)
-	{
-		super(node);
-	}
+    public RegExpNamedGroupRefImpl(ASTNode node) {
+        super(node);
+    }
 
-	@Override
-	public void accept(RegExpElementVisitor visitor)
-	{
-		visitor.visitRegExpNamedGroupRef(this);
-	}
+    @Override
+    public void accept(RegExpElementVisitor visitor) {
+        visitor.visitRegExpNamedGroupRef(this);
+    }
 
-	@Nullable
-	public RegExpGroup resolve()
-	{
-		final PsiElementProcessor.FindFilteredElement<RegExpGroup> processor = new PsiElementProcessor.FindFilteredElement<>(new PsiElementFilter()
-		{
-			public boolean isAccepted(PsiElement element)
-			{
-				if(!(element instanceof RegExpGroup))
-				{
-					return false;
-				}
-				final RegExpGroup regExpGroup = (RegExpGroup) element;
-				return (regExpGroup.isPythonNamedGroup() || regExpGroup.isRubyNamedGroup()) && Comparing.equal(getGroupName(), regExpGroup.getGroupName());
-			}
-		});
-		PsiTreeUtil.processElements(getContainingFile(), processor);
-		return processor.getFoundElement();
-	}
+    @Nullable
+    public RegExpGroup resolve() {
+        final PsiElementProcessor.FindFilteredElement<RegExpGroup> processor =
+            new PsiElementProcessor.FindFilteredElement<>((PsiElementFilter)element -> {
+                if (!(element instanceof RegExpGroup)) {
+                    return false;
+                }
+                final RegExpGroup regExpGroup = (RegExpGroup)element;
+                return (regExpGroup.isPythonNamedGroup() || regExpGroup.isRubyNamedGroup()) && Comparing.equal(
+                    getGroupName(),
+                    regExpGroup.getGroupName()
+                );
+            });
+        PsiTreeUtil.processElements(getContainingFile(), processor);
+        return processor.getFoundElement();
+    }
 
-	@Nullable
-	public String getGroupName()
-	{
-		final ASTNode nameNode = getNode().findChildByType(RegExpTT.NAME);
-		return nameNode != null ? nameNode.getText() : null;
-	}
+    @Nullable
+    public String getGroupName() {
+        final ASTNode nameNode = getNode().findChildByType(RegExpTT.NAME);
+        return nameNode != null ? nameNode.getText() : null;
+    }
 
-	@Override
-	public boolean isPythonNamedGroupRef()
-	{
-		return getNode().findChildByType(RegExpTT.PYTHON_NAMED_GROUP_REF) != null;
-	}
+    @Override
+    public boolean isPythonNamedGroupRef() {
+        return getNode().findChildByType(RegExpTT.PYTHON_NAMED_GROUP_REF) != null;
+    }
 
-	@Override
-	public boolean isRubyNamedGroupRef()
-	{
-		final ASTNode node = getNode();
-		return node.findChildByType(RUBY_GROUP_REF_TOKENS) != null;
-	}
+    @Override
+    public boolean isRubyNamedGroupRef() {
+        final ASTNode node = getNode();
+        return node.findChildByType(RUBY_GROUP_REF_TOKENS) != null;
+    }
 
-	@Override
-	public boolean isNamedGroupRef()
-	{
-		return getNode().findChildByType(RegExpTT.RUBY_NAMED_GROUP_REF) != null;
-	}
+    @Override
+    public boolean isNamedGroupRef() {
+        return getNode().findChildByType(RegExpTT.RUBY_NAMED_GROUP_REF) != null;
+    }
 
-	@Override
-	public PsiReference getReference()
-	{
-		return new PsiReference()
-		{
-			public PsiElement getElement()
-			{
-				return RegExpNamedGroupRefImpl.this;
-			}
+    @Override
+    public PsiReference getReference() {
+        return new PsiReference() {
+            public PsiElement getElement() {
+                return RegExpNamedGroupRefImpl.this;
+            }
 
-			@Override
-			public TextRange getRangeInElement()
-			{
-				final ASTNode groupNode = getNode().findChildByType(GROUP_REF_TOKENS);
-				assert groupNode != null;
-				return new TextRange(groupNode.getTextLength(), getTextLength() - 1);
-			}
+            @Override
+            public TextRange getRangeInElement() {
+                final ASTNode groupNode = getNode().findChildByType(GROUP_REF_TOKENS);
+                assert groupNode != null;
+                return new TextRange(groupNode.getTextLength(), getTextLength() - 1);
+            }
 
-			public PsiElement resolve()
-			{
-				return RegExpNamedGroupRefImpl.this.resolve();
-			}
+            public PsiElement resolve() {
+                return RegExpNamedGroupRefImpl.this.resolve();
+            }
 
-			@Nonnull
-			public String getCanonicalText()
-			{
-				return getRangeInElement().substring(getText());
-			}
+            @Nonnull
+            public String getCanonicalText() {
+                return getRangeInElement().substring(getText());
+            }
 
-			public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException
-			{
-				throw new UnsupportedOperationException();
-			}
+            public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+                throw new UnsupportedOperationException();
+            }
 
-			public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException
-			{
-				throw new UnsupportedOperationException();
-			}
+            public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException {
+                throw new UnsupportedOperationException();
+            }
 
-			public boolean isReferenceTo(PsiElement element)
-			{
-				return resolve() == element;
-			}
+            public boolean isReferenceTo(PsiElement element) {
+                return resolve() == element;
+            }
 
-			@Override
-			@Nonnull
-			public Object[] getVariants()
-			{
-				final PsiElementProcessor.CollectFilteredElements<RegExpGroup> processor = new PsiElementProcessor.CollectFilteredElements<>(new PsiElementFilter()
-				{
-					@Override
-					public boolean isAccepted(PsiElement element)
-					{
-						if(!(element instanceof RegExpGroup))
-						{
-							return false;
-						}
-						final RegExpGroup regExpGroup = (RegExpGroup) element;
-						return regExpGroup.isPythonNamedGroup() || regExpGroup.isRubyNamedGroup();
-					}
-				});
-				PsiTreeUtil.processElements(getContainingFile(), processor);
-				return processor.toArray();
-			}
+            @Override
+            @Nonnull
+            public Object[] getVariants() {
+                final PsiElementProcessor.CollectFilteredElements<RegExpGroup> processor =
+                    new PsiElementProcessor.CollectFilteredElements<>(new PsiElementFilter() {
+                        @Override
+                        public boolean isAccepted(PsiElement element) {
+                            if (!(element instanceof RegExpGroup)) {
+                                return false;
+                            }
+                            final RegExpGroup regExpGroup = (RegExpGroup)element;
+                            return regExpGroup.isPythonNamedGroup() || regExpGroup.isRubyNamedGroup();
+                        }
+                    });
+                PsiTreeUtil.processElements(getContainingFile(), processor);
+                return processor.toArray();
+            }
 
-			public boolean isSoft()
-			{
-				return false;
-			}
-		};
-	}
+            public boolean isSoft() {
+                return false;
+            }
+        };
+    }
 }

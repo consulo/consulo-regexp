@@ -29,11 +29,16 @@ public interface RegExpChar extends RegExpAtom, RegExpClassElement, RegExpCharRa
      * a unicode escape character ("\u0061")
      */
     enum Type {
-        CHAR, HEX, OCT, UNICODE, INVALID
+        CHAR,
+        HEX,
+        OCT,
+        UNICODE,
+        INVALID
     }
 
     /**
      * Returns the type of this character.
+     *
      * @see org.intellij.lang.regexp.psi.RegExpChar.Type
      */
     @Nonnull

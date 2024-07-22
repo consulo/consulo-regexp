@@ -23,23 +23,19 @@ import org.intellij.lang.regexp.psi.RegExpPosixBracketExpression;
 /**
  * @author Bas Leijdekkers
  */
-public class RegExpPosixBracketExpressionImpl extends RegExpElementImpl implements RegExpPosixBracketExpression
-{
-	public RegExpPosixBracketExpressionImpl(ASTNode astNode)
-	{
-		super(astNode);
-	}
+public class RegExpPosixBracketExpressionImpl extends RegExpElementImpl implements RegExpPosixBracketExpression {
+    public RegExpPosixBracketExpressionImpl(ASTNode astNode) {
+        super(astNode);
+    }
 
-	@Override
-	public void accept(RegExpElementVisitor visitor)
-	{
-		visitor.visitPosixBracketExpression(this);
-	}
+    @Override
+    public void accept(RegExpElementVisitor visitor) {
+        visitor.visitPosixBracketExpression(this);
+    }
 
-	@Override
-	public String getClassName()
-	{
-		final ASTNode nameNode = getNode().findChildByType(RegExpTT.NAME);
-		return nameNode != null ? nameNode.getText() : null;
-	}
+    @Override
+    public String getClassName() {
+        final ASTNode nameNode = getNode().findChildByType(RegExpTT.NAME);
+        return nameNode != null ? nameNode.getText() : null;
+    }
 }

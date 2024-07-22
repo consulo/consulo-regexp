@@ -28,76 +28,63 @@ import org.jetbrains.annotations.NonNls;
 
 import javax.annotation.Nonnull;
 
-public class RegExpGroupImpl extends RegExpElementImpl implements RegExpGroup
-{
-	public RegExpGroupImpl(ASTNode astNode)
-	{
-		super(astNode);
-	}
+public class RegExpGroupImpl extends RegExpElementImpl implements RegExpGroup {
+    public RegExpGroupImpl(ASTNode astNode) {
+        super(astNode);
+    }
 
-	public void accept(RegExpElementVisitor visitor)
-	{
-		visitor.visitRegExpGroup(this);
-	}
+    public void accept(RegExpElementVisitor visitor) {
+        visitor.visitRegExpGroup(this);
+    }
 
-	public boolean isCapturing()
-	{
-		final ASTNode node = getNode().getFirstChildNode();
-		if(node == null)
-		{
-			return false;
-		}
-		final IElementType type = node.getElementType();
-		return type == RegExpTT.GROUP_BEGIN || type == RegExpTT.RUBY_NAMED_GROUP ||
-				type == RegExpTT.RUBY_QUOTED_NAMED_GROUP || type == RegExpTT.PYTHON_NAMED_GROUP;
-	}
+    public boolean isCapturing() {
+        final ASTNode node = getNode().getFirstChildNode();
+        if (node == null) {
+            return false;
+        }
+        final IElementType type = node.getElementType();
+        return type == RegExpTT.GROUP_BEGIN || type == RegExpTT.RUBY_NAMED_GROUP ||
+            type == RegExpTT.RUBY_QUOTED_NAMED_GROUP || type == RegExpTT.PYTHON_NAMED_GROUP;
+    }
 
-	public boolean isSimple()
-	{
-		final ASTNode node = getNode().getFirstChildNode();
-		return node != null && (node.getElementType() == RegExpTT.GROUP_BEGIN || node.getElementType() == RegExpTT.NON_CAPT_GROUP);
-	}
+    public boolean isSimple() {
+        final ASTNode node = getNode().getFirstChildNode();
+        return node != null && (node.getElementType() == RegExpTT.GROUP_BEGIN || node.getElementType() == RegExpTT.NON_CAPT_GROUP);
+    }
 
-	public RegExpPattern getPattern()
-	{
-		final ASTNode node = getNode().findChildByType(RegExpElementTypes.PATTERN);
-		return node != null ? (RegExpPattern) node.getPsi() : null;
-	}
+    public RegExpPattern getPattern() {
+        final ASTNode node = getNode().findChildByType(RegExpElementTypes.PATTERN);
+        return node != null ? (RegExpPattern)node.getPsi() : null;
+    }
 
-	public boolean isPythonNamedGroup()
-	{
-		return getNode().findChildByType(RegExpTT.PYTHON_NAMED_GROUP) != null;
-	}
+    public boolean isPythonNamedGroup() {
+        return getNode().findChildByType(RegExpTT.PYTHON_NAMED_GROUP) != null;
+    }
 
-	public boolean isRubyNamedGroup()
-	{
-		return getNode().findChildByType(RegExpTT.RUBY_NAMED_GROUP) != null || getNode().findChildByType(RegExpTT.RUBY_QUOTED_NAMED_GROUP) != null;
-	}
+    public boolean isRubyNamedGroup() {
+        return getNode().findChildByType(RegExpTT.RUBY_NAMED_GROUP) != null
+            || getNode().findChildByType(RegExpTT.RUBY_QUOTED_NAMED_GROUP) != null;
+    }
 
-	public boolean isNamedGroup()
-	{
-		return getNode().findChildByType(RegExpTT.RUBY_NAMED_GROUP) != null;
-	}
+    public boolean isNamedGroup() {
+        return getNode().findChildByType(RegExpTT.RUBY_NAMED_GROUP) != null;
+    }
 
-	public String getGroupName()
-	{
-		if(!isPythonNamedGroup() && !isRubyNamedGroup())
-		{
-			return null;
-		}
-		final ASTNode nameNode = getNode().findChildByType(RegExpTT.NAME);
-		return nameNode != null ? nameNode.getText() : null;
-	}
+    public String getGroupName() {
+        if (!isPythonNamedGroup() && !isRubyNamedGroup()) {
+            return null;
+        }
+        final ASTNode nameNode = getNode().findChildByType(RegExpTT.NAME);
+        return nameNode != null ? nameNode.getText() : null;
+    }
 
-	@Override
-	public String getName()
-	{
-		return getGroupName();
-	}
+    @Override
+    public String getName() {
+        return getGroupName();
+    }
 
-	@Override
-	public PsiElement setName(@NonNls @Nonnull String name) throws IncorrectOperationException
-	{
-		throw new IncorrectOperationException();
-	}
+    @Override
+    public PsiElement setName(@NonNls @Nonnull String name) throws IncorrectOperationException {
+        throw new IncorrectOperationException();
+    }
 }
