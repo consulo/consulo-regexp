@@ -74,7 +74,7 @@ public class CheckRegExpForm {
             Disposable disposable;
 
             @Override
-            @RequiredReadAction
+            @RequiredUIAccess
             public void addNotify() {
                 super.addNotify();
                 disposable = Disposable.newDisposable();
