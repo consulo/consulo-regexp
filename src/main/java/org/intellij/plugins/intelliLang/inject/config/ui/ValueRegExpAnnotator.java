@@ -59,7 +59,8 @@ public class ValueRegExpAnnotator implements Annotator {
 
                 if (count[0] != 1) {
                     holder.newAnnotation(HighlightSeverity.WARNING, "The pattern should contain exactly one capturing group")
-                        .range(branch);
+                        .range(branch)
+                        .create();
                 }
             }
         }
