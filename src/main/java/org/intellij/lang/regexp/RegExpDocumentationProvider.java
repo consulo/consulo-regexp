@@ -21,7 +21,6 @@ import consulo.language.ast.ASTNode;
 import consulo.language.editor.documentation.AbstractDocumentationProvider;
 import consulo.language.editor.documentation.LanguageDocumentationProvider;
 import consulo.language.psi.PsiElement;
-import org.intellij.lang.regexp.psi.RegExpElement;
 import org.intellij.lang.regexp.psi.RegExpGroup;
 import org.intellij.lang.regexp.psi.RegExpProperty;
 

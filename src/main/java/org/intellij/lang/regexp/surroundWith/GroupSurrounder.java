@@ -15,6 +15,7 @@
  */
 package org.intellij.lang.regexp.surroundWith;
 
+import consulo.annotation.access.RequiredReadAction;
 import consulo.codeEditor.Editor;
 import consulo.document.Document;
 import consulo.document.util.TextRange;
@@ -54,6 +55,7 @@ class GroupSurrounder implements Surrounder {
     }
 
     @Nullable
+    @RequiredReadAction
     public TextRange surroundElements(
         @Nonnull Project project,
         @Nonnull Editor editor,
@@ -105,6 +107,7 @@ class GroupSurrounder implements Surrounder {
         }
     }
 
+    @RequiredReadAction
     private static boolean isInsideStringLiteral(PsiElement context) {
         while (context != null) {
             if (RegExpElementImpl.isLiteralExpression(context)) {
@@ -115,7 +118,7 @@ class GroupSurrounder implements Surrounder {
         return false;
     }
 
-    protected String makeReplacement(StringBuilder s) {
+    private String makeReplacement(StringBuilder s) {
         return myGroupStart + s + ")";
     }
 }

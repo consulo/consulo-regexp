@@ -91,6 +91,7 @@ public class RegExpParserDefinition implements ParserDefinition {
     }
 
     @Nonnull
+    @RequiredReadAction
     public PsiElement createElement(ASTNode node) {
         final IElementType type = node.getElementType();
         if (type == RegExpElementTypes.PATTERN) {

@@ -15,6 +15,7 @@
  */
 package org.intellij.lang.regexp.validation;
 
+import consulo.annotation.access.RequiredReadAction;
 import consulo.codeEditor.Editor;
 import consulo.language.ast.ASTNode;
 import consulo.language.editor.intention.IntentionAction;
@@ -22,6 +23,7 @@ import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.language.util.IncorrectOperationException;
 import consulo.project.Project;
+import consulo.ui.annotation.RequiredUIAccess;
 import consulo.util.lang.StringUtil;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpChar;
@@ -50,6 +52,7 @@ class RemoveRedundantEscapeAction implements IntentionAction {
         return myChar.isValid() && myChar.getUnescapedText().startsWith("\\");
     }
 
+    @RequiredUIAccess
     public void invoke(@Nonnull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
         final Character v = myChar.getValue();
         assert v != null;
@@ -60,6 +63,7 @@ class RemoveRedundantEscapeAction implements IntentionAction {
         parent.removeChild(node);
     }
 
+    @RequiredReadAction
     private String replacement(Character v) {
         final PsiElement context = myChar.getContainingFile().getContext();
         return RegExpElementImpl.isLiteralExpression(context) ?

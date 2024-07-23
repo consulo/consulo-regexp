@@ -15,6 +15,7 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import consulo.annotation.access.RequiredReadAction;
 import consulo.language.ast.*;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpChar;
@@ -55,6 +56,7 @@ public class RegExpCharImpl extends RegExpElementImpl implements RegExpChar {
     }
 
     @Nullable
+    @RequiredReadAction
     public Character getValue() {
         final String s = getUnescapedText();
         if (s.equals("\\") && getType() == Type.CHAR) {
@@ -78,7 +80,7 @@ public class RegExpCharImpl extends RegExpElementImpl implements RegExpChar {
     }
 
     @Nullable
-    static Character unescapeChar(String s) {
+    private static Character unescapeChar(String s) {
         assert s.length() > 0;
 
         boolean escaped = false;
@@ -93,42 +95,27 @@ public class RegExpCharImpl extends RegExpElementImpl implements RegExpChar {
                 }
             }
             else {
-                switch (ch) {
-                    case 'n':
-                        return '\n';
-                    case 'r':
-                        return '\r';
-                    case 't':
-                        return '\t';
-                    case 'a':
-                        return '\u0007';
-                    case 'e':
-                        return '\u001b';
-                    case 'f':
-                        return '\f';
-                    case 'b':
-                        return '\b';
-                    case 'c':
-                        return (char)(ch ^ 64);
-                    case 'x':
-                        return parseNumber(idx, s, 16, 2, true);
-                    case 'u':
-                        return parseNumber(idx, s, 16, 4, true);
-                    case '0':
-                        return parseNumber(idx, s, 8, 3, false);
-                    default:
-                        if (Character.isLetter(ch)) {
-                            return null;
-                        }
-                        return ch;
-                }
+                return switch (ch) {
+                    case 'n' -> '\n';
+                    case 'r' -> '\r';
+                    case 't' -> '\t';
+                    case 'a' -> '\u0007';
+                    case 'e' -> '\u001b';
+                    case 'f' -> '\f';
+                    case 'b' -> '\b';
+                    case 'c' -> (char)(ch ^ 64);
+                    case 'x' -> parseNumber(idx, s, 16, 2, true);
+                    case 'u' -> parseNumber(idx, s, 16, 4, true);
+                    case '0' -> parseNumber(idx, s, 8, 3, false);
+                    default -> Character.isLetter(ch) ? null : ch;
+                };
             }
         }
 
         return null;
     }
 
-    static Character parseNumber(int idx, String s, int radix, int len, boolean strict) {
+    private static Character parseNumber(int idx, String s, int radix, int len, boolean strict) {
         final int start = idx + 1;
         final int end = start + len;
         try {

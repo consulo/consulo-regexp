@@ -35,6 +35,7 @@ public class RegExpUtil {
     }
 
     @Nullable
+    @RequiredReadAction
     public static Set<String> getEnumValues(Project project, @Nonnull String regExp) {
         final PsiFileFactory factory = PsiFileFactory.getInstance(project);
         final PsiFile file = factory.createFileFromText("dummy.regexp", RegExpFileType.INSTANCE, regExp);

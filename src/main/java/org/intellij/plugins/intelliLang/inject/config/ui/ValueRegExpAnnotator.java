@@ -18,6 +18,7 @@ package org.intellij.plugins.intelliLang.inject.config.ui;
 import consulo.annotation.access.RequiredReadAction;
 import consulo.language.editor.annotation.AnnotationHolder;
 import consulo.language.editor.annotation.Annotator;
+import consulo.language.editor.annotation.HighlightSeverity;
 import consulo.language.inject.InjectedLanguageManagerUtil;
 import consulo.language.psi.PsiElement;
 import org.intellij.lang.regexp.RegExpFile;
@@ -57,7 +58,9 @@ public class ValueRegExpAnnotator implements Annotator {
                 });
 
                 if (count[0] != 1) {
-                    holder.createWarningAnnotation(branch, "The pattern should contain exactly one capturing group");
+                    holder.newAnnotation(HighlightSeverity.WARNING, "The pattern should contain exactly one capturing group")
+                        .range(branch)
+                        .create();
                 }
             }
         }

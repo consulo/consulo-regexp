@@ -15,6 +15,8 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import consulo.annotation.access.RequiredReadAction;
+import consulo.annotation.access.RequiredWriteAction;
 import consulo.language.ast.ASTNode;
 import consulo.language.ast.IElementType;
 import consulo.language.psi.PsiElement;
@@ -79,11 +81,13 @@ public class RegExpGroupImpl extends RegExpElementImpl implements RegExpGroup {
     }
 
     @Override
+    @RequiredReadAction
     public String getName() {
         return getGroupName();
     }
 
     @Override
+    @RequiredWriteAction
     public PsiElement setName(@NonNls @Nonnull String name) throws IncorrectOperationException {
         throw new IncorrectOperationException();
     }

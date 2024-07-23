@@ -49,7 +49,7 @@ public class RegExpColorsPage implements ColorSettingsPage {
     };
 
     @NonNls
-    private static final HashMap<String, TextAttributesKey> ourTagToDescriptorMap = new HashMap<String, TextAttributesKey>();
+    private static final HashMap<String, TextAttributesKey> ourTagToDescriptorMap = new HashMap<>();
 
     @Nonnull
     public String getDisplayName() {
@@ -75,9 +75,7 @@ public class RegExpColorsPage implements ColorSettingsPage {
 
     @Nonnull
     public String getDemoText() {
-        return
-            "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}\\x0g\\#\\p{alpha}\\Q\\E$";
-
+        return "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}\\x0g\\#\\p{alpha}\\Q\\E$";
     }
 
     public Map<String, TextAttributesKey> getAdditionalHighlightingTagToDescriptorMap() {

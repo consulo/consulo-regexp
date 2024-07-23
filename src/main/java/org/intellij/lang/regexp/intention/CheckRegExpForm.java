@@ -15,6 +15,7 @@
  */
 package org.intellij.lang.regexp.intention;
 
+import consulo.annotation.access.RequiredReadAction;
 import consulo.application.ui.wm.IdeFocusManager;
 import consulo.disposer.Disposable;
 import consulo.disposer.Disposer;
@@ -50,12 +51,12 @@ public class CheckRegExpForm {
     private static final String LAST_EDITED_REGEXP = "last.edited.regexp";
     private final PsiFile myRegexpFile;
 
-    private EditorTextField mySampleText;
-    private EditorTextField myRegExp;
+    private final EditorTextField mySampleText;
+    private final EditorTextField myRegExp;
 
-    private JPanel myRootPanel;
-    private JBLabel myMessage;
-    private Project myProject;
+    private final JPanel myRootPanel;
+    private final JBLabel myMessage;
+    private final Project myProject;
 
     public CheckRegExpForm(PsiFile file) {
         myRegexpFile = file;
@@ -73,6 +74,7 @@ public class CheckRegExpForm {
             Disposable disposable;
 
             @Override
+            @RequiredUIAccess
             public void addNotify() {
                 super.addNotify();
                 disposable = Disposable.newDisposable();
@@ -82,7 +84,7 @@ public class CheckRegExpForm {
                 new AnAction() {
                     @RequiredUIAccess
                     @Override
-                    public void actionPerformed(AnActionEvent e) {
+                    public void actionPerformed(@Nonnull AnActionEvent e) {
                         IdeFocusManager.findInstance().requestFocus(myRegExp.getFocusTarget(), true);
                     }
                 }.registerCustomShortcutSet(CustomShortcutSet.fromString("shift TAB"), mySampleText);
@@ -93,7 +95,7 @@ public class CheckRegExpForm {
                     public void documentChanged(DocumentEvent e) {
                         updater.cancelAllRequests();
                         if (!updater.isDisposed()) {
-                            updater.addRequest(() -> updateBalloon(), 200);
+                            updater.addRequest(CheckRegExpForm.this::updateBalloon, 200);
                         }
                     }
                 };
@@ -133,6 +135,7 @@ public class CheckRegExpForm {
         return myRootPanel;
     }
 
+    @RequiredUIAccess
     private void updateBalloon() {
         boolean correct = isMatchingText(myRegexpFile, mySampleText.getText());
 
@@ -142,10 +145,12 @@ public class CheckRegExpForm {
     }
 
     @TestOnly
+    @RequiredReadAction
     public static boolean isMatchingTextTest(@Nonnull PsiFile regexpFile, @Nonnull String sampleText) {
         return isMatchingText(regexpFile, sampleText);
     }
 
+    @RequiredReadAction
     private static boolean isMatchingText(@Nonnull PsiFile regexpFile, @Nonnull String sampleText) {
         final String regExp = regexpFile.getText();
 

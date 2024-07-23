@@ -15,6 +15,8 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+import consulo.annotation.access.RequiredReadAction;
+import consulo.annotation.access.RequiredWriteAction;
 import consulo.document.util.TextRange;
 import consulo.language.ast.ASTNode;
 import consulo.language.ast.TokenSet;
@@ -102,56 +104,62 @@ public class RegExpNamedGroupRefImpl extends RegExpElementImpl implements RegExp
     @Override
     public PsiReference getReference() {
         return new PsiReference() {
+            @RequiredReadAction
             public PsiElement getElement() {
                 return RegExpNamedGroupRefImpl.this;
             }
 
             @Override
+            @RequiredReadAction
             public TextRange getRangeInElement() {
                 final ASTNode groupNode = getNode().findChildByType(GROUP_REF_TOKENS);
                 assert groupNode != null;
                 return new TextRange(groupNode.getTextLength(), getTextLength() - 1);
             }
 
+            @RequiredReadAction
             public PsiElement resolve() {
                 return RegExpNamedGroupRefImpl.this.resolve();
             }
 
             @Nonnull
+            @RequiredReadAction
             public String getCanonicalText() {
                 return getRangeInElement().substring(getText());
             }
 
+            @RequiredWriteAction
             public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
                 throw new UnsupportedOperationException();
             }
 
+            @RequiredWriteAction
             public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException {
                 throw new UnsupportedOperationException();
             }
 
+            @RequiredReadAction
             public boolean isReferenceTo(PsiElement element) {
                 return resolve() == element;
             }
 
             @Override
             @Nonnull
+            @RequiredReadAction
             public Object[] getVariants() {
                 final PsiElementProcessor.CollectFilteredElements<RegExpGroup> processor =
-                    new PsiElementProcessor.CollectFilteredElements<>(new PsiElementFilter() {
-                        @Override
-                        public boolean isAccepted(PsiElement element) {
-                            if (!(element instanceof RegExpGroup)) {
-                                return false;
-                            }
-                            final RegExpGroup regExpGroup = (RegExpGroup)element;
-                            return regExpGroup.isPythonNamedGroup() || regExpGroup.isRubyNamedGroup();
+                    new PsiElementProcessor.CollectFilteredElements<>((PsiElementFilter)element -> {
+                        if (!(element instanceof RegExpGroup)) {
+                            return false;
                         }
+                        final RegExpGroup regExpGroup = (RegExpGroup)element;
+                        return regExpGroup.isPythonNamedGroup() || regExpGroup.isRubyNamedGroup();
                     });
                 PsiTreeUtil.processElements(getContainingFile(), processor);
                 return processor.toArray();
             }
 
+            @RequiredReadAction
             public boolean isSoft() {
                 return false;
             }
