@@ -135,7 +135,7 @@ public class CheckRegExpForm {
         return myRootPanel;
     }
 
-    @RequiredReadAction
+    @RequiredUIAccess
     private void updateBalloon() {
         boolean correct = isMatchingText(myRegexpFile, mySampleText.getText());
 

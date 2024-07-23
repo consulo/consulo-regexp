@@ -15,7 +15,8 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
-import consulo.annotation.access.RequiredReadAction;import consulo.language.ast.ASTNode;
+import consulo.annotation.access.RequiredReadAction;
+import consulo.language.ast.ASTNode;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpSimpleClass;
 
