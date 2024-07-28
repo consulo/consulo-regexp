@@ -34,6 +34,7 @@ public class RegExpCharImpl extends RegExpElementImpl implements RegExpChar {
     }
 
     @Nonnull
+    @Override
     public Type getType() {
         final ASTNode child = getNode().getFirstChildNode();
         assert child != null;
@@ -56,6 +57,7 @@ public class RegExpCharImpl extends RegExpElementImpl implements RegExpChar {
     }
 
     @Nullable
+    @Override
     @RequiredReadAction
     public Character getValue() {
         final String s = getUnescapedText();
@@ -135,6 +137,7 @@ public class RegExpCharImpl extends RegExpElementImpl implements RegExpChar {
         }
     }
 
+    @Override
     public void accept(RegExpElementVisitor visitor) {
         visitor.visitRegExpChar(this);
     }

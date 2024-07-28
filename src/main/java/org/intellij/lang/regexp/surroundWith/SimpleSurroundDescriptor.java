@@ -44,12 +44,14 @@ public class SimpleSurroundDescriptor implements SurroundDescriptor {
     };
 
     @Nonnull
+    @Override
     @RequiredReadAction
     public PsiElement[] getElementsToSurround(PsiFile file, int startOffset, int endOffset) {
         return findElementsInRange(file, startOffset, endOffset);
     }
 
     @Nonnull
+    @Override
     public Surrounder[] getSurrounders() {
         return SURROUNDERS;
     }

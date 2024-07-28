@@ -33,11 +33,13 @@ public class RegExpPatternImpl extends RegExpElementImpl implements RegExpPatter
         super(astNode);
     }
 
+    @Override
     public void accept(RegExpElementVisitor visitor) {
         visitor.visitRegExpPattern(this);
     }
 
     @Nonnull
+    @Override
     public RegExpBranch[] getBranches() {
         final ASTNode[] nodes = getNode().getChildren(BRANCH);
         final RegExpBranch[] branches = new RegExpBranch[nodes.length];

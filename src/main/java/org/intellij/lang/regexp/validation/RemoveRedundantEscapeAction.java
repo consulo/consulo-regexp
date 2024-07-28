@@ -39,6 +39,7 @@ class RemoveRedundantEscapeAction implements IntentionAction {
     }
 
     @Nonnull
+    @Override
     public String getText() {
         return "Remove Redundant Escape";
     }
@@ -48,10 +49,12 @@ class RemoveRedundantEscapeAction implements IntentionAction {
         return "Redundant Character Escape";
     }
 
+    @Override
     public boolean isAvailable(@Nonnull Project project, Editor editor, PsiFile file) {
         return myChar.isValid() && myChar.getUnescapedText().startsWith("\\");
     }
 
+    @Override
     @RequiredUIAccess
     public void invoke(@Nonnull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
         final Character v = myChar.getValue();
@@ -66,13 +69,14 @@ class RemoveRedundantEscapeAction implements IntentionAction {
     @RequiredReadAction
     private String replacement(Character v) {
         final PsiElement context = myChar.getContainingFile().getContext();
-        return RegExpElementImpl.isLiteralExpression(context) ?
-            StringUtil.escapeStringCharacters(v.toString()) :
-                /*(context instanceof XmlElement ?
+        return RegExpElementImpl.isLiteralExpression(context)
+            ? StringUtil.escapeStringCharacters(v.toString())
+            : /*(context instanceof XmlElement ?
                         XmlStringUtil.escapeString(v.toString()) : */
             v.toString()/*)*/;
     }
 
+    @Override
     public boolean startInWriteAction() {
         return true;
     }

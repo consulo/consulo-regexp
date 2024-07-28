@@ -61,11 +61,13 @@ public interface RegExpQuantifier extends RegExpAtom {
         }
 
         @Nonnull
+        @Override
         public String getMin() {
             return myMin;
         }
 
         @Nonnull
+        @Override
         public String getMax() {
             return myMax;
         }

@@ -32,11 +32,13 @@ public class RegExpQuantifierImpl extends RegExpElementImpl implements RegExpQua
         super(astNode);
     }
 
+    @Override
     public void accept(RegExpElementVisitor visitor) {
         visitor.visitRegExpQuantifier(this);
     }
 
     @Nonnull
+    @Override
     public RegExpAtom getAtom() {
         final ASTNode[] nodes = getNode().getChildren(RegExpElementTypes.ATOMS);
         assert nodes.length > 0;
@@ -44,6 +46,7 @@ public class RegExpQuantifierImpl extends RegExpElementImpl implements RegExpQua
     }
 
     @Nonnull
+    @Override
     public Count getCount() {
         final ASTNode[] nodes = getNode().getChildren(RegExpTT.QUANTIFIERS);
         assert nodes.length > 0;
@@ -83,6 +86,7 @@ public class RegExpQuantifierImpl extends RegExpElementImpl implements RegExpQua
     }
 
     @Nonnull
+    @Override
     public Type getType() {
         final ASTNode[] nodes = getNode().getChildren(RegExpTT.QUANTIFIERS);
         if (nodes.length > 1) {
@@ -107,11 +111,13 @@ public class RegExpQuantifierImpl extends RegExpElementImpl implements RegExpQua
         }
 
         @Nonnull
+        @Override
         public String getMin() {
             return myMin;
         }
 
         @Nonnull
+        @Override
         public String getMax() {
             return myMax;
         }

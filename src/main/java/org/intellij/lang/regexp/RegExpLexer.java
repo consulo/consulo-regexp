@@ -28,15 +28,18 @@ public class RegExpLexer extends FlexAdapter {
         myCapabilities = capabilities;
     }
 
+    @Override
     public void start(CharSequence buffer, int startOffset, int endOffset, int initialState) {
         getFlex().commentMode = (initialState & COMMENT_MODE) != 0 || myCapabilities.contains(RegExpCapability.COMMENT_MODE);
         super.start(buffer, startOffset, endOffset, initialState & ~COMMENT_MODE);
     }
 
+    @Override
     public _RegExLexer getFlex() {
         return (_RegExLexer)super.getFlex();
     }
 
+    @Override
     public int getState() {
         final boolean commentMode = getFlex().commentMode;
         final int state = super.getState();

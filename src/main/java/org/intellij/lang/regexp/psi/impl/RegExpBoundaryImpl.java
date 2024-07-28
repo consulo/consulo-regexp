@@ -30,6 +30,7 @@ public class RegExpBoundaryImpl extends RegExpElementImpl implements RegExpBound
     }
 
     @Nonnull
+    @Override
     @RequiredReadAction
     public Type getType() {
         final ASTNode child = getNode().getFirstChildNode();
@@ -57,6 +58,7 @@ public class RegExpBoundaryImpl extends RegExpElementImpl implements RegExpBound
         return null;
     }
 
+    @Override
     public void accept(RegExpElementVisitor visitor) {
         visitor.visitRegExpBoundary(this);
     }

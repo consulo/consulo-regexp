@@ -32,11 +32,13 @@ public class RegExpCharRangeImpl extends RegExpElementImpl implements RegExpChar
     }
 
     @Nonnull
+    @Override
     public Endpoint getFrom() {
         return (Endpoint)getCharNode(0);
     }
 
     @Nonnull
+    @Override
     public Endpoint getTo() {
         return (Endpoint)getCharNode(1);
     }
@@ -47,6 +49,7 @@ public class RegExpCharRangeImpl extends RegExpElementImpl implements RegExpChar
         return ch[idx].getPsi();
     }
 
+    @Override
     public void accept(RegExpElementVisitor visitor) {
         visitor.visitRegExpCharRange(this);
     }

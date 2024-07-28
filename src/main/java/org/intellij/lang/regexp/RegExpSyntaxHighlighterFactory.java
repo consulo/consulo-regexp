@@ -43,8 +43,8 @@ public class RegExpSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHigh
         myParserDefinition = ParserDefinition.forLanguage(language);
     }
 
-
     @Nonnull
+    @Override
     protected SyntaxHighlighter createHighlighter() {
         return new RegExpHighlighter(myParserDefinition);
     }

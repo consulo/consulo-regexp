@@ -39,25 +39,29 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
     }
 
     @Nonnull
+    @Override
     @RequiredReadAction
     public Language getLanguage() {
         return RegExpLanguage.INSTANCE;
     }
 
     @Nonnull
+    @Override
     @SuppressWarnings({"ConstantConditions", "EmptyMethod"})
     public ASTNode getNode() {
         return super.getNode();
     }
 
+    @Override
     @RequiredReadAction
     public String toString() {
         return getClass().getSimpleName() + ": <" + getText() + ">";
     }
 
+    @Override
     public void accept(@Nonnull PsiElementVisitor visitor) {
-        if (visitor instanceof RegExpElementVisitor) {
-            accept((RegExpElementVisitor)visitor);
+        if (visitor instanceof RegExpElementVisitor regExpElementVisitor) {
+            accept(regExpElementVisitor);
         }
         else {
             super.accept(visitor);
@@ -68,6 +72,7 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
         visitor.visitRegExpElement(this);
     }
 
+    @Override
     public PsiElement replace(@Nonnull PsiElement psiElement) throws IncorrectOperationException {
         final ASTNode node = psiElement.getNode();
         assert node != null;
@@ -75,10 +80,12 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
         return psiElement;
     }
 
+    @Override
     public void delete() throws IncorrectOperationException {
         getNode().getTreeParent().removeChild(getNode());
     }
 
+    @Override
     @RequiredReadAction
     public final String getUnescapedText() {
         if (InjectedLanguageManagerUtil.isInInjectedLanguagePrefixSuffix(this)) {

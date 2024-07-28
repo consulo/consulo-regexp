@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 
 @ExtensionImpl
 public class RegExpBraceMatcher implements PairedBraceMatcher {
+    @Override
     public BracePair[] getPairs() {
         return new BracePair[]{
             new BracePair(RegExpTT.GROUP_BEGIN, RegExpTT.GROUP_END, true),
@@ -44,10 +45,12 @@ public class RegExpBraceMatcher implements PairedBraceMatcher {
         };
     }
 
+    @Override
     public boolean isPairedBracesAllowedBeforeType(@Nonnull IElementType lbraceType, @Nullable IElementType contextType) {
         return false;
     }
 
+    @Override
     public int getCodeConstructStart(PsiFile file, int openingBraceOffset) {
         return openingBraceOffset;
     }

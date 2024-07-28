@@ -45,35 +45,38 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
         super(astNode);
     }
 
+    @Override
     public PsiReference getReference() {
         final ASTNode lbrace = getNode().findChildByType(RegExpTT.LBRACE);
-        if (lbrace == null) {
-            return null;
-        }
-        return new MyPsiReference();
+        return lbrace == null ? null : new MyPsiReference();
     }
 
+    @Override
     public boolean isNegated() {
         final ASTNode node = getNode().findChildByType(RegExpTT.PROPERTY);
         return node != null && node.textContains('P');
     }
 
     @Nullable
+    @Override
     public ASTNode getCategoryNode() {
         return getNode().findChildByType(RegExpTT.NAME);
     }
 
+    @Override
     public void accept(RegExpElementVisitor visitor) {
         visitor.visitRegExpProperty(this);
     }
 
     private class MyPsiReference implements PsiReference {
+        @Override
         @RequiredReadAction
         public PsiElement getElement() {
             return RegExpPropertyImpl.this;
         }
 
         @Nonnull
+        @Override
         @RequiredReadAction
         public TextRange getRangeInElement() {
             final ASTNode lbrace = getNode().findChildByType(RegExpTT.LBRACE);
@@ -86,33 +89,39 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
         }
 
         @Nullable
+        @Override
         @RequiredReadAction
         public PsiElement resolve() {
             return RegExpPropertyImpl.this;
         }
 
         @Nonnull
+        @Override
         @RequiredReadAction
         public String getCanonicalText() {
             return getRangeInElement().substring(getElement().getText());
         }
 
+        @Override
         @RequiredWriteAction
         public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
             throw new IncorrectOperationException();
         }
 
+        @Override
         @RequiredWriteAction
         public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException {
             throw new IncorrectOperationException();
         }
 
+        @Override
         @RequiredReadAction
         public boolean isReferenceTo(PsiElement element) {
             return false;
         }
 
         @Nonnull
+        @Override
         @RequiredReadAction
         public Object[] getVariants() {
             final ASTNode categoryNode = getCategoryNode();
@@ -126,12 +135,12 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
                 for (int i = 0; i < objects.length; i++) {
                     final String[] prop = knownProperties[i];
                     objects[i] = new MyLookupValue(prop);
-
                 }
                 return objects;
             }
         }
 
+        @Override
         @RequiredReadAction
         public boolean isSoft() {
             return true;
@@ -146,16 +155,16 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
                 myProp = prop;
             }
 
+            @Override
             public String getPresentation() {
                 final ASTNode categoryNode = getCategoryNode();
-                if (categoryNode != null) {
-                    if (categoryNode.getText().startsWith("Is")) {
-                        return "Is" + super.getPresentation();
-                    }
+                if (categoryNode != null && categoryNode.getText().startsWith("Is")) {
+                    return "Is" + super.getPresentation();
                 }
                 return super.getPresentation();
             }
 
+            @Override
             public int getPriority() {
                 final String name = myProp[0];
                 if (name.equals("all")) {
@@ -167,21 +176,23 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
                 return name.length() > 2 ? HIGH : NORMAL;
             }
 
+            @Override
             public String getTypeHint() {
                 return myProp.length > 1 ? myProp[1] : ("Character.is" + myProp[0].substring("java".length()) + "()");
             }
 
             @Nullable
+            @Override
             public Color getColorHint() {
                 return null;
             }
 
+            @Override
             public boolean isBold() {
                 return false;
             }
         }
     }
-
 
     private static final String[] UNICODE_BLOCKS;
 
@@ -189,10 +200,10 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
         final Field[] fields = Character.UnicodeBlock.class.getFields();
         final List<String> unicodeBlocks = new ArrayList<>(fields.length);
         for (Field field : fields) {
-            if (field.getType().equals(Character.UnicodeBlock.class)) {
-                if (Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers())) {
-                    unicodeBlocks.add("In" + field.getName());
-                }
+            if (field.getType().equals(Character.UnicodeBlock.class)
+                && Modifier.isStatic(field.getModifiers())
+                && Modifier.isFinal(field.getModifiers())) {
+                unicodeBlocks.add("In" + field.getName());
             }
         }
         UNICODE_BLOCKS = ArrayUtil.toStringArray(unicodeBlocks);

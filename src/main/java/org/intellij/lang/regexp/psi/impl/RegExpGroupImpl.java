@@ -35,10 +35,12 @@ public class RegExpGroupImpl extends RegExpElementImpl implements RegExpGroup {
         super(astNode);
     }
 
+    @Override
     public void accept(RegExpElementVisitor visitor) {
         visitor.visitRegExpGroup(this);
     }
 
+    @Override
     public boolean isCapturing() {
         final ASTNode node = getNode().getFirstChildNode();
         if (node == null) {
@@ -49,29 +51,35 @@ public class RegExpGroupImpl extends RegExpElementImpl implements RegExpGroup {
             type == RegExpTT.RUBY_QUOTED_NAMED_GROUP || type == RegExpTT.PYTHON_NAMED_GROUP;
     }
 
+    @Override
     public boolean isSimple() {
         final ASTNode node = getNode().getFirstChildNode();
         return node != null && (node.getElementType() == RegExpTT.GROUP_BEGIN || node.getElementType() == RegExpTT.NON_CAPT_GROUP);
     }
 
+    @Override
     public RegExpPattern getPattern() {
         final ASTNode node = getNode().findChildByType(RegExpElementTypes.PATTERN);
         return node != null ? (RegExpPattern)node.getPsi() : null;
     }
 
+    @Override
     public boolean isPythonNamedGroup() {
         return getNode().findChildByType(RegExpTT.PYTHON_NAMED_GROUP) != null;
     }
 
+    @Override
     public boolean isRubyNamedGroup() {
         return getNode().findChildByType(RegExpTT.RUBY_NAMED_GROUP) != null
             || getNode().findChildByType(RegExpTT.RUBY_QUOTED_NAMED_GROUP) != null;
     }
 
+    @Override
     public boolean isNamedGroup() {
         return getNode().findChildByType(RegExpTT.RUBY_NAMED_GROUP) != null;
     }
 
+    @Override
     public String getGroupName() {
         if (!isPythonNamedGroup() && !isRubyNamedGroup()) {
             return null;

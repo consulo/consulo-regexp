@@ -31,11 +31,13 @@ public class RegExpClosureImpl extends RegExpElementImpl implements RegExpClosur
         super(astNode);
     }
 
+    @Override
     public void accept(RegExpElementVisitor visitor) {
         visitor.visitRegExpClosure(this);
     }
 
     @Nonnull
+    @Override
     public RegExpQuantifier getQuantifier() {
         final ASTNode node = getNode().findChildByType(RegExpElementTypes.QUANTIFIER);
         assert node != null;
@@ -43,6 +45,7 @@ public class RegExpClosureImpl extends RegExpElementImpl implements RegExpClosur
     }
 
     @Nonnull
+    @Override
     public RegExpAtom getAtom() {
         final RegExpAtom atom = PsiTreeUtil.getChildOfType(this, RegExpAtom.class);
         assert atom != null;
