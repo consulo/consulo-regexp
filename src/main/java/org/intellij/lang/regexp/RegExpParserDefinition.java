@@ -60,37 +60,44 @@ public class RegExpParserDefinition implements ParserDefinition {
     }
 
     @Nonnull
+    @Override
     public Lexer createLexer(@Nonnull LanguageVersion languageVersion) {
         return new RegExpLexer(CAPABILITIES);
     }
 
     @Nonnull
+    @Override
     public PsiParser createParser(@Nonnull LanguageVersion languageVersion) {
         return new RegExpParser(CAPABILITIES);
     }
 
     @Nonnull
+    @Override
     public IFileElementType getFileNodeType() {
         return RegExpElementTypes.REGEXP_FILE;
     }
 
     @Nonnull
+    @Override
     public TokenSet getWhitespaceTokens(@Nonnull LanguageVersion languageVersion) {
         // trick to hide quote tokens from parser... should actually go into the lexer
         return TokenSet.create(RegExpTT.QUOTE_BEGIN, RegExpTT.QUOTE_END, TokenType.WHITE_SPACE);
     }
 
     @Nonnull
+    @Override
     public TokenSet getStringLiteralElements(@Nonnull LanguageVersion languageVersion) {
         return TokenSet.EMPTY;
     }
 
     @Nonnull
+    @Override
     public TokenSet getCommentTokens(@Nonnull LanguageVersion languageVersion) {
         return COMMENT_TOKENS;
     }
 
     @Nonnull
+    @Override
     @RequiredReadAction
     public PsiElement createElement(ASTNode node) {
         final IElementType type = node.getElementType();
@@ -159,11 +166,13 @@ public class RegExpParserDefinition implements ParserDefinition {
     }
 
     @Nonnull
+    @Override
     public PsiFile createFile(@Nonnull FileViewProvider viewProvider) {
         return new RegExpFile(viewProvider, RegExpLanguage.INSTANCE);
     }
 
     @Nonnull
+    @Override
     public SpaceRequirements spaceExistanceTypeBetweenTokens(ASTNode left, ASTNode right) {
         return SpaceRequirements.MUST_NOT;
     }

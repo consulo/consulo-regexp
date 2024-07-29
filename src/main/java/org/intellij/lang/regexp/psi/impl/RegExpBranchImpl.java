@@ -29,6 +29,7 @@ public class RegExpBranchImpl extends RegExpElementImpl implements RegExpBranch 
     }
 
     @Nonnull
+    @Override
     public RegExpAtom[] getAtoms() {
         final ASTNode[] nodes = getNode().getChildren(RegExpElementTypes.ATOMS);
         final RegExpAtom[] atoms = new RegExpAtom[nodes.length];
@@ -38,6 +39,7 @@ public class RegExpBranchImpl extends RegExpElementImpl implements RegExpBranch 
         return atoms;
     }
 
+    @Override
     public void accept(RegExpElementVisitor visitor) {
         visitor.visitRegExpBranch(this);
     }

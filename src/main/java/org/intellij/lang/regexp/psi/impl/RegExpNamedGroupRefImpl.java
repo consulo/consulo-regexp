@@ -63,23 +63,20 @@ public class RegExpNamedGroupRefImpl extends RegExpElementImpl implements RegExp
     }
 
     @Nullable
+    @Override
     public RegExpGroup resolve() {
         final PsiElementProcessor.FindFilteredElement<RegExpGroup> processor =
-            new PsiElementProcessor.FindFilteredElement<>((PsiElementFilter)element -> {
-                if (!(element instanceof RegExpGroup)) {
-                    return false;
-                }
-                final RegExpGroup regExpGroup = (RegExpGroup)element;
-                return (regExpGroup.isPythonNamedGroup() || regExpGroup.isRubyNamedGroup()) && Comparing.equal(
-                    getGroupName(),
-                    regExpGroup.getGroupName()
-                );
-            });
+            new PsiElementProcessor.FindFilteredElement<>(
+                (PsiElementFilter)element -> element instanceof RegExpGroup regExpGroup
+                    && (regExpGroup.isPythonNamedGroup() || regExpGroup.isRubyNamedGroup())
+                    && Comparing.equal(getGroupName(), regExpGroup.getGroupName())
+            );
         PsiTreeUtil.processElements(getContainingFile(), processor);
         return processor.getFoundElement();
     }
 
     @Nullable
+    @Override
     public String getGroupName() {
         final ASTNode nameNode = getNode().findChildByType(RegExpTT.NAME);
         return nameNode != null ? nameNode.getText() : null;
@@ -104,6 +101,7 @@ public class RegExpNamedGroupRefImpl extends RegExpElementImpl implements RegExp
     @Override
     public PsiReference getReference() {
         return new PsiReference() {
+            @Override
             @RequiredReadAction
             public PsiElement getElement() {
                 return RegExpNamedGroupRefImpl.this;
@@ -117,48 +115,51 @@ public class RegExpNamedGroupRefImpl extends RegExpElementImpl implements RegExp
                 return new TextRange(groupNode.getTextLength(), getTextLength() - 1);
             }
 
+            @Override
             @RequiredReadAction
             public PsiElement resolve() {
                 return RegExpNamedGroupRefImpl.this.resolve();
             }
 
             @Nonnull
+            @Override
             @RequiredReadAction
             public String getCanonicalText() {
                 return getRangeInElement().substring(getText());
             }
 
+            @Override
             @RequiredWriteAction
             public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
                 throw new UnsupportedOperationException();
             }
 
+            @Override
             @RequiredWriteAction
             public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException {
                 throw new UnsupportedOperationException();
             }
 
+            @Override
             @RequiredReadAction
             public boolean isReferenceTo(PsiElement element) {
                 return resolve() == element;
             }
 
-            @Override
             @Nonnull
+            @Override
             @RequiredReadAction
             public Object[] getVariants() {
                 final PsiElementProcessor.CollectFilteredElements<RegExpGroup> processor =
-                    new PsiElementProcessor.CollectFilteredElements<>((PsiElementFilter)element -> {
-                        if (!(element instanceof RegExpGroup)) {
-                            return false;
-                        }
-                        final RegExpGroup regExpGroup = (RegExpGroup)element;
-                        return regExpGroup.isPythonNamedGroup() || regExpGroup.isRubyNamedGroup();
-                    });
+                    new PsiElementProcessor.CollectFilteredElements<>(
+                        (PsiElementFilter)element -> element instanceof RegExpGroup regExpGroup
+                            && (regExpGroup.isPythonNamedGroup() || regExpGroup.isRubyNamedGroup())
+                    );
                 PsiTreeUtil.processElements(getContainingFile(), processor);
                 return processor.toArray();
             }
 
+            @Override
             @RequiredReadAction
             public boolean isSoft() {
                 return false;

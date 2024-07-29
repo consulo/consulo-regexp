@@ -28,6 +28,7 @@ public class RegExpFile extends PsiFileBase {
     }
 
     @Nonnull
+    @Override
     public FileType getFileType() {
         return RegExpFileType.INSTANCE;
     }

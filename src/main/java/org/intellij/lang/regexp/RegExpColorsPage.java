@@ -52,21 +52,25 @@ public class RegExpColorsPage implements ColorSettingsPage {
     private static final HashMap<String, TextAttributesKey> ourTagToDescriptorMap = new HashMap<>();
 
     @Nonnull
+    @Override
     public String getDisplayName() {
         return "RegExp";
     }
 
     @Nonnull
+    @Override
     public AttributesDescriptor[] getAttributeDescriptors() {
         return ATTRS;
     }
 
     @Nonnull
+    @Override
     public ColorDescriptor[] getColorDescriptors() {
         return ColorDescriptor.EMPTY_ARRAY;
     }
 
     @Nonnull
+    @Override
     public SyntaxHighlighter getHighlighter() {
         final SyntaxHighlighter highlighter = SyntaxHighlighterFactory.getSyntaxHighlighter(RegExpFileType.INSTANCE, null, null);
         assert highlighter != null;
@@ -74,10 +78,12 @@ public class RegExpColorsPage implements ColorSettingsPage {
     }
 
     @Nonnull
+    @Override
     public String getDemoText() {
         return "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}\\x0g\\#\\p{alpha}\\Q\\E$";
     }
 
+    @Override
     public Map<String, TextAttributesKey> getAdditionalHighlightingTagToDescriptorMap() {
         return ourTagToDescriptorMap;
     }

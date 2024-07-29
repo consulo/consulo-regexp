@@ -50,6 +50,7 @@ public final class RegExpDocumentationProvider extends AbstractDocumentationProv
     }
 
     @Nullable
+    @Override
     public String getQuickNavigateInfo(PsiElement element, PsiElement originalElement) {
         return element instanceof RegExpGroup regExpGroup ? "Capturing Group: " + regExpGroup.getUnescapedText() : null;
     }

@@ -39,6 +39,7 @@ class SimplifyQuantifierAction implements IntentionAction {
     }
 
     @Nonnull
+    @Override
     public String getText() {
         return myReplacement == null ? "Simplify" : "Replace with '" + myReplacement + "'";
     }
@@ -48,10 +49,12 @@ class SimplifyQuantifierAction implements IntentionAction {
         return "Simplify Quantifier";
     }
 
+    @Override
     public boolean isAvailable(@Nonnull Project project, Editor editor, PsiFile file) {
         return myQuantifier.isValid();
     }
 
+    @Override
     public void invoke(@Nonnull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
         if (myReplacement == null) {
             myQuantifier.delete();
@@ -71,6 +74,7 @@ class SimplifyQuantifierAction implements IntentionAction {
         }
     }
 
+    @Override
     public boolean startInWriteAction() {
         return true;
     }

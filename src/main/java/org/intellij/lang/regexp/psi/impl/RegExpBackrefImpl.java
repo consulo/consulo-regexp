@@ -39,6 +39,7 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
         super(astNode);
     }
 
+    @Override
     @RequiredReadAction
     public int getIndex() {
         final String s = getUnescapedText();
@@ -46,10 +47,12 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
         return Integer.parseInt(s.substring(1));
     }
 
+    @Override
     public void accept(RegExpElementVisitor visitor) {
         visitor.visitRegExpBackref(this);
     }
 
+    @Override
     @RequiredReadAction
     public RegExpGroup resolve() {
         final int index = getIndex();
@@ -58,6 +61,7 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
             new PsiElementProcessor.FindFilteredElement<>(new PsiElementFilter() {
                 int groupCount;
 
+                @Override
                 public boolean isAccepted(PsiElement element) {
                     if (element instanceof RegExpGroup group) {
                         if (group.isCapturing() && ++groupCount == index) {
@@ -72,51 +76,61 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
         return processor.getFoundElement() instanceof RegExpGroup group ? group : null;
     }
 
+    @Override
     public PsiReference getReference() {
         return new PsiReference() {
+            @Override
             @RequiredReadAction
             public PsiElement getElement() {
                 return RegExpBackrefImpl.this;
             }
 
             @Nonnull
+            @Override
             @RequiredReadAction
             public TextRange getRangeInElement() {
                 return TextRange.from(0, getElement().getTextLength());
             }
 
             @Nonnull
+            @Override
             @RequiredReadAction
             public String getCanonicalText() {
                 return getElement().getText();
             }
 
+            @Override
             @RequiredWriteAction
             public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
                 throw new IncorrectOperationException();
             }
 
+            @Override
             @RequiredWriteAction
             public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException {
                 throw new IncorrectOperationException();
             }
 
+            @Override
             @RequiredReadAction
             public boolean isReferenceTo(PsiElement element) {
                 return Comparing.equal(element, resolve());
             }
 
+            @Override
             @RequiredReadAction
             public boolean isSoft() {
                 return false;
             }
 
+            @Override
             @RequiredReadAction
             public PsiElement resolve() {
                 return RegExpBackrefImpl.this.resolve();
             }
 
             @Nonnull
+            @Override
             @RequiredReadAction
             public Object[] getVariants() {
                 return ArrayUtil.EMPTY_OBJECT_ARRAY;

@@ -30,21 +30,25 @@ public class RegExpFileType extends LanguageFileType {
     }
 
     @Nonnull
+    @Override
     public String getId() {
         return "RegExp";
     }
 
     @Nonnull
+    @Override
     public LocalizeValue getDescription() {
         return LocalizeValue.localizeTODO("Regular Expression");
     }
 
     @Nonnull
+    @Override
     public String getDefaultExtension() {
         return "regexp";
     }
 
     @Nonnull
+    @Override
     public Image getIcon() {
         return RegExpIconGroup.regexp();
     }

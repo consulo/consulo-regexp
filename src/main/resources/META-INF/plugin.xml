@@ -1,9 +1,9 @@
 <consulo-plugin url="https://github.com/consulo/consulo-regexp">
-	<id>com.intellij.regexp</id>
-	<name>Regexp</name>
-	<version>SNAPSHOT</version>
-	<category>Custom Languages</category>
-	<tags>
-		<tag>pattern.language</tag>
-	</tags>
+    <id>com.intellij.regexp</id>
+    <name>Regexp</name>
+    <version>SNAPSHOT</version>
+    <category>Custom Languages</category>
+    <tags>
+        <tag>pattern.language</tag>
+    </tags>
 </consulo-plugin>

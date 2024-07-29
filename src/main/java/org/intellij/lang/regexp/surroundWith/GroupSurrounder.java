@@ -46,21 +46,21 @@ class GroupSurrounder implements Surrounder {
         myGroupStart = groupStart;
     }
 
+    @Override
     public String getTemplateDescription() {
         return myTitle;
     }
 
+    @Override
     public boolean isApplicable(@Nonnull PsiElement[] elements) {
         return elements.length == 1 || PsiTreeUtil.findCommonParent(elements) == elements[0].getParent();
     }
 
     @Nullable
+    @Override
     @RequiredReadAction
-    public TextRange surroundElements(
-        @Nonnull Project project,
-        @Nonnull Editor editor,
-        @Nonnull PsiElement[] elements
-    ) throws IncorrectOperationException {
+    public TextRange surroundElements(@Nonnull Project project, @Nonnull Editor editor, @Nonnull PsiElement[] elements)
+        throws IncorrectOperationException {
         assert elements.length == 1 || PsiTreeUtil.findCommonParent(elements) == elements[0].getParent();
         final PsiElement e = elements[0];
         final ASTNode node = e.getNode();

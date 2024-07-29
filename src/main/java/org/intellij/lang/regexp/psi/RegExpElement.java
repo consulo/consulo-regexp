@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 
 public interface RegExpElement extends PsiElement {
     @Nonnull
+    @Override
     ASTNode getNode();
 
     String getUnescapedText();
