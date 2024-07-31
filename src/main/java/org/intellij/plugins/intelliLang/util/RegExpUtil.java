@@ -56,11 +56,13 @@ public class RegExpUtil {
     private static boolean analyzeBranch(RegExpBranch branch) {
         final RegExpAtom[] atoms = branch.getAtoms();
         for (RegExpAtom atom : atoms) {
-            if (!(atom instanceof RegExpChar) || ((RegExpChar) atom).getValue() == null) {
-                return false;
+            if (atom instanceof RegExpChar regExpChar && regExpChar.getValue() != null) {
+                if (regExpChar.getType() != RegExpChar.Type.CHAR) {
+                    // this could probably allow more, such as escape sequences
+                    return false;
+                }
             }
-            else if (((RegExpChar)atom).getType() != RegExpChar.Type.CHAR) {
-                // this could probably allow more, such as escape sequences
+            else {
                 return false;
             }
         }

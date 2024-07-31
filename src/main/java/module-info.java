@@ -1,6 +1,6 @@
 /**
  * @author VISTALL
- * @since 08-Mar-22
+ * @since 2022-03-08
  */
 open module com.intellij.regexp
 {
