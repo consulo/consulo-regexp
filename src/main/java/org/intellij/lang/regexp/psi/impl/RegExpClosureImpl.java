@@ -26,7 +26,6 @@ import org.intellij.lang.regexp.psi.RegExpQuantifier;
 import javax.annotation.Nonnull;
 
 public class RegExpClosureImpl extends RegExpElementImpl implements RegExpClosure {
-
     public RegExpClosureImpl(ASTNode astNode) {
         super(astNode);
     }

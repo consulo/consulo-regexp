@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 
 /**
  * @author VISTALL
- * @since 28-Jun-22
+ * @since 2022-06-28
  */
 @ExtensionImpl
 public class ValueRegExpAnnotatorFactory implements AnnotatorFactory {
