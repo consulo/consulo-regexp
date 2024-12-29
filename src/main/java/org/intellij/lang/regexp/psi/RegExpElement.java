@@ -18,7 +18,7 @@ package org.intellij.lang.regexp.psi;
 import consulo.language.ast.ASTNode;
 import consulo.language.psi.PsiElement;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public interface RegExpElement extends PsiElement {
     @Nonnull

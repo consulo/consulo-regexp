@@ -27,7 +27,7 @@ import consulo.language.lexer.Lexer;
 import consulo.language.parser.ParserDefinition;
 import consulo.language.version.LanguageVersionUtil;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -27,7 +27,7 @@ import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import org.intellij.lang.annotations.MagicConstant;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.util.List;
 import java.util.regex.Pattern;
 

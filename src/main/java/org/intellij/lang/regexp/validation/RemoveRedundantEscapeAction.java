@@ -29,7 +29,7 @@ import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpChar;
 import org.intellij.lang.regexp.psi.impl.RegExpElementImpl;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 class RemoveRedundantEscapeAction implements IntentionAction {
     private final RegExpChar myChar;

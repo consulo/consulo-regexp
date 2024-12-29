@@ -15,7 +15,7 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 /**
  * Basic element that holds a whole pattern that consists of one or more branches.

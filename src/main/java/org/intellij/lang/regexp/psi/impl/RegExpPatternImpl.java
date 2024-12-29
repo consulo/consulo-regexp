@@ -24,7 +24,7 @@ import org.intellij.lang.regexp.psi.RegExpBranch;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpPattern;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class RegExpPatternImpl extends RegExpElementImpl implements RegExpPattern {
     private static final TokenSet BRANCH = TokenSet.create(RegExpElementTypes.BRANCH);

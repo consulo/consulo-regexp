@@ -27,7 +27,7 @@ import org.intellij.lang.regexp.psi.RegExpGroup;
 import org.intellij.lang.regexp.psi.RegExpPattern;
 import org.intellij.lang.regexp.psi.RegExpRecursiveElementVisitor;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 /**
  * Annotator that is used to validate the "Value-Pattern" textfield: The regex entered there should contain exactly

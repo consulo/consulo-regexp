@@ -21,7 +21,7 @@ import org.intellij.lang.regexp.psi.RegExpAtom;
 import org.intellij.lang.regexp.psi.RegExpBranch;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class RegExpBranchImpl extends RegExpElementImpl implements RegExpBranch {
     public RegExpBranchImpl(ASTNode astNode) {

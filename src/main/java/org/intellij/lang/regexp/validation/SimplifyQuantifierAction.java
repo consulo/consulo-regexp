@@ -27,7 +27,7 @@ import org.intellij.lang.regexp.psi.RegExpClosure;
 import org.intellij.lang.regexp.psi.RegExpPattern;
 import org.intellij.lang.regexp.psi.RegExpQuantifier;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 class SimplifyQuantifierAction implements IntentionAction {
     private final RegExpQuantifier myQuantifier;

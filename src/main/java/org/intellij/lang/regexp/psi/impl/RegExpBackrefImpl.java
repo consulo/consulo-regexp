@@ -32,7 +32,7 @@ import org.intellij.lang.regexp.psi.RegExpElement;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpGroup;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackref {
     public RegExpBackrefImpl(ASTNode astNode) {

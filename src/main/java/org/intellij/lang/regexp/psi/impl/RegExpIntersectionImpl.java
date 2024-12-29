@@ -20,7 +20,7 @@ import org.intellij.lang.regexp.psi.RegExpClassElement;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpIntersection;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class RegExpIntersectionImpl extends RegExpElementImpl implements RegExpIntersection {
     public RegExpIntersectionImpl(ASTNode astNode) {

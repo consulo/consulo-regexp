@@ -22,7 +22,7 @@ import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpBoundary;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class RegExpBoundaryImpl extends RegExpElementImpl implements RegExpBoundary {
     public RegExpBoundaryImpl(ASTNode astNode) {

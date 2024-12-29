@@ -28,7 +28,7 @@ import org.intellij.lang.regexp.psi.RegExpGroup;
 import org.intellij.lang.regexp.psi.RegExpPattern;
 import org.jetbrains.annotations.NonNls;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class RegExpGroupImpl extends RegExpElementImpl implements RegExpGroup {
     public RegExpGroupImpl(ASTNode astNode) {

@@ -20,7 +20,7 @@ import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpOptions;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 public class RegExpOptionsImpl extends RegExpElementImpl implements RegExpOptions {
     public RegExpOptionsImpl(ASTNode astNode) {

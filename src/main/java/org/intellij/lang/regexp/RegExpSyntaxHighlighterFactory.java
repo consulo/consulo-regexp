@@ -22,7 +22,7 @@ import consulo.language.editor.highlight.SyntaxHighlighter;
 import consulo.language.parser.ParserDefinition;
 import jakarta.inject.Inject;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 @ExtensionImpl
 public class RegExpSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHighlighterFactory {

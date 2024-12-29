@@ -17,7 +17,7 @@ package org.intellij.lang.regexp.psi;
 
 import consulo.language.ast.ASTNode;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Represents an inline options element (?x) or (?-x). Returned from {@link org.intellij.lang.regexp.psi.RegExpSetOptions}

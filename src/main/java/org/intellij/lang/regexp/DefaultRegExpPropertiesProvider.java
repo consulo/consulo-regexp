@@ -17,8 +17,8 @@ package org.intellij.lang.regexp;
 
 import consulo.util.lang.StringUtil;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 public final class DefaultRegExpPropertiesProvider {
     private static final DefaultRegExpPropertiesProvider INSTANCE = new DefaultRegExpPropertiesProvider();

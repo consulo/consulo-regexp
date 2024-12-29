@@ -22,7 +22,7 @@ import org.intellij.lang.regexp.psi.RegExpClass;
 import org.intellij.lang.regexp.psi.RegExpClassElement;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class RegExpClassImpl extends RegExpElementImpl implements RegExpClass {
     public RegExpClassImpl(ASTNode astNode) {

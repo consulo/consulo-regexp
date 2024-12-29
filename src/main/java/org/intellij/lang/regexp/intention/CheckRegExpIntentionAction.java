@@ -33,7 +33,7 @@ import consulo.ui.image.Image;
 import consulo.util.lang.Pair;
 import org.intellij.lang.regexp.RegExpLanguage;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import javax.swing.*;
 
 /**

@@ -33,7 +33,7 @@ import consulo.language.util.ProcessingContext;
 import consulo.ui.image.Image;
 import org.jetbrains.annotations.NonNls;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import static consulo.language.pattern.PlatformPatterns.psiElement;
 import static consulo.language.pattern.StandardPatterns.or;

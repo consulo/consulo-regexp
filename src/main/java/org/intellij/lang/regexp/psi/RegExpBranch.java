@@ -15,7 +15,7 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 /**
  * A branch represents an alternative in a regex pattern: abc | xyz

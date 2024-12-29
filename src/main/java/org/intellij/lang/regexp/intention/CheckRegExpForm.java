@@ -40,7 +40,7 @@ import org.intellij.lang.regexp.RegExpLanguage;
 import org.intellij.lang.regexp.RegExpModifierProvider;
 import org.jetbrains.annotations.TestOnly;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import javax.swing.*;
 import java.util.regex.Pattern;
 

@@ -15,7 +15,7 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 /**
  * Represents an atom with a quantifier, such as ?, *, + or {min,max}

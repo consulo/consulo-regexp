@@ -22,7 +22,7 @@ import org.intellij.lang.regexp.RegExpElementTypes;
 import org.intellij.lang.regexp.psi.RegExpCharRange;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class RegExpCharRangeImpl extends RegExpElementImpl implements RegExpCharRange {
     private static final TokenSet E = TokenSet.create(RegExpElementTypes.CHAR, RegExpElementTypes.SIMPLE_CLASS);

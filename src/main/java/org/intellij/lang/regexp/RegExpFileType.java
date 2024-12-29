@@ -20,7 +20,7 @@ import consulo.localize.LocalizeValue;
 import consulo.ui.image.Image;
 import consulo.regexp.icon.RegExpIconGroup;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class RegExpFileType extends LanguageFileType {
     public static final RegExpFileType INSTANCE = new RegExpFileType();

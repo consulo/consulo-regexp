@@ -23,7 +23,7 @@ import org.intellij.lang.regexp.psi.RegExpClosure;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpQuantifier;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class RegExpClosureImpl extends RegExpElementImpl implements RegExpClosure {
     public RegExpClosureImpl(ASTNode astNode) {

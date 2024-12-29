@@ -21,7 +21,7 @@ import consulo.language.editor.action.WordSelectionerFilter;
 import consulo.language.psi.PsiElement;
 import org.intellij.lang.regexp.psi.RegExpChar;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 /**
  * @author yole

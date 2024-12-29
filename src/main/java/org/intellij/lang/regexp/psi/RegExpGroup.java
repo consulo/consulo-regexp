@@ -17,7 +17,7 @@ package org.intellij.lang.regexp.psi;
 
 import consulo.language.psi.PsiNamedElement;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 public interface RegExpGroup extends RegExpAtom, PsiNamedElement {
     boolean isCapturing();

@@ -20,8 +20,8 @@ import consulo.language.psi.PsiElement;
 import org.intellij.lang.regexp.psi.*;
 import org.jetbrains.annotations.Contract;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * @author yole

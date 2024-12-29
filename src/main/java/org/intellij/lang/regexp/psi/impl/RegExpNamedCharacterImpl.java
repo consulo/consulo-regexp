@@ -20,7 +20,7 @@ import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpNamedCharacter;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * @author Bas Leijdekkers

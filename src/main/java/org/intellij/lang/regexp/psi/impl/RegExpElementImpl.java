@@ -30,8 +30,8 @@ import org.intellij.lang.regexp.RegExpLanguage;
 import org.intellij.lang.regexp.psi.RegExpElement;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements RegExpElement {
     public RegExpElementImpl(ASTNode node) {

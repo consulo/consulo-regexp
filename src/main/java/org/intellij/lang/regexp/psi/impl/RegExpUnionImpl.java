@@ -20,7 +20,7 @@ import org.intellij.lang.regexp.psi.RegExpClassElement;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpUnion;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 /**
  * @author Bas Leijdekkers

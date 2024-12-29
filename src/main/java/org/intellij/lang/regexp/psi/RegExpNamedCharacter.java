@@ -17,7 +17,7 @@ package org.intellij.lang.regexp.psi;
 
 import consulo.language.ast.ASTNode;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * @author Bas Leijdekkers

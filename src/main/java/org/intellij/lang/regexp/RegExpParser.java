@@ -23,8 +23,8 @@ import consulo.language.parser.PsiBuilder;
 import consulo.language.parser.PsiParser;
 import consulo.language.version.LanguageVersion;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.util.EnumSet;
 
 public class RegExpParser implements PsiParser {
