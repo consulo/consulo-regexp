@@ -18,20 +18,19 @@ package org.intellij.lang.regexp.validation;
 import consulo.annotation.access.RequiredReadAction;
 import consulo.codeEditor.Editor;
 import consulo.language.ast.ASTNode;
-import consulo.language.editor.intention.IntentionAction;
+import consulo.language.editor.intention.SyntheticIntentionAction;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.language.util.IncorrectOperationException;
 import consulo.project.Project;
 import consulo.ui.annotation.RequiredUIAccess;
 import consulo.util.lang.StringUtil;
+import jakarta.annotation.Nonnull;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpChar;
 import org.intellij.lang.regexp.psi.impl.RegExpElementImpl;
 
-import jakarta.annotation.Nonnull;
-
-class RemoveRedundantEscapeAction implements IntentionAction {
+class RemoveRedundantEscapeAction implements SyntheticIntentionAction {
     private final RegExpChar myChar;
 
     public RemoveRedundantEscapeAction(RegExpChar ch) {
@@ -42,11 +41,6 @@ class RemoveRedundantEscapeAction implements IntentionAction {
     @Override
     public String getText() {
         return "Remove Redundant Escape";
-    }
-
-    @Nonnull
-    public String getFamilyName() {
-        return "Redundant Character Escape";
     }
 
     @Override
