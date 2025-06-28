@@ -15,29 +15,30 @@
  */
 package org.intellij.lang.regexp.psi.impl;
 
+
 import consulo.annotation.access.RequiredReadAction;
 import consulo.annotation.access.RequiredWriteAction;
-import consulo.application.AllIcons;
 import consulo.document.util.TextRange;
 import consulo.language.ast.ASTNode;
-import consulo.language.editor.completion.lookup.LookupValueFactory;
-import consulo.language.editor.completion.lookup.LookupValueWithPriority;
-import consulo.language.editor.completion.lookup.LookupValueWithUIHint;
+import consulo.language.editor.completion.lookup.LookupElement;
+import consulo.language.editor.completion.lookup.LookupElementBuilder;
+import consulo.language.editor.completion.lookup.PrioritizedLookupElement;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiReference;
 import consulo.language.util.IncorrectOperationException;
+import consulo.platform.base.icon.PlatformIconGroup;
 import consulo.util.collection.ArrayUtil;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.intellij.lang.regexp.RegExpLanguageHosts;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpProperty;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
-import java.awt.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpProperty {
@@ -48,19 +49,29 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
     @Override
     public PsiReference getReference() {
         final ASTNode lbrace = getNode().findChildByType(RegExpTT.LBRACE);
-        return lbrace == null ? null : new MyPsiReference();
+        if (lbrace == null) {
+            return null;
+        }
+        return new MyPsiReference();
     }
 
     @Override
     public boolean isNegated() {
-        final ASTNode node = getNode().findChildByType(RegExpTT.PROPERTY);
-        return node != null && node.textContains('P');
+        final ASTNode node1 = getNode().findChildByType(RegExpTT.PROPERTY);
+        final ASTNode node2 = getNode().findChildByType(RegExpTT.CARET);
+        return (node1 != null && node1.textContains('P')) ^ (node2 != null);
     }
 
-    @Nullable
     @Override
-    public ASTNode getCategoryNode() {
+    public @Nullable ASTNode getCategoryNode() {
         return getNode().findChildByType(RegExpTT.NAME);
+    }
+
+    @Override
+    public @Nullable ASTNode getValueNode() {
+        ASTNode node = getNode();
+        ASTNode eq = node.findChildByType(RegExpTT.EQ);
+        return eq != null ? node.findChildByType(RegExpTT.NAME, eq) : null;
     }
 
     @Override
@@ -69,128 +80,110 @@ public class RegExpPropertyImpl extends RegExpElementImpl implements RegExpPrope
     }
 
     private class MyPsiReference implements PsiReference {
-        @Override
         @RequiredReadAction
-        public PsiElement getElement() {
+        @Override
+        public @Nonnull PsiElement getElement() {
             return RegExpPropertyImpl.this;
         }
 
-        @Nonnull
-        @Override
         @RequiredReadAction
-        public TextRange getRangeInElement() {
-            final ASTNode lbrace = getNode().findChildByType(RegExpTT.LBRACE);
-            assert lbrace != null;
-            final ASTNode rbrace = getNode().findChildByType(RegExpTT.RBRACE);
-            int to = rbrace == null ? getTextRange().getEndOffset() : rbrace.getTextRange().getEndOffset() - 1;
+        @Override
+        public @Nonnull TextRange getRangeInElement() {
+            ASTNode node = getNode();
+            ASTNode firstNode = node.findChildByType(RegExpTT.CARET);
+            if (firstNode == null) {
+                firstNode = node.findChildByType(RegExpTT.LBRACE);
+            }
+            assert firstNode != null;
+            ASTNode eq = node.findChildByType(RegExpTT.EQ);
+            final ASTNode rbrace = node.findChildByType(RegExpTT.RBRACE);
+            int to;
+            if (eq != null) {
+                to = eq.getTextRange().getEndOffset() - 1;
+            }
+            else if (rbrace != null) {
+                to = rbrace.getTextRange().getEndOffset() - 1;
+            }
+            else {
+                to = getTextRange().getEndOffset();
+            }
 
-            final TextRange t = new TextRange(lbrace.getStartOffset() + 1, to);
+            final TextRange t = new TextRange(firstNode.getStartOffset() + 1, to);
             return t.shiftRight(-getTextRange().getStartOffset());
         }
 
-        @Nullable
-        @Override
         @RequiredReadAction
-        public PsiElement resolve() {
+        @Override
+        public @Nullable PsiElement resolve() {
             return RegExpPropertyImpl.this;
         }
 
-        @Nonnull
-        @Override
         @RequiredReadAction
-        public String getCanonicalText() {
+        @Override
+        public @Nonnull String getCanonicalText() {
             return getRangeInElement().substring(getElement().getText());
         }
 
-        @Override
         @RequiredWriteAction
-        public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+        @Override
+        public PsiElement handleElementRename(@Nonnull String newElementName) throws IncorrectOperationException {
             throw new IncorrectOperationException();
         }
 
-        @Override
         @RequiredWriteAction
+        @Override
         public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException {
             throw new IncorrectOperationException();
         }
 
-        @Override
         @RequiredReadAction
-        public boolean isReferenceTo(PsiElement element) {
+        @Override
+        public boolean isReferenceTo(@Nonnull PsiElement element) {
             return false;
         }
 
-        @Nonnull
-        @Override
         @RequiredReadAction
+        @Override
+        @Nonnull
         public Object[] getVariants() {
             final ASTNode categoryNode = getCategoryNode();
-            if (categoryNode != null && categoryNode.getText().startsWith("In")
-                && !categoryNode.getText().startsWith("Intelli")) {
+            if (categoryNode != null && categoryNode.getText().startsWith("In") && !categoryNode.getText().startsWith("Intelli")) {
                 return UNICODE_BLOCKS;
             }
             else {
-                final String[][] knownProperties = RegExpLanguageHosts.INSTANCE.getAllKnownProperties(getElement());
-                final Object[] objects = new Object[knownProperties.length];
-                for (int i = 0; i < objects.length; i++) {
-                    final String[] prop = knownProperties[i];
-                    objects[i] = new MyLookupValue(prop);
+                boolean startsWithIs = categoryNode != null && categoryNode.getText().startsWith("Is");
+                Collection<LookupElement> result = new ArrayList<>();
+                for (String[] properties : RegExpLanguageHosts.INSTANCE.getAllKnownProperties(getElement())) {
+                    String name = ArrayUtil.getFirstElement(properties);
+                    if (name != null) {
+                        String typeText = properties.length > 1 ? properties[1] : ("Character.is" + name.substring("java".length()) + "()");
+                        result.add(PrioritizedLookupElement.withPriority(LookupElementBuilder.create(name)
+                            .withPresentableText(startsWithIs ? "Is" + name : name)
+                            .withIcon(PlatformIconGroup.nodesProperty())
+                            .withTypeText(typeText), getPriority(name)));
+                    }
                 }
-                return objects;
+                return ArrayUtil.toObjectArray(result);
             }
         }
 
-        @Override
+        private int getPriority(@Nonnull String propertyName) {
+            if (propertyName.equals("all")) {
+                return 3;
+            }
+            if (propertyName.startsWith("java")) {
+                return 1;
+            }
+            if (propertyName.length() > 2) {
+                return 2;
+            }
+            return 0;
+        }
+
         @RequiredReadAction
+        @Override
         public boolean isSoft() {
             return true;
-        }
-
-        private class MyLookupValue extends LookupValueFactory.LookupValueWithIcon
-            implements LookupValueWithPriority, LookupValueWithUIHint {
-            private final String[] myProp;
-
-            public MyLookupValue(String[] prop) {
-                super(prop[0], AllIcons.Nodes.Property);
-                myProp = prop;
-            }
-
-            @Override
-            public String getPresentation() {
-                final ASTNode categoryNode = getCategoryNode();
-                if (categoryNode != null && categoryNode.getText().startsWith("Is")) {
-                    return "Is" + super.getPresentation();
-                }
-                return super.getPresentation();
-            }
-
-            @Override
-            public int getPriority() {
-                final String name = myProp[0];
-                if (name.equals("all")) {
-                    return HIGH + 1;
-                }
-                if (name.startsWith("java")) {
-                    return HIGHER;
-                }
-                return name.length() > 2 ? HIGH : NORMAL;
-            }
-
-            @Override
-            public String getTypeHint() {
-                return myProp.length > 1 ? myProp[1] : ("Character.is" + myProp[0].substring("java".length()) + "()");
-            }
-
-            @Nullable
-            @Override
-            public Color getColorHint() {
-                return null;
-            }
-
-            @Override
-            public boolean isBold() {
-                return false;
-            }
         }
     }
 

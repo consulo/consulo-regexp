@@ -1,0 +1,410 @@
+action.add.pattern.text:
+    text: Add Pattern…
+action.add.regexp.replace.inspection.text:
+    text: Add RegExp Replace Inspection…
+action.add.regexp.replace.template.text:
+    text: Add RegExp Replace Template…
+action.add.regexp.search.inspection.text:
+    text: Add RegExp Search Inspection…
+action.add.regexp.search.template.text:
+    text: Add RegExp Search Template…
+button.enable.replace:
+    text: Enable Replace
+button.search.only:
+    text: Search Only
+checker.sample.text:
+    text: Sample Text
+color.settings.bad.character:
+    text: Bad character
+color.settings.brace:
+    text: Brace
+color.settings.bracket:
+    text: Bracket
+color.settings.character.class:
+    text: Character class
+color.settings.comma:
+    text: Comma
+color.settings.comment:
+    text: Comment
+color.settings.dot:
+    text: Dot
+color.settings.escaped.character:
+    text: Escaped character
+color.settings.inline.option:
+    text: Inline option
+color.settings.invalid.escape.sequence:
+    text: Invalid escape sequence
+color.settings.matched.groups:
+    text: Matched groups
+color.settings.name:
+    text: Name
+color.settings.operator.character:
+    text: Operator character
+color.settings.parenthesis:
+    text: Parenthesis
+color.settings.plain.character:
+    text: Plain character
+color.settings.quantifier:
+    text: Quantifier
+color.settings.quote.character:
+    text: Quote escape
+color.settings.redundant.escape.sequence:
+    text: Redundant escape sequence
+color.settings.title.regexp:
+    text: RegExp
+dialog.message.inspection.with.name.exists.warning:
+    text: Inspection with name ''{0}'' already exists
+doc.property.block.stands.for.0:
+    text: Property block stands for {0}
+doc.property.block.stands.for.characters.not.matching.0:
+    text: Property block stands for characters not matching {0}
+edit.metadata.button:
+    text: Edit Metadata…
+error.0.repetition.not.allowed.inside.lookbehind:
+    text: '{0} repetition not allowed inside lookbehind'
+error.alternation.alternatives.needs.to.have.the.same.length.inside.lookbehind:
+    text: Alternation alternatives need to have the same length inside lookbehind
+error.atomic.groups.are.not.supported.in.this.regex.dialect:
+    text: Atomic groups are not supported in this regex dialect
+error.back.reference.is.nested.into.the.capturing.group.it.refers.to:
+    text: Back reference is nested into the capturing group it refers to
+error.conditional.group.reference.not.allowed.inside.lookbehind:
+    text: Conditional group reference not allowed inside lookbehind
+error.conditionals.are.not.supported.in.this.regex.dialect:
+    text: Conditionals are not supported in this regex dialect
+error.dangling.metacharacter:
+    text: Dangling quantifier ''{0}''
+error.dangling.opening.bracket:
+    text: Unexpected start of quantifier '{'
+error.define.subpattern.contains.more.than.one.branch:
+    text: DEFINE subpattern contains more than one branch
+error.embedded.comments.are.not.supported.in.this.regex.dialect:
+    text: Embedded comments are not supported in this regex dialect
+error.empty.group:
+    text: Empty group
+error.group.reference.is.nested.into.the.named.group.it.refers.to:
+    text: Group reference is nested into the named group it refers to
+error.group.reference.not.allowed.inside.lookbehind:
+    text: Group reference not allowed inside lookbehind
+error.group.with.name.0.already.defined:
+    text: Group with name ''{0}'' already defined
+error.illegal.character.range.to.from:
+    text: Illegal character range (to < from)
+error.illegal.hexadecimal.escape.sequence:
+    text: Illegal hexadecimal escape sequence
+error.illegal.octal.escape.sequence:
+    text: Illegal octal escape sequence
+error.illegal.repetition.range.min.max:
+    text: Illegal repetition range (min > max)
+error.illegal.unicode.escape.sequence:
+    text: Illegal unicode escape sequence
+error.illegal.unsupported.escape.sequence:
+    text: Illegal/unsupported escape sequence
+error.invalid.group.name:
+    text: Invalid group name
+error.look.behind.groups.are.not.supported.in.this.regex.dialect:
+    text: Look-behind groups are not supported in this regex dialect
+error.lookaround.conditions.in.conditionals.not.supported.in.this.regex.dialect:
+    text: Lookaround conditions for conditionals are not supported in this regex dialect
+error.named.group.reference.not.allowed.inside.lookbehind:
+    text: Named group reference not allowed inside lookbehind
+error.named.unicode.characters.are.not.allowed.in.this.regex.dialect:
+    text: Named Unicode characters are not allowed in this regex dialect
+error.nested.quantifier.in.regexp:
+    text: Nested quantifier in regexp
+error.property.escape.sequences.are.not.supported.in.this.regex.dialect:
+    text: Property escape sequences are not supported in this regex dialect
+error.redundant.group.nesting:
+    text: Redundant group nesting
+error.repetition.value.too.large:
+    text: Repetition value too large
+error.this.boundary.is.not.supported.in.this.regex.dialect:
+    text: This boundary is not supported in this regex dialect
+error.this.hex.character.syntax.is.not.supported.in.this.regex.dialect:
+    text: This hex character syntax is not supported in this regex dialect
+error.this.kind.group.reference.condition.not.supported.in.this.regex.dialect:
+    text: This kind of group reference condition is not supported in this regex dialect
+error.this.named.group.reference.syntax.is.not.supported.in.this.regex.dialect:
+    text: This named group reference syntax is not supported in this regex dialect
+error.this.named.group.syntax.is.not.supported.in.this.regex.dialect:
+    text: This named group syntax is not supported in this regex dialect
+error.unequal.min.and.max.in.counted.quantifier.not.allowed.inside.lookbehind:
+    text: Unequal min and max in counted quantifier not allowed inside lookbehind
+error.unknown.character.category:
+    text: Unknown character category
+error.unknown.character.name:
+    text: Unknown character name
+error.unknown.inline.option.flag:
+    text: Unknown inline option flag
+error.unknown.posix.character.class:
+    text: Unknown POSIX character class
+error.unknown.property.name:
+    text: Unknown property name
+error.unknown.property.value:
+    text: Unknown property value
+error.unresolved.back.reference:
+    text: Unresolved back reference
+error.unresolved.named.group.reference:
+    text: Unresolved named group reference
+error.unresolved.numbered.group.reference:
+    text: Unresolved numbered group reference
+filetype.regular.expression.description:
+    text: Regular expression
+inspection.group.name.regexp:
+    text: RegExp
+inspection.name.anonymous.group.or.numeric.back.reference:
+    text: Anonymous capturing group or numeric back reference
+inspection.name.begin.or.end.anchor.in.unexpected.position:
+    text: Begin or end anchor in unexpected position
+inspection.name.consecutive.spaces:
+    text: Consecutive spaces
+inspection.name.custom.regexp:
+    text: Custom RegExp inspection
+inspection.name.duplicate.branch.in.alternation:
+    text: Duplicate branch in alternation
+inspection.name.duplicate.character.in.class:
+    text: Duplicate character in character class
+inspection.name.empty.branch.in.alternation:
+    text: Empty branch in alternation
+inspection.name.escaped.meta.character:
+    text: Escaped meta character
+inspection.name.octal.escape:
+    text: Octal escape
+inspection.name.redundant.character.escape:
+    text: Redundant character escape
+inspection.name.redundant.digit.class.element:
+    text: Redundant '\d', '[:digit:]', or '\D' class elements
+inspection.name.redundant.nested.character.class:
+    text: Redundant nested character class
+inspection.name.simplifiable.expression:
+    text: Regular expression can be simplified
+inspection.name.single.character.alternation:
+    text: Single character alternation
+inspection.name.suspicious.backref:
+    text: Suspicious back reference
+inspection.name.unnecessary.non.capturing.group:
+    text: Unnecessary non-capturing group
+inspection.option.ignore.escaped.closing.brackets:
+    text: Ignore escaped closing brackets '}' and ']'
+inspection.quick.fix.remove.duplicate.0.from.character.class:
+    text: Remove duplicate ''{0}'' from character class
+inspection.quick.fix.remove.duplicate.branch:
+    text: Remove duplicate branch
+inspection.quick.fix.remove.duplicate.element.from.character.class:
+    text: Remove duplicate element from character class
+inspection.quick.fix.remove.empty.branch:
+    text: Remove empty branch
+inspection.quick.fix.remove.redundant.0.class.element:
+    text: Remove redundant ''{0}''
+inspection.quick.fix.remove.redundant.class.element:
+    text: Remove redundant class element
+inspection.quick.fix.remove.redundant.escape:
+    text: Remove redundant escape
+inspection.quick.fix.remove.unnecessary.non.capturing.group:
+    text: Unwrap unnecessary non-capturing group
+inspection.quick.fix.replace.alternation.with.character.class:
+    text: Replace alternation with character class
+inspection.quick.fix.replace.redundant.character.class.with.contents:
+    text: Replace redundant character class with contents
+inspection.quick.fix.replace.with.character.inside.class:
+    text: Replace with character inside class
+inspection.quick.fix.replace.with.hexadecimal.escape:
+    text: Replace with hexadecimal escape
+inspection.quick.fix.replace.with.space.and.repeated.quantifier:
+    text: Replace with space and repeated quantifier
+inspection.tree.create.inspection:
+    text: Using a RegExp…
+inspection.tree.group.description:
+    text: Use the + button in the toolbar to create a new RegExp inspection.<br>RegExp inspections highlight code snippets matching the specified regular expression. A quick-fix can be provided by adding a string template which may contain group references (e.g. <code>$1</code>).<br><br><a href="action://regexp.profile.action.provider.add.group">Add Custom RegExp Inspection…</a>
+inspection.warning.anchor.code.ref.code.in.unexpected.position:
+    text: Anchor <code>#ref</code> in unexpected position
+inspection.warning.anonymous.capturing.group:
+    text: Anonymous capturing group
+inspection.warning.can.be.removed:
+    text: <code>#ref</code> is redundant
+inspection.warning.can.be.simplified:
+    text: <code>#ref</code> can be simplified to ''{0}''
+inspection.warning.consecutive.spaces.in.regexp:
+    text: '{0} consecutive spaces in RegExp'
+inspection.warning.duplicate.branch.in.alternation:
+    text: Duplicate branch in alternation
+inspection.warning.empty.branch.in.alternation:
+    text: Empty branch in alternation
+inspection.warning.escaped.meta.character.0:
+    text: Escaped meta character <code>{0}</code>
+inspection.warning.group.back.reference.are.in.different.branches:
+    text: Group <code>{0}</code> and this back reference are in different branches
+inspection.warning.group.defined.after.back.reference:
+    text: Group <code>{0}</code> is defined after this back reference
+inspection.warning.numeric.back.reference:
+    text: Numeric back reference
+inspection.warning.octal.escape.code.ref.code.in.regexp:
+    text: Octal escape <code>#ref</code> in RegExp
+inspection.warning.potential.exponential.backtracking:
+    text: Potential exponential backtracking
+inspection.warning.redundant.character.escape.0.in.regexp:
+    text: Redundant character escape <code>{0}</code> in RegExp
+inspection.warning.redundant.class.element:
+    text: Redundant ''{0}'' in RegExp
+inspection.warning.redundant.nested.character.class:
+    text: Redundant nested character class
+inspection.warning.single.character.alternation.in.regexp:
+    text: Single character alternation in RegExp
+inspection.warning.unnecessary.non.capturing.group:
+    text: Unnecessary non-capturing group <code>{0}</code>
+intention.family.name.replace:
+    text: Replace
+intention.name.check.regexp:
+    text: Check RegExp
+label.any:
+    text: Any
+label.regexp:
+    text: '&RegExp:'
+label.regexp.patterns:
+    text: 'RegExp patterns:'
+label.sample:
+    text: '&Sample:'
+no.description.provided.description:
+    text: No description provided
+parse.error.category.shorthand.not.allowed.in.this.regular.expression.dialect:
+    text: Category shorthand not allowed in this regular expression dialect
+parse.error.character.class.expected:
+    text: Character class expected
+parse.error.character.expected:
+    text: Character expected
+parse.error.character.or.mysql.character.name.expected:
+    text: Character or MySQL character name expected
+parse.error.closing.brace.expected:
+    text: '''}'' expected'
+parse.error.closing.brace.or.number.expected:
+    text: '''}'' or number expected'
+parse.error.comma.expected:
+    text: ''','' expected'
+parse.error.empty.property:
+    text: Empty property
+parse.error.group.name.expected:
+    text: Group name expected
+parse.error.group.name.or.number.expected:
+    text: Group name or number expected
+parse.error.group.number.expected:
+    text: Group number expected
+parse.error.illegal.category.shorthand:
+    text: Illegal category shorthand
+parse.error.illegal.character.range:
+    text: Illegal character range
+parse.error.negating.a.property.not.allowed.in.this.regular.expression.dialect:
+    text: Negating a property not allowed in this regular expression dialect
+parse.error.number.expected:
+    text: Number expected
+parse.error.opening.brace.expected:
+    text: '''{'' expected'
+parse.error.opening.brace.or.category.shorthand.expected:
+    text: '''{'' or category shorthand expected'
+parse.error.pattern.expected:
+    text: Pattern expected
+parse.error.posix.character.class.name.expected:
+    text: POSIX character class name expected
+parse.error.property.name.expected:
+    text: Property name expected
+parse.error.property.value.expected:
+    text: Property value expected
+parse.error.unclosed.character.class:
+    text: Unclosed character class
+parse.error.unclosed.group:
+    text: ''')'' expected'
+parse.error.unclosed.group.name:
+    text: Unclosed group name
+parse.error.unclosed.group.reference:
+    text: Unclosed group reference
+parse.error.unclosed.mysql.character.equivalence.class:
+    text: Unclosed MySQL character equivalence class
+parse.error.unclosed.mysql.character.expression:
+    text: Unclosed MySQL character expression
+parse.error.unclosed.options.group:
+    text: Unclosed options group
+parse.error.unclosed.posix.bracket.expression:
+    text: Unclosed POSIX bracket expression
+parse.error.unclosed.property:
+    text: Unclosed property
+parse.error.unicode.character.name.expected:
+    text: Unicode character name expected
+parse.error.unmatched.closing.bracket:
+    text: Unmatched closing ''{0}''
+regexp.dialog.flag.canonical.equivalence:
+    text: Canonical Equivalence
+regexp.dialog.flag.canonical.equivalence.description:
+    text: Characters are converted into Unicode normalized form before matching.
+regexp.dialog.flag.case.insensitive:
+    text: Case Insensitive
+regexp.dialog.flag.case.insensitive.description:
+    text: By default, Case Insensitive only knows about the US-ASCII character set. Enable Unicode Case for Unicode-aware case-insensitive matching.
+regexp.dialog.flag.comments:
+    text: Comments
+regexp.dialog.flag.comments.description:
+    text: Ignore whitespace, and <code>#</code> comments until the end of the line when matching.
+regexp.dialog.flag.dotall:
+    text: Dotall
+regexp.dialog.flag.dotall.description:
+    text: In Dotall mode, <code>.</code> matches any character, including newline characters. By default, it does not match newline characters.
+regexp.dialog.flag.literal:
+    text: Literal
+regexp.dialog.flag.literal.description:
+    text: The pattern is treated as a sequence of literal characters. Metacharacters and escape sequences will have no special meaning.
+regexp.dialog.flag.multiline:
+    text: Multiline
+regexp.dialog.flag.multiline.description:
+    text: In multiline mode <code>^</code> and <code>$</code> match the beginning and end of a line. By default, they only match the beginning and end of the entire file.
+regexp.dialog.flag.unicode.case:
+    text: Unicode Case
+regexp.dialog.flag.unicode.case.description:
+    text: Unicode-aware case-insensitive matching.
+regexp.dialog.flag.unicode.character.class:
+    text: Unicode Character Classes
+regexp.dialog.flag.unicode.character.class.description:
+    text: Use Unicode aware predefined character classes and POSIX character classes.
+regexp.dialog.flag.unix.lines:
+    text: Unix Lines
+regexp.dialog.flag.unix.lines.description:
+    text: Only the <code>\n</code> line terminator is recognized in the behavior of <code>.</code>, <code>^</code>, and <code>$</code>.
+regexp.dialog.language:
+    text: '&Language:'
+regexp.dialog.regexp.flags:
+    text: RegExp Flags
+regexp.dialog.replace.template:
+    text: 'Replacement:'
+regexp.dialog.search.template:
+    text: 'Search RegExp:'
+regexp.dialog.title:
+    text: RegExp
+surrounder.atomic.group.pattern:
+    text: Atomic Group (?:pattern)
+surrounder.capturing.group.pattern:
+    text: Capturing Group (pattern)
+surrounder.negative.lookahead.pattern:
+    text: Negative Lookahead (?!pattern)
+surrounder.negative.lookbehind.pattern:
+    text: Negative Lookbehind (?<!pattern)
+surrounder.non.capturing.group.pattern:
+    text: Non-Capturing Group (?:pattern)
+surrounder.positive.lookahead.pattern:
+    text: Positive Lookahead (?=pattern)
+surrounder.positive.lookbehind.pattern:
+    text: Positive Lookbehind (?<=pattern)
+tooltip.bad.pattern:
+    text: Bad regular expression pattern
+tooltip.found:
+    text: Expression found in example
+tooltip.found.multiple:
+    text: Expression found {0} times in example
+tooltip.matches:
+    text: Expression and example match!
+tooltip.more.input.expected:
+    text: More example input expected
+tooltip.no.match:
+    text: Expression and example do not match
+tooltip.pattern.is.too.complex:
+    text: Regular expression pattern is too complex
+warning.duplicate.character.0.inside.character.class:
+    text: Duplicate character ''{0}'' inside character class
+warning.duplicate.predefined.character.class.0.inside.character.class:
+    text: Duplicate predefined character class ''{0}'' inside character class

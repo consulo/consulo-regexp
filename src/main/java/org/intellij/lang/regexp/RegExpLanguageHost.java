@@ -22,10 +22,10 @@ import consulo.component.extension.ByClassGrouper;
 import consulo.component.extension.ExtensionPointCacheKey;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
-import org.intellij.lang.regexp.psi.*;
-
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+import org.intellij.lang.regexp.psi.*;
+
 import java.util.function.Function;
 
 /**
@@ -56,6 +56,34 @@ public interface RegExpLanguageHost {
         return null;
     }
 
+    enum Lookbehind {
+        /**
+         * Lookbehind not supported.
+         */
+        NOT_SUPPORTED,
+
+        /**
+         * Alternation inside lookbehind (a|b|c) branches must have same length,
+         * finite repetition with identical min, max values (a{3} or a{3,3}) allowed.
+         */
+        FIXED_LENGTH_ALTERNATION,
+
+        /**
+         * Alternation (a|bc|def) branches inside look behind may have different length
+         */
+        VARIABLE_LENGTH_ALTERNATION,
+
+        /**
+         * Finite repetition inside lookbehind with different minimum, maximum values allowed
+         */
+        FINITE_REPETITION,
+
+        /**
+         * Full regex syntax inside lookbehind, i.e. star (*) and plus (*) repetition and backreferences, allowed.
+         */
+        FULL
+    }
+    
     @Nonnull
     Class getHostClass();
 
@@ -66,6 +94,26 @@ public interface RegExpLanguageHost {
     boolean supportsPossessiveQuantifiers();
 
     boolean supportsPythonConditionalRefs();
+
+    default boolean supportsPropertySyntax(@Nonnull PsiElement context) {
+        return true;
+    }
+
+    /**
+     * @param condition a RegExpBackRef, RegExpNamedGroupRef or RegExpGroup instance.
+     * @return true, if this type of conditional condition is supported
+     */
+    default boolean supportConditionalCondition(RegExpAtom condition) {
+        return true;
+    }
+
+    default boolean isValidPropertyValue(@Nonnull String propertyName, @Nonnull String value) {
+        return true;
+    }
+
+    default boolean isValidPropertyName(@Nonnull String name) {
+        return true;
+    }
 
     boolean supportsNamedGroupSyntax(RegExpGroup group);
 
@@ -112,6 +160,10 @@ public interface RegExpLanguageHost {
         }
     }
 
+    default boolean isDuplicateGroupNamesAllowed(@Nonnull RegExpGroup group) {
+        return false;
+    }
+
     default boolean supportsLiteralBackspace(RegExpChar aChar) {
         return true;
     }
@@ -130,4 +182,17 @@ public interface RegExpLanguageHost {
 
     @Nonnull
     String[][] getKnownCharacterClasses();
+
+    /**
+     * @param number the number element to extract the value from
+     * @return the value, or null when the value is out of range
+     */
+    @Nullable
+    default Number getQuantifierValue(@Nonnull RegExpNumber number) {
+        return Double.parseDouble(number.getUnescapedText());
+    }
+
+    default Lookbehind supportsLookbehind(@Nonnull RegExpGroup lookbehindGroup) {
+        return Lookbehind.FULL; // to not break existing implementations, although rarely actually supported.
+    }
 }

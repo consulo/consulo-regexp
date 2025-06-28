@@ -93,11 +93,15 @@ public class RegExpElementVisitor extends PsiElementVisitor {
         visitRegExpElement(groupRef);
     }
 
-    public void visitRegExpPyCondRef(RegExpPyCondRef condRef) {
+    public void visitRegExpConditional(RegExpConditional condRef) {
         visitRegExpElement(condRef);
     }
 
     public void visitPosixBracketExpression(RegExpPosixBracketExpression posixBracketExpression) {
         visitRegExpElement(posixBracketExpression);
+    }
+
+    public void visitRegExpNumber(RegExpNumber number) {
+        visitRegExpElement(number);
     }
 }

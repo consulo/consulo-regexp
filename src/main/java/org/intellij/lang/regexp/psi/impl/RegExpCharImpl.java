@@ -16,29 +16,32 @@
 package org.intellij.lang.regexp.psi.impl;
 
 import consulo.annotation.access.RequiredReadAction;
-import consulo.language.ast.*;
+import consulo.component.util.UnicodeCharacterRegistry;
+import consulo.language.ast.ASTNode;
+import consulo.language.ast.IElementType;
+import consulo.language.ast.StringEscapesTokenTypes;
+import consulo.language.ast.TokenSet;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpChar;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
-
 import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+
+import java.util.Objects;
 
 public class RegExpCharImpl extends RegExpElementImpl implements RegExpChar {
     private static final TokenSet OCT_CHARS = TokenSet.create(RegExpTT.OCT_CHAR, RegExpTT.BAD_OCT_VALUE);
     private static final TokenSet HEX_CHARS = TokenSet.create(RegExpTT.HEX_CHAR, RegExpTT.BAD_HEX_VALUE);
-    private static final TokenSet UNICODE_CHARS = TokenSet.create(RegExpTT.HEX_CHAR, StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN);
+    private static final TokenSet UNICODE_CHARS = TokenSet.create(RegExpTT.UNICODE_CHAR, StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN);
 
     public RegExpCharImpl(ASTNode astNode) {
         super(astNode);
     }
 
-    @Nonnull
+    @RequiredReadAction
     @Override
+    @Nonnull
     public Type getType() {
-        final ASTNode child = getNode().getFirstChildNode();
-        assert child != null;
-        final IElementType t = child.getElementType();
+        final IElementType t = getNode().getFirstChildNode().getElementType();
         if (OCT_CHARS.contains(t)) {
             return Type.OCT;
         }
@@ -48,93 +51,119 @@ public class RegExpCharImpl extends RegExpElementImpl implements RegExpChar {
         else if (UNICODE_CHARS.contains(t)) {
             return Type.UNICODE;
         }
-        else if (t == TokenType.ERROR_ELEMENT) {
-            return Type.INVALID;
+        else if (t == RegExpTT.NAMED_CHARACTER) {
+            return Type.NAMED;
+        }
+        else if (t == RegExpTT.CTRL) {
+            return Type.CONTROL;
         }
         else {
             return Type.CHAR;
         }
     }
 
-    @Nullable
-    @Override
     @RequiredReadAction
-    public Character getValue() {
-        final String s = getUnescapedText();
-        if (s.equals("\\") && getType() == Type.CHAR) {
-            return '\\';
+    @Override
+    public int getValue() {
+        final ASTNode node = getNode();
+        final IElementType type = node.getFirstChildNode().getElementType();
+        if (type == RegExpTT.BAD_OCT_VALUE ||
+            type == RegExpTT.BAD_HEX_VALUE ||
+            type == RegExpTT.BAD_CHARACTER ||
+            type == StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN) {
+            return -1;
         }
-        // special case for valid octal escaped sequences (see RUBY-12161)
-        if (s.startsWith("\\") && s.length() > 1) {
-            final ASTNode child = getNode().getFirstChildNode();
-            assert child != null;
-            final IElementType t = child.getElementType();
-            if (t == RegExpTT.OCT_CHAR) {
-                try {
-                    return (char)Integer.parseInt(s.substring(1), 8);
-                }
-                catch (NumberFormatException e) {
-                    // do nothing
-                }
+        final String text = getUnescapedText();
+        if (text.length() == 1 && (type == RegExpTT.CHARACTER || type == RegExpTT.CTRL_CHARACTER)) {
+            return text.codePointAt(0);
+        }
+        else if (type == RegExpTT.UNICODE_CHAR) {
+            final int i = text.indexOf('\\', 1);
+            if (i >= 0) {
+                return Character.toCodePoint((char) unescapeChar(text.substring(0, i)), (char) unescapeChar(text.substring(i)));
             }
         }
-        return unescapeChar(s);
+        return unescapeChar(text);
     }
 
-    @Nullable
-    private static Character unescapeChar(String s) {
-        assert s.length() > 0;
-
-        boolean escaped = false;
-        for (int idx = 0; idx < s.length(); idx++) {
-            char ch = s.charAt(idx);
-            if (!escaped) {
-                if (ch == '\\') {
-                    escaped = true;
-                }
-                else {
-                    return ch;
-                }
-            }
-            else {
-                return switch (ch) {
-                    case 'n' -> '\n';
-                    case 'r' -> '\r';
-                    case 't' -> '\t';
-                    case 'a' -> '\u0007';
-                    case 'e' -> '\u001b';
-                    case 'f' -> '\f';
-                    case 'b' -> '\b';
-                    case 'c' -> (char)(ch ^ 64);
-                    case 'x' -> parseNumber(idx, s, 16, 2, true);
-                    case 'u' -> parseNumber(idx, s, 16, 4, true);
-                    case '0' -> parseNumber(idx, s, 8, 3, false);
-                    default -> Character.isLetter(ch) ? null : ch;
-                };
-            }
+    public static int unescapeChar(String s) {
+        final int c = s.codePointAt(0);
+        final int length = s.length();
+        if (length == 1 || c != '\\') {
+            return -1;
         }
+        final int codePoint = s.codePointAt(1);
+        return switch (codePoint) {
+            case 'n' -> '\n';
+            case 'r' -> '\r';
+            case 't' -> '\t';
+            case 'a' -> '\u0007'; // The alert (bell) character
+            case 'e' -> '\u001b'; // The escape character
+            case 'f' -> '\f'; // The form-feed character
+            case 'b' -> '\b';
+            case 'c' -> {
+                if (length != 3) {
+                    yield -1;
+                }
+                yield s.codePointAt(2) ^ 64; // control character
+            }
+            case 'N' -> {
+                if (length < 4 || s.charAt(2) != '{' || s.charAt(length - 1) != '}') {
+                    yield -1;
+                }
 
-        return null;
+                String charPoint = s.substring(3, length - 1);
+                UnicodeCharacterRegistry.UnicodeCharacter unicodeCharacter =
+                    UnicodeCharacterRegistry.listCharacters()
+                        .stream()
+                        .filter(it -> Objects.equals(it.getName(), charPoint))
+                        .findFirst()
+                        .orElse(null);
+                yield unicodeCharacter == null ? -1 : unicodeCharacter.getCodePoint();
+            }
+            case 'x' -> {
+                if (length <= 2) {
+                    yield -1;
+                }
+                if (s.charAt(2) == '{') {
+                    yield (s.charAt(length - 1) != '}') ? -1 : parseNumber(s, 3, 16);
+                }
+                if (length == 3) {
+                    yield parseNumber(s, 2, 16);
+                }
+                yield length == 4 ? parseNumber(s, 2, 16) : -1;
+            }
+            case 'u' -> {
+                if (length <= 2) {
+                    yield 'u';
+                }
+                if (s.charAt(2) == '{') {
+                    yield (s.charAt(length - 1) != '}') ? -1 : parseNumber(s, 3, 16);
+                }
+                yield length != 6 ? -1 : parseNumber(s, 2, 16);
+            }
+            case '0', '1', '2', '3', '4', '5', '6', '7' -> parseNumber(s, 1, 8);
+            default -> codePoint;
+        };
     }
 
-    private static Character parseNumber(int idx, String s, int radix, int len, boolean strict) {
-        final int start = idx + 1;
-        final int end = start + len;
-        try {
-            int sum = 0;
-            int i;
-            for (i = start; i < end && i < s.length(); i++) {
-                sum *= radix;
-                sum += Integer.valueOf(s.substring(i, i + 1), radix);
+    private static int parseNumber(String s, int offset, int radix) {
+        int sum = 0;
+        int i = offset;
+        for (; i < s.length(); i++) {
+            final int digit = Character.digit(s.charAt(i), radix);
+            if (digit < 0) { // '}' encountered
+                break;
             }
-            if (i - start == 0) {
-                return null;
+            sum = sum * radix + digit;
+            if (sum > Character.MAX_CODE_POINT) {
+                return -1;
             }
-            return i - start < len && strict ? null : (char)sum;
         }
-        catch (NumberFormatException e1) {
-            return null;
+        if (i - offset <= 0) {
+            return -1; // no digits found
         }
+        return sum;
     }
 
     @Override

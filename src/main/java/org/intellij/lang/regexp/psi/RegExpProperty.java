@@ -16,7 +16,6 @@
 package org.intellij.lang.regexp.psi;
 
 import consulo.language.ast.ASTNode;
-
 import jakarta.annotation.Nullable;
 
 /**
@@ -33,4 +32,10 @@ public interface RegExpProperty extends RegExpAtom, RegExpClassElement {
      */
     @Nullable
     ASTNode getCategoryNode();
+
+    /**
+     * The node that represents the category value, e.g 'Latin' in \p{Script=Latin}
+     */
+    @Nullable
+    ASTNode getValueNode();
 }

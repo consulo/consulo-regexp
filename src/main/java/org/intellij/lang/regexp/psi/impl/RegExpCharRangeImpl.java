@@ -16,37 +16,28 @@
 package org.intellij.lang.regexp.psi.impl;
 
 import consulo.language.ast.ASTNode;
-import consulo.language.ast.TokenSet;
 import consulo.language.psi.PsiElement;
-import org.intellij.lang.regexp.RegExpElementTypes;
+import jakarta.annotation.Nullable;
+import org.intellij.lang.regexp.psi.RegExpChar;
 import org.intellij.lang.regexp.psi.RegExpCharRange;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
-
 import jakarta.annotation.Nonnull;
 
 public class RegExpCharRangeImpl extends RegExpElementImpl implements RegExpCharRange {
-    private static final TokenSet E = TokenSet.create(RegExpElementTypes.CHAR, RegExpElementTypes.SIMPLE_CLASS);
 
     public RegExpCharRangeImpl(ASTNode astNode) {
         super(astNode);
     }
 
-    @Nonnull
     @Override
-    public Endpoint getFrom() {
-        return (Endpoint)getCharNode(0);
+    public @Nonnull RegExpChar getFrom() {
+        return (RegExpChar) getFirstChild();
     }
 
-    @Nonnull
     @Override
-    public Endpoint getTo() {
-        return (Endpoint)getCharNode(1);
-    }
-
-    private PsiElement getCharNode(int idx) {
-        final ASTNode[] ch = getNode().getChildren(E);
-        assert ch.length == 2;
-        return ch[idx].getPsi();
+    public @Nullable RegExpChar getTo() {
+        final PsiElement child = getLastChild();
+        return child instanceof RegExpChar ? (RegExpChar) child : null;
     }
 
     @Override

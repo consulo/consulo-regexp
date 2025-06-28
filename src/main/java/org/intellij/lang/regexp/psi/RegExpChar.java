@@ -15,39 +15,60 @@
  */
 package org.intellij.lang.regexp.psi;
 
+import consulo.annotation.access.RequiredReadAction;
 import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 
 /**
- * Represents a simple or escaped character
+ * Represents a simple, escaped, encoded or named character
  */
-public interface RegExpChar extends RegExpAtom, RegExpClassElement, RegExpCharRange.Endpoint {
+public interface RegExpChar extends RegExpAtom, RegExpClassElement {
     /**
-     * Character type enumeration. Represents either a plain character ("a"),
-     * a hex encoded character value ("\x61"),
-     * an octal encoded character value ("\0141"), or
-     * a unicode escape character ("\u0061")
+     * Character type
      */
     enum Type {
+        /**
+         * A plain character, e.g.: a
+         */
         CHAR,
+
+        /**
+         * Aa hex encoded character value, e.g.: \x61
+         */
         HEX,
+
+        /**
+         * An octal encoded character value, e.g.: \0141
+         */
         OCT,
+
+        /**
+         * A unicode escape character, e.g.: \uFFFD
+         */
         UNICODE,
-        INVALID
+
+        /**
+         * A named character, e.g.: \N{LATIN SMALL LETTER A}
+         */
+        NAMED,
+
+        /**
+         * A control character, e.g.: \c@
+         */
+        CONTROL,
     }
 
     /**
      * Returns the type of this character.
      *
-     * @see org.intellij.lang.regexp.psi.RegExpChar.Type
+     * @see Type
      */
     @Nonnull
+    @RequiredReadAction
     Type getType();
 
     /**
-     * Returns possibly unescaped character-value.
-     * Null if escape sequence is invalid.
+     * Returns unescaped character code point value, -1 if escape sequence is invalid.
      */
-    @Nullable
-    Character getValue();
+    @RequiredReadAction
+    int getValue();
 }

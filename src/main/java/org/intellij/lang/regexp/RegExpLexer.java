@@ -15,34 +15,71 @@
  */
 package org.intellij.lang.regexp;
 
+import consulo.language.ast.IElementType;
 import consulo.language.lexer.FlexAdapter;
+import consulo.language.lexer.Lexer;
+import consulo.language.lexer.LookAheadLexer;
+import jakarta.annotation.Nonnull;
 
 import java.util.EnumSet;
 
-public class RegExpLexer extends FlexAdapter {
-    private static final int COMMENT_MODE = 1 << 14;
-    private final EnumSet<RegExpCapability> myCapabilities;
+public class RegExpLexer extends LookAheadLexer {
 
     public RegExpLexer(EnumSet<RegExpCapability> capabilities) {
-        super(new _RegExLexer(capabilities));
-        myCapabilities = capabilities;
+        super(new FlexRegExpLexer(capabilities));
     }
 
     @Override
-    public void start(CharSequence buffer, int startOffset, int endOffset, int initialState) {
-        getFlex().commentMode = (initialState & COMMENT_MODE) != 0 || myCapabilities.contains(RegExpCapability.COMMENT_MODE);
-        super.start(buffer, startOffset, endOffset, initialState & ~COMMENT_MODE);
+    protected void lookAhead(@Nonnull Lexer baseLexer) {
+        final IElementType tokenType = baseLexer.getTokenType();
+        if (!RegExpTT.CHARACTERS.contains(tokenType) && tokenType != RegExpTT.RBRACE) {
+            advanceLexer(baseLexer);
+            if (baseLexer.getTokenType() == RegExpTT.MINUS) {
+                advanceAs(baseLexer, RegExpTT.CHARACTER);
+            }
+        }
+        else {
+            super.lookAhead(baseLexer);
+        }
     }
 
-    @Override
-    public _RegExLexer getFlex() {
-        return (_RegExLexer)super.getFlex();
-    }
+    static class FlexRegExpLexer extends FlexAdapter {
 
-    @Override
-    public int getState() {
-        final boolean commentMode = getFlex().commentMode;
-        final int state = super.getState();
-        return commentMode ? state | COMMENT_MODE : state;
+        private static final int COMMENT_MODE = 1 << 14;
+        private static final int NESTED_STATES = 1 << 15;
+        private static final int CAPTURING_GROUPS = 1 << 16;
+        private final EnumSet<RegExpCapability> myCapabilities;
+
+        FlexRegExpLexer(EnumSet<RegExpCapability> capabilities) {
+            super(new _RegExLexer(capabilities));
+            myCapabilities = capabilities;
+        }
+
+        @Override
+        public void start(@Nonnull CharSequence buffer, int startOffset, int endOffset, int initialState) {
+            getFlex().commentMode = (initialState & COMMENT_MODE) != 0 || myCapabilities.contains(RegExpCapability.COMMENT_MODE);
+            super.start(buffer, startOffset, endOffset, initialState & ~COMMENT_MODE);
+        }
+
+        @Override
+        public _RegExLexer getFlex() {
+            return (_RegExLexer) super.getFlex();
+        }
+
+        @Override
+        public int getState() {
+            final _RegExLexer flex = getFlex();
+            int state = super.getState();
+            if (flex.commentMode) {
+                state |= COMMENT_MODE;
+            }
+            if (!flex.states.isEmpty()) {
+                state |= NESTED_STATES;
+            }
+            if (flex.capturingGroupCount != 0) {
+                state |= CAPTURING_GROUPS;
+            }
+            return state;
+        }
     }
 }

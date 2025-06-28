@@ -16,34 +16,32 @@
 package org.intellij.lang.regexp.psi.impl;
 
 import consulo.language.ast.ASTNode;
-import org.intellij.lang.regexp.RegExpElementTypes;
+import consulo.language.psi.util.PsiTreeUtil;
+import jakarta.annotation.Nonnull;
 import org.intellij.lang.regexp.RegExpTT;
 import org.intellij.lang.regexp.psi.RegExpClass;
 import org.intellij.lang.regexp.psi.RegExpClassElement;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 
-import jakarta.annotation.Nonnull;
-
 public class RegExpClassImpl extends RegExpElementImpl implements RegExpClass {
+
+    private static final RegExpClassElement[] EMPTY_CHILDREN = new RegExpClassElement[0];
+
     public RegExpClassImpl(ASTNode astNode) {
         super(astNode);
     }
 
     @Override
     public boolean isNegated() {
-        final ASTNode node = getNode().getFirstChildNode();
+        final ASTNode node = getNode().getFirstChildNode().getTreeNext();
         return node != null && node.getElementType() == RegExpTT.CARET;
     }
 
     @Override
     @Nonnull
     public RegExpClassElement[] getElements() {
-        final ASTNode[] nodes = getNode().getChildren(RegExpElementTypes.CLASS_ELEMENTS);
-        final RegExpClassElement[] e = new RegExpClassElement[nodes.length];
-        for (int i = 0; i < e.length; i++) {
-            e[i] = (RegExpClassElement)nodes[i].getPsi();
-        }
-        return e;
+        RegExpClassElement[] children = PsiTreeUtil.getChildrenOfType(this, RegExpClassElement.class);
+        return children != null ? children : EMPTY_CHILDREN;
     }
 
     @Override

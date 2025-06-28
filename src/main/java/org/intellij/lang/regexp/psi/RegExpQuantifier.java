@@ -15,79 +15,41 @@
  */
 package org.intellij.lang.regexp.psi;
 
-import jakarta.annotation.Nonnull;
+import consulo.language.ast.ASTNode;
+import jakarta.annotation.Nullable;
 
 public interface RegExpQuantifier extends RegExpAtom {
-    @Nonnull
-    RegExpAtom getAtom();
 
     /**
-     * The min,max occurrence count the quantifier represents. This is either an instance of
-     * {@link org.intellij.lang.regexp.psi.RegExpQuantifier.SimpleCount} for the ?, * or +
-     * quantifiers, or an arbitrary instance of the {@link org.intellij.lang.regexp.psi.RegExpQuantifier.Count}
-     * interface that returns the values obtained from the {min,max} quantifier.
+     * @return true, if the quantifier is of the {min, max} variety, false if it is ?, * or +
      */
-    @Nonnull
-    Count getCount();
+    boolean isCounted();
 
     /**
-     * The "greedyness" type of the quantifier.
+     * @return the ?, * or + token, or null if isCounted() is true.
      */
-    @Nonnull
-    Type getType();
+    @Nullable
+    ASTNode getToken();
 
-    interface Count {
-        @Nonnull
-        String getMin();
+    /**
+     * @return the min element, or null when not present
+     */
+    @Nullable
+    RegExpNumber getMin();
 
-        @Nonnull
-        String getMax();
-    }
+    /**
+     * @return the max element, or null when not present. Returns the min element when no max element or comma is present (i.e. {n}).
+     */
+    @Nullable
+    RegExpNumber getMax();
 
-    enum SimpleCount implements Count {
-        /** ? */
-        ONE_OR_ZERO("0", "1"),
-        /** * */
-        ZERO_OR_MORE("0", ""),
-        /** + */
-        ONE_OR_MORE("1", "");
+    /**
+     * @return optional reluctant '?' or possessive modifier '+'
+     */
+    @Nullable
+    ASTNode getModifier();
 
-        private final String myMin;
-        private final String myMax;
+    boolean isReluctant();
 
-        SimpleCount(String min, String max) {
-            myMin = min;
-            myMax = max;
-        }
-
-        @Nonnull
-        @Override
-        public String getMin() {
-            return myMin;
-        }
-
-        @Nonnull
-        @Override
-        public String getMax() {
-            return myMax;
-        }
-    }
-
-    enum Type {
-        GREEDY(""),
-        /** ? */
-        RELUCTANT("?"),
-        /** + */
-        POSSESSIVE("+");
-
-        private final String myToken;
-
-        Type(String ch) {
-            myToken = ch;
-        }
-
-        public String getToken() {
-            return myToken;
-        }
-    }
+    boolean isPossessive();
 }

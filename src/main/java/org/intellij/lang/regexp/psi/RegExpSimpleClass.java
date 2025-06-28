@@ -15,49 +15,85 @@
  */
 package org.intellij.lang.regexp.psi;
 
+import consulo.annotation.access.RequiredReadAction;
 import jakarta.annotation.Nonnull;
 
 /**
  * Represents a simple character class.
  */
-public interface RegExpSimpleClass extends RegExpAtom, RegExpClassElement, RegExpCharRange.Endpoint {
+public interface RegExpSimpleClass extends RegExpAtom, RegExpClassElement {
     enum Kind {
-        /** . */
+        /**
+         * .
+         */
         ANY,
-        /** \d */
+        /**
+         * \d
+         */
         DIGIT,
-        /** \D */
+        /**
+         * \D
+         */
         NON_DIGIT,
-        /** \w */
+        /**
+         * \w
+         */
         WORD,
-        /** \W */
+        /**
+         * \W
+         */
         NON_WORD,
-        /** \s */
+        /**
+         * \s
+         */
         SPACE,
-        /** \S */
+        /**
+         * \S
+         */
         NON_SPACE,
-        /** \h */
+        /**
+         * \h
+         */
         HORIZONTAL_SPACE,
-        /** \H */
+        /**
+         * \H
+         */
         NON_HORIZONTAL_SPACE,
-        /** \v */
+        /**
+         * \v
+         */
         VERTICAL_SPACE,
-        /** \V */
+        /**
+         * \V
+         */
         NON_VERTICAL_SPACE,
-        /** \i */
+        /**
+         * \i
+         */
         XML_NAME_START,
-        /** \I */
+        /**
+         * \I
+         */
         NON_XML_NAME_START,
-        /** \c */
+        /**
+         * \c
+         */
         XML_NAME_PART,
-        /** \C */
+        /**
+         * \C
+         */
         NON_XML_NAME_PART,
-        /** \X */
+        /**
+         * \X
+         */
         UNICODE_GRAPHEME,
-        /** \R */
-        UNICODE_LINEBREAK
+        /**
+         * \R
+         */
+        UNICODE_LINEBREAK,
     }
 
     @Nonnull
+    @RequiredReadAction
     Kind getKind();
 }

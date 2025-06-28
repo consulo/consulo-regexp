@@ -1,5 +1,5 @@
 /*
- * Copyright 2000-2010 JetBrains s.r.o.
+ * Copyright 2000-2017 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.intellij.lang.regexp.psi.impl;
+package org.intellij.lang.regexp.psi;
 
-import consulo.language.ast.ASTNode;
-import org.intellij.lang.regexp.psi.RegExpElementVisitor;
-import org.intellij.lang.regexp.psi.RegExpPyCondRef;
+import jakarta.annotation.Nullable;
 
 /**
- * @author yole
+ * Number consisting only of one or more decimal digits. No negation or decimal points.
+ *
+ * @author Bas Leijdekkers
  */
-public class RegExpPyCondRefImpl extends RegExpElementImpl implements RegExpPyCondRef {
-  public RegExpPyCondRefImpl(ASTNode node) {
-    super(node);
-  }
+public interface RegExpNumber extends RegExpElement {
 
-  @Override
-  public void accept(RegExpElementVisitor visitor) {
-    visitor.visitRegExpPyCondRef(this);
-  }
+    @Nullable
+    Number getValue();
 }

@@ -53,16 +53,15 @@ public class RegExpUtil {
         return values;
     }
 
+    @RequiredReadAction
     private static boolean analyzeBranch(RegExpBranch branch) {
         final RegExpAtom[] atoms = branch.getAtoms();
         for (RegExpAtom atom : atoms) {
-            if (atom instanceof RegExpChar regExpChar && regExpChar.getValue() != null) {
-                if (regExpChar.getType() != RegExpChar.Type.CHAR) {
-                    // this could probably allow more, such as escape sequences
-                    return false;
-                }
+            if (!(atom instanceof RegExpChar) || ((RegExpChar) atom).getValue() == -1) {
+                return false;
             }
-            else {
+            else if (((RegExpChar) atom).getType() != RegExpChar.Type.CHAR) {
+                // this could probably allow more, such as escape sequences
                 return false;
             }
         }

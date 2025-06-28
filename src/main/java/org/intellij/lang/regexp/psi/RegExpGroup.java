@@ -16,23 +16,84 @@
 package org.intellij.lang.regexp.psi;
 
 import consulo.language.psi.PsiNamedElement;
-
+import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 public interface RegExpGroup extends RegExpAtom, PsiNamedElement {
+
     boolean isCapturing();
 
-    boolean isSimple();
-
-    @Nullable
+    @Nonnull
     RegExpPattern getPattern();
 
-    boolean isPythonNamedGroup();
-
-    boolean isRubyNamedGroup();
-
-    boolean isNamedGroup();
+    /**
+     * @return true, if this is a named group of any kind, false otherwise
+     */
+    boolean isAnyNamedGroup();
 
     @Nullable
     String getGroupName();
+
+    Type getType();
+
+    enum Type {
+        /**
+         * (?<name>pattern)
+         */
+        NAMED_GROUP,
+
+        /**
+         * (?'name'pattern)
+         */
+        QUOTED_NAMED_GROUP,
+
+        /**
+         * (?P<name>pattern)
+         */
+        PYTHON_NAMED_GROUP,
+
+        /**
+         * (pattern)
+         */
+        CAPTURING_GROUP,
+
+        /**
+         * (?>pattern)
+         */
+        ATOMIC,
+
+        /**
+         * (?:pattern)
+         */
+        NON_CAPTURING,
+
+        /**
+         * (?=pattern)
+         */
+        POSITIVE_LOOKAHEAD,
+
+        /**
+         * (?!pattern)
+         */
+        NEGATIVE_LOOKAHEAD,
+
+        /**
+         * (?<=pattern)
+         */
+        POSITIVE_LOOKBEHIND,
+
+        /**
+         * (?<!pattern)
+         */
+        NEGATIVE_LOOKBEHIND,
+        /**
+         * (?|pattern)
+         */
+        PCRE_BRANCH_RESET,
+
+        /**
+         * (?i:pattern)
+         */
+        OPTIONS
+    }
 }

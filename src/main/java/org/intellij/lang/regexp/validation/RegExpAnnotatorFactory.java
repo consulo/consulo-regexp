@@ -17,6 +17,7 @@
 package org.intellij.lang.regexp.validation;
 
 import consulo.annotation.component.ExtensionImpl;
+import consulo.application.dumb.DumbAware;
 import consulo.language.Language;
 import consulo.language.editor.annotation.Annotator;
 import consulo.language.editor.annotation.AnnotatorFactory;
@@ -30,7 +31,7 @@ import jakarta.annotation.Nullable;
  * @since 2022-06-28
  */
 @ExtensionImpl
-public class RegExpAnnotatorFactory implements AnnotatorFactory {
+public class RegExpAnnotatorFactory implements AnnotatorFactory, DumbAware {
     @Nullable
     @Override
     public Annotator createAnnotator() {

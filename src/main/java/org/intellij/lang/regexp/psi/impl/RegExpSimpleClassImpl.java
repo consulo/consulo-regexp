@@ -17,20 +17,18 @@ package org.intellij.lang.regexp.psi.impl;
 
 import consulo.annotation.access.RequiredReadAction;
 import consulo.language.ast.ASTNode;
+import jakarta.annotation.Nonnull;
 import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpSimpleClass;
-
-import jakarta.annotation.Nonnull;
 
 public class RegExpSimpleClassImpl extends RegExpElementImpl implements RegExpSimpleClass {
     public RegExpSimpleClassImpl(ASTNode node) {
         super(node);
     }
 
-    @Override
-    @Nonnull
     @RequiredReadAction
-    public Kind getKind() {
+    @Override
+    public @Nonnull Kind getKind() {
         return switch (getUnescapedText()) {
             case "." -> Kind.ANY;
             case "\\d" -> Kind.DIGIT;
@@ -49,7 +47,7 @@ public class RegExpSimpleClassImpl extends RegExpElementImpl implements RegExpSi
             case "\\C" -> Kind.NON_XML_NAME_PART;
             case "\\X" -> Kind.UNICODE_GRAPHEME;
             case "\\R" -> Kind.UNICODE_LINEBREAK;
-            default -> throw new AssertionError();
+            default -> throw new AssertionError("unknown character class '" + getUnescapedText() + "'");
         };
     }
 

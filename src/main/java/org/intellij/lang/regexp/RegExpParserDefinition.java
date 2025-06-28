@@ -17,8 +17,6 @@ package org.intellij.lang.regexp;
 
 import consulo.annotation.access.RequiredReadAction;
 import consulo.annotation.component.ExtensionImpl;
-import consulo.disposer.Disposable;
-import consulo.disposer.Disposer;
 import consulo.language.Language;
 import consulo.language.ast.*;
 import consulo.language.file.FileViewProvider;
@@ -29,29 +27,15 @@ import consulo.language.parser.PsiParser;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.language.version.LanguageVersion;
-import org.intellij.lang.regexp.psi.impl.*;
-import org.jetbrains.annotations.TestOnly;
-
 import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+import org.intellij.lang.regexp.psi.impl.*;
+
 import java.util.EnumSet;
 
 @ExtensionImpl
 public class RegExpParserDefinition implements ParserDefinition {
     private static final TokenSet COMMENT_TOKENS = TokenSet.create(RegExpTT.COMMENT);
-    private static final EnumSet<RegExpCapability> CAPABILITIES = EnumSet.of(
-        RegExpCapability.NESTED_CHARACTER_CLASSES,
-        RegExpCapability.ALLOW_HORIZONTAL_WHITESPACE_CLASS,
-        RegExpCapability.UNICODE_CATEGORY_SHORTHAND
-    );
-
-    @TestOnly
-    public static void setTestCapability(@Nullable RegExpCapability capability, @Nonnull Disposable parentDisposable) {
-        if (!CAPABILITIES.contains(capability)) {
-            CAPABILITIES.add(capability);
-            Disposer.register(parentDisposable, () -> CAPABILITIES.remove(capability));
-        }
-    }
+    public static final IFileElementType REGEXP_FILE = new IFileElementType(RegExpLanguage.INSTANCE);
 
     @Nonnull
     @Override
@@ -62,19 +46,27 @@ public class RegExpParserDefinition implements ParserDefinition {
     @Nonnull
     @Override
     public Lexer createLexer(@Nonnull LanguageVersion languageVersion) {
-        return new RegExpLexer(CAPABILITIES);
+        EnumSet<RegExpCapability> capabilities = RegExpCapability.DEFAULT_CAPABILITIES;
+        if (languageVersion instanceof RegExpLanguageVersion regExpLanguageVersion) {
+            capabilities = regExpLanguageVersion.getCapabilities();
+        }
+        return new RegExpLexer(capabilities);
     }
 
     @Nonnull
     @Override
     public PsiParser createParser(@Nonnull LanguageVersion languageVersion) {
-        return new RegExpParser(CAPABILITIES);
+        EnumSet<RegExpCapability> capabilities = RegExpCapability.DEFAULT_CAPABILITIES;
+        if (languageVersion instanceof RegExpLanguageVersion regExpLanguageVersion) {
+            capabilities = regExpLanguageVersion.getCapabilities();
+        }
+        return new RegExpParser(capabilities);
     }
 
     @Nonnull
     @Override
     public IFileElementType getFileNodeType() {
-        return RegExpElementTypes.REGEXP_FILE;
+        return REGEXP_FILE;
     }
 
     @Nonnull
@@ -125,7 +117,7 @@ public class RegExpParserDefinition implements ParserDefinition {
         else if (type == RegExpElementTypes.PROPERTY) {
             return new RegExpPropertyImpl(node);
         }
-        else if (type == RegExpElementTypes.NAMED_CHARACTER_ELEMENT) {
+        else if (type == RegExpElementTypes.NAMED_CHARACTER) {
             return new RegExpNamedCharacterImpl(node);
         }
         else if (type == RegExpElementTypes.SET_OPTIONS) {
@@ -149,17 +141,17 @@ public class RegExpParserDefinition implements ParserDefinition {
         else if (type == RegExpElementTypes.INTERSECTION) {
             return new RegExpIntersectionImpl(node);
         }
-        else if (type == RegExpElementTypes.UNION) {
-            return new RegExpUnionImpl(node);
-        }
         else if (type == RegExpElementTypes.NAMED_GROUP_REF) {
             return new RegExpNamedGroupRefImpl(node);
         }
-        else if (type == RegExpElementTypes.PY_COND_REF) {
-            return new RegExpPyCondRefImpl(node);
+        else if (type == RegExpElementTypes.CONDITIONAL) {
+            return new RegExpConditionalImpl(node);
         }
         else if (type == RegExpElementTypes.POSIX_BRACKET_EXPRESSION) {
             return new RegExpPosixBracketExpressionImpl(node);
+        }
+        else if (type == RegExpElementTypes.NUMBER) {
+            return new RegExpNumberImpl(node);
         }
 
         return new ASTWrapperPsiElement(node);
@@ -173,7 +165,7 @@ public class RegExpParserDefinition implements ParserDefinition {
 
     @Nonnull
     @Override
-    public SpaceRequirements spaceExistanceTypeBetweenTokens(ASTNode left, ASTNode right) {
+    public SpaceRequirements spaceExistenceTypeBetweenTokens(ASTNode left, ASTNode right) {
         return SpaceRequirements.MUST_NOT;
     }
 }

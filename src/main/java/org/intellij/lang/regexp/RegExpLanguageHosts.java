@@ -15,13 +15,13 @@
  */
 package org.intellij.lang.regexp;
 
+import consulo.annotation.access.RequiredReadAction;
 import consulo.language.psi.PsiComment;
 import consulo.language.psi.PsiElement;
-import org.intellij.lang.regexp.psi.*;
-import org.jetbrains.annotations.Contract;
-
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+import org.intellij.lang.regexp.psi.*;
+import org.jetbrains.annotations.Contract;
 
 /**
  * @author yole
@@ -98,13 +98,13 @@ public final class RegExpLanguageHosts {
         return host != null && host.supportsPerl5EmbeddedComments();
     }
 
-    public boolean supportsPythonConditionalRefs(@Nullable final RegExpPyCondRef condRef) {
+    public boolean supportsConditionals(@Nullable final RegExpConditional condRef) {
         final RegExpLanguageHost host = findRegExpHost(condRef);
         return host != null && host.supportsPythonConditionalRefs();
     }
 
-    public boolean supportsPossessiveQuantifiers(@Nullable final RegExpQuantifier quantifier) {
-        final RegExpLanguageHost host = findRegExpHost(quantifier);
+    public boolean supportsPossessiveQuantifiers(final @Nullable RegExpElement context) {
+        final RegExpLanguageHost host = findRegExpHost(context);
         return host == null || host.supportsPossessiveQuantifiers();
     }
 
@@ -153,5 +153,47 @@ public final class RegExpLanguageHosts {
 
     String[][] getPosixCharacterClasses(@Nonnull final PsiElement element) {
         return myDefaultProvider.getPosixCharacterClasses();
+    }
+
+    public RegExpLanguageHost.Lookbehind supportsLookbehind(RegExpGroup group) {
+        final RegExpLanguageHost host = findRegExpHost(group);
+        if (host == null) {
+            return RegExpLanguageHost.Lookbehind.FULL;
+        }
+        return host.supportsLookbehind(group);
+    }
+
+    public boolean isDuplicateGroupNamesAllowed(final @Nonnull RegExpGroup group) {
+        final RegExpLanguageHost host = findRegExpHost(group);
+        return host == null || host.isDuplicateGroupNamesAllowed(group);
+    }
+
+    public boolean supportConditionalCondition(RegExpAtom condition) {
+        final RegExpLanguageHost host = findRegExpHost(condition);
+        return host == null || host.supportConditionalCondition(condition);
+    }
+
+    public boolean isValidPropertyName(@Nonnull PsiElement element, @Nonnull String type) {
+        final RegExpLanguageHost host = findRegExpHost(element);
+        return host == null || host.isValidPropertyName(type);
+    }
+
+    public boolean supportsPropertySyntax(@Nonnull PsiElement context) {
+        RegExpLanguageHost host = findRegExpHost(context);
+        return host == null || host.supportsPropertySyntax(context);
+    }
+
+    public boolean isValidPropertyValue(@Nonnull PsiElement element, @Nonnull String propertyName, @Nonnull String propertyValue) {
+        final RegExpLanguageHost host = findRegExpHost(element);
+        return host == null || host.isValidPropertyValue(propertyName, propertyValue);
+    }
+    
+    @RequiredReadAction
+    public @Nullable Number getQuantifierValue(@Nonnull RegExpNumber valueElement) {
+        final RegExpLanguageHost host = findRegExpHost(valueElement);
+        if (host == null) {
+            return Double.valueOf(valueElement.getText());
+        }
+        return host.getQuantifierValue(valueElement);
     }
 }

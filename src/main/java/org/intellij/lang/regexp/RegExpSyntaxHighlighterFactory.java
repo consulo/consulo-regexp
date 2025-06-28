@@ -26,11 +26,16 @@ import jakarta.annotation.Nonnull;
 
 @ExtensionImpl
 public class RegExpSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHighlighterFactory {
-    private final ParserDefinition myParserDefinition;
+    @Nonnull
+    private final Language myLanguage;
 
     @Inject
     public RegExpSyntaxHighlighterFactory() {
         this(RegExpLanguage.INSTANCE);
+    }
+
+    protected RegExpSyntaxHighlighterFactory(@Nonnull Language language) {
+        myLanguage = language;
     }
 
     @Nonnull
@@ -39,13 +44,9 @@ public class RegExpSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHigh
         return RegExpLanguage.INSTANCE;
     }
 
-    protected RegExpSyntaxHighlighterFactory(@Nonnull Language language) {
-        myParserDefinition = ParserDefinition.forLanguage(language);
-    }
-
     @Nonnull
     @Override
     protected SyntaxHighlighter createHighlighter() {
-        return new RegExpHighlighter(myParserDefinition);
+        return new RegExpHighlighter(ParserDefinition.forLanguage(myLanguage));
     }
 }
