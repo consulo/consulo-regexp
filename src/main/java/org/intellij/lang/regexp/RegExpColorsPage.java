@@ -22,6 +22,8 @@ import consulo.colorScheme.setting.ColorDescriptor;
 import consulo.language.editor.colorScheme.setting.ColorSettingsPage;
 import consulo.language.editor.highlight.SyntaxHighlighter;
 import consulo.language.editor.highlight.SyntaxHighlighterFactory;
+import consulo.localize.LocalizeValue;
+import consulo.regexp.localize.RegExpLocalize;
 import org.jetbrains.annotations.NonNls;
 
 import jakarta.annotation.Nonnull;
@@ -53,8 +55,8 @@ public class RegExpColorsPage implements ColorSettingsPage {
 
     @Nonnull
     @Override
-    public String getDisplayName() {
-        return "RegExp";
+    public LocalizeValue getDisplayName() {
+        return RegExpLocalize.colorSettingsName();
     }
 
     @Nonnull
