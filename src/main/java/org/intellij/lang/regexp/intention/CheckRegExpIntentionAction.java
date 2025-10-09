@@ -27,13 +27,14 @@ import consulo.language.editor.intention.IntentionMetaData;
 import consulo.language.psi.PsiDocumentManager;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
+import consulo.localize.LocalizeValue;
 import consulo.project.Project;
 import consulo.regexp.icon.RegExpIconGroup;
 import consulo.ui.image.Image;
 import consulo.util.lang.Pair;
+import jakarta.annotation.Nonnull;
 import org.intellij.lang.regexp.RegExpLanguage;
 
-import jakarta.annotation.Nonnull;
 import javax.swing.*;
 
 /**
@@ -43,8 +44,8 @@ import javax.swing.*;
 @ExtensionImpl
 @IntentionMetaData(ignoreId = "regexp.CheckRegExpIntentionAction", categories = "RegExp", fileExtensions = "regexp")
 public class CheckRegExpIntentionAction extends QuickEditAction implements Iconable {
-    @RequiredReadAction
     @Override
+    @RequiredReadAction
     public boolean isAvailable(@Nonnull Project project, Editor editor, PsiFile file) {
         final Pair<PsiElement, TextRange> pair = getRangePair(file, editor);
         /*super.isAvailable(project, editor, file) && */
@@ -73,8 +74,8 @@ public class CheckRegExpIntentionAction extends QuickEditAction implements Icona
 
     @Nonnull
     @Override
-    public String getText() {
-        return "Check RegExp";
+    public LocalizeValue getText() {
+        return LocalizeValue.localizeTODO("Check RegExp");
     }
 
     @Override
