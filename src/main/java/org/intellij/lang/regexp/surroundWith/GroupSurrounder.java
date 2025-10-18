@@ -27,6 +27,7 @@ import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiFileFactory;
 import consulo.language.psi.util.PsiTreeUtil;
 import consulo.language.util.IncorrectOperationException;
+import consulo.localize.LocalizeValue;
 import consulo.project.Project;
 import consulo.util.lang.StringUtil;
 import org.intellij.lang.regexp.RegExpFileType;
@@ -38,16 +39,17 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
 class GroupSurrounder implements Surrounder {
-    private final String myTitle;
+    private final LocalizeValue myTitle;
     private final String myGroupStart;
 
-    public GroupSurrounder(String title, String groupStart) {
+    public GroupSurrounder(LocalizeValue title, String groupStart) {
         myTitle = title;
         myGroupStart = groupStart;
     }
 
+    @Nonnull
     @Override
-    public String getTemplateDescription() {
+    public LocalizeValue getTemplateDescription() {
         return myTitle;
     }
 

@@ -18,15 +18,14 @@ package org.intellij.lang.regexp;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.colorScheme.TextAttributesKey;
 import consulo.colorScheme.setting.AttributesDescriptor;
-import consulo.colorScheme.setting.ColorDescriptor;
 import consulo.language.editor.colorScheme.setting.ColorSettingsPage;
 import consulo.language.editor.highlight.SyntaxHighlighter;
 import consulo.language.editor.highlight.SyntaxHighlighterFactory;
 import consulo.localize.LocalizeValue;
 import consulo.regexp.localize.RegExpLocalize;
+import jakarta.annotation.Nonnull;
 import org.jetbrains.annotations.NonNls;
 
-import jakarta.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,13 +63,6 @@ public class RegExpColorsPage implements ColorSettingsPage {
     public AttributesDescriptor[] getAttributeDescriptors() {
         return ATTRS;
     }
-
-    @Nonnull
-    @Override
-    public ColorDescriptor[] getColorDescriptors() {
-        return ColorDescriptor.EMPTY_ARRAY;
-    }
-
     @Nonnull
     @Override
     public SyntaxHighlighter getHighlighter() {

@@ -25,6 +25,7 @@ import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiUtilCore;
 import consulo.language.psi.PsiWhiteSpace;
 import consulo.language.psi.util.PsiTreeUtil;
+import consulo.localize.LocalizeValue;
 import org.intellij.lang.regexp.RegExpLanguage;
 import org.intellij.lang.regexp.psi.RegExpAtom;
 import org.intellij.lang.regexp.psi.RegExpBranch;
@@ -39,8 +40,8 @@ import java.util.List;
 @ExtensionImpl
 public class SimpleSurroundDescriptor implements SurroundDescriptor {
     private static final Surrounder[] SURROUNDERS = {
-        new GroupSurrounder("Capturing Group (pattern)", "("),
-        new GroupSurrounder("Non-Capturing Group (?:pattern)", "(?:"),
+        new GroupSurrounder(LocalizeValue.localizeTODO("Capturing Group (pattern)"), "("),
+        new GroupSurrounder(LocalizeValue.localizeTODO("Non-Capturing Group (?:pattern)"), "(?:"),
     };
 
     @Nonnull
