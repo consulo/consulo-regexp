@@ -20,7 +20,9 @@ import consulo.annotation.access.RequiredWriteAction;
 import consulo.document.util.TextRange;
 import consulo.language.ast.ASTNode;
 import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiReference;
+import consulo.language.psi.SyntaxTraverser;
 import consulo.language.psi.resolve.PsiElementProcessor;
 import consulo.language.psi.util.PsiElementFilter;
 import consulo.language.psi.util.PsiTreeUtil;
@@ -33,6 +35,10 @@ import org.intellij.lang.regexp.psi.RegExpElementVisitor;
 import org.intellij.lang.regexp.psi.RegExpGroup;
 
 import jakarta.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.Nullable;
+
+import java.util.List;
 
 public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackref {
     public RegExpBackrefImpl(ASTNode astNode) {
@@ -54,86 +60,81 @@ public class RegExpBackrefImpl extends RegExpElementImpl implements RegExpBackre
 
     @Override
     @RequiredReadAction
-    public RegExpGroup resolve() {
-        final int index = getIndex();
-
-        final PsiElementProcessor.FindFilteredElement<RegExpElement> processor =
-            new PsiElementProcessor.FindFilteredElement<>(new PsiElementFilter() {
-                int groupCount;
-
-                @Override
-                public boolean isAccepted(PsiElement element) {
-                    if (element instanceof RegExpGroup group) {
-                        if (group.isCapturing() && ++groupCount == index) {
-                            return true;
-                        }
-                    }
-                    return element == RegExpBackrefImpl.this;
-                }
-            });
-
-        PsiTreeUtil.processElements(getContainingFile(), processor);
-        return processor.getFoundElement() instanceof RegExpGroup group ? group : null;
+    public @Nullable RegExpGroup resolve() {
+        return resolve(getIndex(), getContainingFile());
     }
 
+    static @Nullable RegExpGroup resolve(int index, PsiFile file) {
+        if (index < 0) {
+            return resolveRelativeGroup(Math.abs(index), file);
+        }
+
+        return SyntaxTraverser.psiTraverser(file)
+            .filter(RegExpGroup.class)
+            .filter(RegExpGroup::isCapturing)
+            .skip(index - 1)
+            .first();
+    }
+
+    private static @Nullable RegExpGroup resolveRelativeGroup(int index, PsiFile file) {
+        List<RegExpGroup> groups = SyntaxTraverser.psiTraverser(file)
+            .filter(RegExpGroup.class)
+            .filter(RegExpGroup::isCapturing)
+            .toList();
+        return index <= groups.size() ? groups.get(groups.size() - index) : null;
+    }
+
+    @Nonnull
     @Override
     public PsiReference getReference() {
         return new PsiReference() {
-            @Override
             @RequiredReadAction
+            @Override
             public PsiElement getElement() {
                 return RegExpBackrefImpl.this;
             }
 
-            @Nonnull
-            @Override
             @RequiredReadAction
+            @Override
             public TextRange getRangeInElement() {
                 return TextRange.from(0, getElement().getTextLength());
             }
 
-            @Nonnull
-            @Override
             @RequiredReadAction
+            @Override
             public String getCanonicalText() {
                 return getElement().getText();
             }
 
-            @Override
             @RequiredWriteAction
-            public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+            @Nonnull
+            @Override
+            public PsiElement handleElementRename(@Nonnull String newElementName) throws IncorrectOperationException {
                 throw new IncorrectOperationException();
             }
 
-            @Override
             @RequiredWriteAction
+            @Override
             public PsiElement bindToElement(@Nonnull PsiElement element) throws IncorrectOperationException {
                 throw new IncorrectOperationException();
             }
 
-            @Override
             @RequiredReadAction
-            public boolean isReferenceTo(PsiElement element) {
+            @Override
+            public boolean isReferenceTo(@Nonnull PsiElement element) {
                 return Comparing.equal(element, resolve());
             }
 
-            @Override
             @RequiredReadAction
+            @Override
             public boolean isSoft() {
                 return false;
             }
 
-            @Override
             @RequiredReadAction
-            public PsiElement resolve() {
+            @Override
+            public @Nullable PsiElement resolve() {
                 return RegExpBackrefImpl.this.resolve();
-            }
-
-            @Nonnull
-            @Override
-            @RequiredReadAction
-            public Object[] getVariants() {
-                return ArrayUtil.EMPTY_OBJECT_ARRAY;
             }
         };
     }
