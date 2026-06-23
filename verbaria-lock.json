@@ -3,19 +3,11 @@
   "server" : "https://i.verbaria.org/",
   "project" : "consulo-regexp",
   "projectVersion" : "master",
-  "generatedAt" : "2026-06-23T21:35:39.464030459Z",
+  "generatedAt" : "2026-06-23T21:39:39.042192726Z",
   "documents" : {
     "consulo.regexp.RegExpLocalize" : {
       "source" : {
         "revision" : 1
-      },
-      "translations" : {
-        "en-US" : {
-          "sig" : "09184f6bb87a9b5a0e4a42bdf420bb0a",
-          "state" : "Approved",
-          "total" : 205,
-          "translators" : [ "Valery Semenchuk <vistall.valeriy@gmail.com>" ]
-        }
       }
     }
   }
