@@ -37,7 +37,7 @@ color.settings.invalid.escape.sequence:
 color.settings.matched.groups:
     text: Matched groups
 color.settings.name:
-    text: Name
+    text: RegExp
 color.settings.operator.character:
     text: Operator character
 color.settings.parenthesis:
